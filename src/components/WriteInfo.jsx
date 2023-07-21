@@ -77,7 +77,7 @@ export default function WriteInfo() {
   );
 }
 
-const InfoBox = styled.div`
+export const InfoBox = styled.div`
   width: 245px;
   margin-top: 153px;
   margin-left: 90px;
@@ -90,7 +90,7 @@ const InfoBox = styled.div`
   flex-wrap: wrap;
 `;
 
-const SearchBox = styled.div`
+export const SearchBox = styled.div`
   width: 155px;
   border-radius: 26px;
   display: flex;
@@ -101,7 +101,7 @@ const SearchBox = styled.div`
   color: var(--festie-primary-orange);
 `;
 
-const SearchInput = styled.input`
+export const SearchInput = styled.input`
   width: 130px;
   height: 22px;
   border: none;
@@ -119,7 +119,7 @@ const IconImage = styled.img`
   cursor: pointer;
 `;
 
-const InputBox = styled.div`
+export const InputBox = styled.div`
   width: auto;
   height: auto;
   display: flex;
@@ -168,7 +168,7 @@ const SelectCategory = styled.select`
   background-size: 12px;
 `;
 
-const AddImage = styled.div`
+export const AddImage = styled.div`
   width: 197px;
   height: 280px;
   border: 0.8px solid var(--festie-gray-600, #949494);
@@ -189,6 +189,6 @@ const AddImage = styled.div`
   line-height: 140%;
 `;
 
-const PlusIcon = styled.img`
+export const PlusIcon = styled.img`
   margin-bottom: 23px;
 `;

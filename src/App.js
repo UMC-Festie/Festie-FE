@@ -7,8 +7,8 @@ import View from "./pages/View";
 import Share from "./pages/Share";
 import Together from "./pages/Together";
 import PerformanceWrite from "./pages/PerformanceWrite";
-import ReviewWrite from "./pages/ReviewWrite";
-
+import TicketingWrite from "./pages/TicketingWrite";
+import TogetherWrite from "./pages/TogetherWrite";
 function App() {
   return (
     <>
@@ -19,8 +19,8 @@ function App() {
         <Route path="/view" element={<View />} />
         <Route path="/share" element={<Share />} />
         <Route path="/together" element={<Together />} />
-        <Route path="/test" element={<PerformanceWrite />} />
-        <Route path="/test2" element={<ReviewWrite />} />
+        <Route path="/test" element={<TogetherWrite />} />
+        <Route path="/test2" element={<TicketingWrite />} />
       </Routes>
       <Footer />
     </>
