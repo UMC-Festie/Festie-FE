@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import TogetherRequest from "./TogetherRequest";
 
@@ -26,20 +26,43 @@ export default function TogetherRequestList() {
     //
     
     const [isClicked, setIsClicked] = useState(false);
-    
-    const onClickCheckButton = (userId) => {
-        setRequests(prevRequests =>
-          prevRequests.map(request =>
-            request.userId === userId
-              ? { ...request, isChecked: !request.isChecked }
-              : request
-          )
+    const [isAnyRequestChecked, setIsAnyRequestChecked] = useState(false);
+    const [checkedRequestIndex, setCheckedRequestIndex] = useState(null);
+
+    useEffect(() => {
+        setIsAnyRequestChecked(requests.some((request) => request.isChecked));
+    }, [requests]);
+
+    const onClickCheckButton = (index) => {
+        setRequests((prevRequests) =>
+            prevRequests.map((request, idx) =>
+                idx === index 
+                    ? { ...request, isChecked: !request.isChecked } 
+                    : { ...request, isChecked: false }
+            )
         );
-        console.log(`${userId}번 체크 버튼 누름`);
+        setCheckedRequestIndex(index);
+        console.log(`${index}번 Box 체크 버튼 누름`);
     };
 
     const onClickMatchingButton = () => {
         setIsClicked(!isClicked);
+    }
+
+    const onClickConfirmButton = () => {
+        // 임시 코드
+        const checkedRequest = requests.find((request, index) => index === checkedRequestIndex);
+       
+        if (checkedRequest) {
+            const { userId } = checkedRequest;
+            alert(`**${userId}** user에게 매칭 메세지를 보냈습니다.`);
+        } 
+
+        // *** TO DO : 신청 수락 버큰 클릭 후 프로세스 구현 ***
+        // toast message: 매칭 메세지를 보냈습니다!
+        // api [POST] 신청 대기 상태: 매칭 중 -> 매칭 성공
+        // 신청 내역 최신화: 매칭 성공된 메세지 안 보이도록
+        // 신청 수락 완료 페이지로 돌아가기
     }
 
     return (
@@ -53,12 +76,15 @@ export default function TogetherRequestList() {
                     <MatchingButton>Bestie 매칭하기</MatchingButton>
                 </MatchingButtonWrap>
                 <ConfirmButtonWrap isVisible={isClicked}>
-                    <DisableConfirmButton>매칭 메세지 보내기</DisableConfirmButton> 
-                    {/* <ConfirmButton>매칭 메세지 보내기</ConfirmButton> */}
+                    {   
+                        isAnyRequestChecked === true 
+                        ? <ConfirmButton onClick={onClickConfirmButton}>매칭 메세지 보내기</ConfirmButton>
+                        : <DisableConfirmButton>매칭 메세지 보내기</DisableConfirmButton>  
+                    }
                 </ConfirmButtonWrap>
             </RequestHeader>
             <RequestList>
-                {requests.map(request => (
+                {requests.map((request, index) => (
                     <TogetherRequest
                         key={request.userId}
                         userId={request.userId}
@@ -68,7 +94,7 @@ export default function TogetherRequestList() {
                         age={request.age}
                         gender={request.gender}
                         message={request.message}
-                        onClickCheckButton={() => onClickCheckButton(request.userId)}
+                        onClickCheckButton={() => onClickCheckButton(index)}
                     />
                 ))}
             </RequestList>
@@ -78,7 +104,6 @@ export default function TogetherRequestList() {
 }
 
 const RequestListBox = styled.div`
-    margin: 20px;
     width: 750px;
     height: auto;
     flex-shrink: 0;
@@ -151,9 +176,6 @@ const DisableConfirmButton = styled.button`
     font-style: normal;
     font-weight: 500;
     line-height: 140%;  
-    &:hover {
-        cursor: pointer;
-    }
 `;
 
 const ConfirmButton = styled.button`
