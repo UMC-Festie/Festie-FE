@@ -18,14 +18,26 @@ export default function WriteInfo() {
         </AddImage>
         <WriteTitle placeholder="공연 제목을 입력해주세요"></WriteTitle>
         <SelectCategory>
-          <option key="category" value="category">
-            카테고리
+          <option key="musical" value="musical">
+            뮤지컬
           </option>
-          <option key="option1" value="option1">
-            option1
+          <option key="play" value="play">
+            연극
           </option>
-          <option key="option2" value="option2">
-            option2
+          <option key="concert" value="concert">
+            콘서트
+          </option>
+          <option key="classic" value="classic">
+            클래식
+          </option>
+          <option key="family" value="family">
+            가족/아동
+          </option>
+          <option key="festival" value="festival">
+            뮤직페스티벌
+          </option>
+          <option key="performance" value="performance">
+            공연제
           </option>
         </SelectCategory>
         <SelectCategory>
@@ -166,6 +178,18 @@ const SelectCategory = styled.select`
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 12px;
+`;
+
+const styledOption = styled.li`
+  padding: 12px 16px;
+  justify-content: center;
+  align-items: center;
+  color: var(--festie-gray-800, #3a3a3a);
+  font-family: SUIT Variable;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 `;
 
 export const AddImage = styled.div`
