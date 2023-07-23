@@ -1,9 +1,9 @@
-import { Reset } from 'styled-reset'
+import { Reset } from "styled-reset";
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Main from "./pages/Main"
-import View from "./pages/View"
+import Main from "./pages/Main";
+import View from "./pages/View";
 import Share from "./pages/Share";
 import Together from "./pages/Together";
 
