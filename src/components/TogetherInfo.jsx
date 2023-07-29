@@ -43,7 +43,7 @@ export default function TogetherInfo() {
 }
 
 const InfoBox = styled.div`
-  margin: 20px;
+  /* margin: 20px; */
   padding: 24px;
   width: 197px;
   height: auto;

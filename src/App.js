@@ -6,6 +6,7 @@ import Main from "./pages/Main"
 import View from "./pages/View"
 import Share from "./pages/Share";
 import Together from "./pages/Together";
+import TogetherDetail from './pages/TogetherDetail';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/view" element={<View />} />
         <Route path="/share" element={<Share />} />
         <Route path="/together" element={<Together />} />
+        <Route path="/togetherDetail" element={<TogetherDetail />} />
       </Routes>
       <Footer />
     </>
