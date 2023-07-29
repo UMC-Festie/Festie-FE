@@ -4,16 +4,23 @@ import styled from "styled-components";
 
 export default function PerformanceWrite() {
   return (
-    <PerformanceWriteWrap>
-      <WriteInfo></WriteInfo>
-      <Write></Write>
-    </PerformanceWriteWrap>
+    <WriteWrap>
+      <WriteWrapBox>
+        <WriteInfo></WriteInfo>
+        <Write></Write>
+      </WriteWrapBox>
+    </WriteWrap>
   );
 }
 
-const PerformanceWriteWrap = styled.div`
+const WriteWrap = styled.div`
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+`;
+const WriteWrapBox = styled.div`
+  display: flex;
   align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 1410px;
 `;

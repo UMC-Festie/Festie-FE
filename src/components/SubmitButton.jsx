@@ -14,8 +14,7 @@ const StyledSubmitButton = styled.button`
   border-radius: 26px;
   background-color: var(--festie-gray-400, #c8c8c8);
   border: none;
-  margin-top: 30px;
-  margin-right: 110px;
+  margin: 30px 110px 0px 0px;
   color: var(--festie-white, #fff);
   font-family: SUIT Variable;
   font-size: 20px;

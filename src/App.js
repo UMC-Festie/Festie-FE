@@ -10,10 +10,12 @@ import PerformanceWrite from "./pages/PerformanceWrite";
 import TicketingWrite from "./pages/TicketingWrite";
 import TogetherWrite from "./pages/TogetherWrite";
 import ReviewWrite from "./pages/ReviewWrite";
+import GlobalStyle from "./GlobalStyle";
 
 function App() {
   return (
     <>
+      <GlobalStyle />
       <Reset />
       <Header />
       <Routes>
@@ -21,7 +23,6 @@ function App() {
         <Route path="/view" element={<View />} />
         <Route path="/share" element={<Share />} />
         <Route path="/together" element={<Together />} />
-
         <Route path="/share/performance_write" element={<PerformanceWrite />} />
         <Route path="/share/review_write" element={<ReviewWrite />} />
         <Route path="/share/ticketing_write" element={<TicketingWrite />} />

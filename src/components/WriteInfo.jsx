@@ -5,6 +5,49 @@ import selectArrow from "../assets/SelectArrow.svg";
 import plusIcon from "../assets/plus.svg";
 
 export default function WriteInfo() {
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedAmPm, setSelectedAmPm] = useState("");
+  const [selectedHour, setSelectedHour] = useState("");
+  const [selectedMinute, setSelectedMinute] = useState("");
+  const [showCategoryOptions, setShowCategoryOptions] = useState(false);
+  const [showTimeOptions, setShowTimeOptions] = useState(false);
+
+  const categories = [
+    "뮤지컬",
+    "연극",
+    "콘서트",
+    "클래식",
+    "가족/아동",
+    "뮤직페스티벌",
+    "공연제",
+  ];
+
+  const ampm = ["오전", "오후"];
+  const hour = Array.from({ length: 12 }, (_, index) =>
+    String(index + 1).padStart(2, "0")
+  );
+  const minute = Array.from({ length: 60 }, (_, index) =>
+    String(index).padStart(2, "0")
+  );
+
+  const handleCategoryChange = (value) => {
+    setSelectedCategory(value);
+    setShowCategoryOptions(false);
+  };
+
+  const handleAmPmChange = (value) => {
+    setSelectedAmPm(value);
+  };
+
+  const handleHourChange = (value) => {
+    setSelectedHour(value);
+  };
+
+  const handleMinuteChange = (value) => {
+    setSelectedMinute(value);
+    setShowTimeOptions(false);
+  };
+
   return (
     <InfoBox>
       <SearchBox>
@@ -12,56 +55,79 @@ export default function WriteInfo() {
         <IconImage src={searchIcon} alt="Search Icon" />
       </SearchBox>
       <InputBox>
-        <AddImage>
+        <AddImage for="file">
+          <AddImageInput type="file" name="file" id="file"></AddImageInput>
           <PlusIcon src={plusIcon} alt="Plus Icon" />
           사진 추가하기
         </AddImage>
         <WriteTitle placeholder="공연 제목을 입력해주세요"></WriteTitle>
-        <SelectCategory>
-          <option key="musical" value="musical">
-            뮤지컬
-          </option>
-          <option key="play" value="play">
-            연극
-          </option>
-          <option key="concert" value="concert">
-            콘서트
-          </option>
-          <option key="classic" value="classic">
-            클래식
-          </option>
-          <option key="family" value="family">
-            가족/아동
-          </option>
-          <option key="festival" value="festival">
-            뮤직페스티벌
-          </option>
-          <option key="performance" value="performance">
-            공연제
-          </option>
-        </SelectCategory>
-        <SelectCategory>
-          <option key="category" value="category">
-            날짜
-          </option>
-          <option key="option1" value="option1">
-            option1
-          </option>
-          <option key="option2" value="option2">
-            option2
-          </option>
-        </SelectCategory>
-        <SelectCategory>
-          <option key="category" value="category">
-            시간
-          </option>
-          <option key="option1" value="option1">
-            option1
-          </option>
-          <option key="option2" value="option2">
-            option2
-          </option>
-        </SelectCategory>
+        <CustomDropdown>
+          <DropdownToggle
+            onClick={() => setShowCategoryOptions((prev) => !prev)}
+          >
+            {selectedCategory || "카테고리"}
+          </DropdownToggle>
+          {showCategoryOptions && (
+            <DropdownOptions>
+              {categories.map((category, index) => (
+                <CategoryOption
+                  key={index}
+                  onClick={() => handleCategoryChange(category)}
+                  isSelected={category === selectedCategory}
+                >
+                  {category}
+                </CategoryOption>
+              ))}
+            </DropdownOptions>
+          )}
+        </CustomDropdown>
+        <CustomDropdown>
+          <TimeDropdownToggle
+            onClick={() => setShowTimeOptions((prev) => !prev)}
+          >
+            {selectedAmPm || "시간 "}
+            {selectedHour ? ` ${selectedHour}` : ""}
+
+            {selectedMinute ? `:${selectedMinute}` : ""}
+          </TimeDropdownToggle>
+          {showTimeOptions && (
+            <TimeDropdownOptions>
+              <TimeSection>
+                {ampm.map((ap, index) => (
+                  <TimeOption
+                    key={index}
+                    onClick={() => handleAmPmChange(ap)}
+                    isSelected={ap === selectedAmPm}
+                  >
+                    {ap}
+                  </TimeOption>
+                ))}
+              </TimeSection>
+              <TimeSection>
+                {hour.map((h, index) => (
+                  <TimeOption
+                    key={index}
+                    onClick={() => handleHourChange(h)}
+                    isSelected={h === selectedHour}
+                  >
+                    {h}
+                  </TimeOption>
+                ))}
+              </TimeSection>
+              <TimeSection>
+                {minute.map((m, index) => (
+                  <TimeOption
+                    key={index}
+                    onClick={() => handleMinuteChange(m)}
+                    isSelected={m === selectedMinute}
+                  >
+                    {m}
+                  </TimeOption>
+                ))}
+              </TimeSection>
+            </TimeDropdownOptions>
+          )}
+        </CustomDropdown>
         <SelectCategory>
           <option key="category" value="category">
             지역
@@ -90,24 +156,24 @@ export default function WriteInfo() {
 }
 
 export const InfoBox = styled.div`
-  width: 245px;
-  margin-top: 153px;
+  width: 197px;
+  margin-top: 94px;
   margin-left: 90px;
   margin-right: 40px;
   border: 1px solid var(--festie-gray-200, #e8e8e8);
   border-radius: 20px;
   justify-content: center;
   padding: 24px;
-  display: flex;
-  flex-wrap: wrap;
 `;
 
 export const SearchBox = styled.div`
   width: 155px;
+  height: 24px;
   border-radius: 26px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  justify-content: center;
   padding: 12px 20px 12px 20px;
   border: 1px solid var(--festie-primary-orange, #ff7a00);
   color: var(--festie-primary-orange);
@@ -142,23 +208,6 @@ export const InputBox = styled.div`
   height: 640px;
 `;
 
-const WriteTitle = styled.input`
-  width: 173px;
-  height: 48px;
-  border: 0.8px solid var(--festie-gray-600, #949494);
-  border-radius: 10px;
-  padding: 0px;
-  outline: none;
-  padding: 0px 12px;
-
-  color: var(--festie-gray-500, #b7b7b7);
-  text-align: right;
-  font-family: SUIT Variable;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 140%;
-`;
 const SelectCategory = styled.select`
   width: 197px;
   height: 48px;
@@ -180,19 +229,88 @@ const SelectCategory = styled.select`
   background-size: 12px;
 `;
 
-const styledOption = styled.li`
-  padding: 12px 16px;
-  justify-content: center;
+const WriteTitle = styled.input`
+  width: 173px;
+  height: 48px;
+  border: 0.8px solid var(--festie-gray-600, #949494);
+  border-radius: 10px;
+  padding: 0px;
+  outline: none;
+  padding: 0px 12px;
+
+  color: var(--festie-gray-500, #b7b7b7);
+  font-family: SUIT Variable;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+`;
+const CustomDropdown = styled.div`
+  position: relative;
+`;
+
+const DropdownToggle = styled.div`
+  width: 174px;
+  height: 48px;
+  border: 0.8px solid var(--festie-gray-600, #949494);
+  border-radius: 10px;
+  padding: 0px 12px;
+  display: flex;
   align-items: center;
+  cursor: pointer;
+
   color: var(--festie-gray-800, #3a3a3a);
   font-family: SUIT Variable;
   font-size: 16px;
   font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  font-weight: 500;
+  line-height: 140%;
+
+  background-image: url(${selectArrow});
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
 `;
 
-export const AddImage = styled.div`
+const DropdownOptions = styled.ul`
+  z-index: 10;
+  position: absolute;
+  width: 197px;
+  background-color: var(--festie-white, #fff);
+  border: 0.8px solid var(--festie-gray-600, #949494);
+  border-radius: 10px;
+`;
+
+const CategoryOption = styled.li`
+  z-index: 9;
+
+  padding: 12px 16px;
+  cursor: pointer;
+  background-color: ${(props) =>
+    props.isSelected ? "#ff7a00" : "transparent"};
+  color: ${(props) =>
+    props.isSelected ? "#fff" : "var(--festie-gray-800, #3a3a3a)"};
+  &:hover {
+    background-color: #ff7a00;
+    color: #fff;
+  }
+`;
+
+const TimeOption = styled.li`
+  width: 34px;
+  padding: 12px 16px;
+  cursor: pointer;
+  background-color: ${(props) =>
+    props.isSelected ? "#ff7a00" : "transparent"};
+  color: ${(props) =>
+    props.isSelected ? "#fff" : "var(--festie-gray-800, #3a3a3a)"};
+  &:hover {
+    background-color: #ff7a00;
+    color: #fff;
+  }
+`;
+
+export const AddImage = styled.label`
   width: 197px;
   height: 280px;
   border: 0.8px solid var(--festie-gray-600, #949494);
@@ -211,8 +329,57 @@ export const AddImage = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 140%;
+  cursor: pointer;
+  z-index: 10;
+`;
+
+export const AddImageInput = styled.input`
+  display: none;
 `;
 
 export const PlusIcon = styled.img`
+  z-index: 10;
   margin-bottom: 23px;
+`;
+const TimeDropdownToggle = styled.div`
+  z-index: 1;
+  width: 174px;
+  height: 48px;
+  border: 0.8px solid var(--festie-gray-600, #949494);
+  border-radius: 10px;
+  padding: 0px 12px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  color: var(--festie-gray-800, #3a3a3a);
+  font-family: SUIT Variable;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+
+  appearance: none;
+  background-image: url(${selectArrow});
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+`;
+
+const TimeDropdownOptions = styled.div`
+  display: flex;
+  list-style: none;
+  position: absolute;
+  background-color: var(--festie-white, #fff);
+  border: 0.8px solid var(--festie-gray-600, #949494);
+  border-radius: 10px;
+`;
+
+const TimeSection = styled.div`
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  justify-content: space-between;
+  max-height: 180px;
+  overflow-y: auto;
 `;

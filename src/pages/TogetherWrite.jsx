@@ -56,7 +56,7 @@ const WriteWrapBox = styled.div`
 const WriteBox = styled.div`
   border: 1px solid var(--festie-gray-200, #e8e8e8);
   border-radius: 20px;
-  margin-top: 153px;
+  margin-top: 94px;
   margin-right: 90px;
   padding: 0px 32px 30px 32px;
 `;
@@ -87,6 +87,7 @@ const ButtonWrap = styled.div`
   display: flex;
   width: 100%;
   justify-content: right;
+  margin-right: 20px;
 `;
 const AddImage = styled.div`
   width: 150px;
@@ -107,7 +108,6 @@ const AddImage = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 140%;
+  cursor: pointer;
 `;
-const IconImage = styled.img`
-  margin-bottom: 16px;
-`;
+const IconImage = styled.img``;
