@@ -167,8 +167,6 @@ function ConcertMain() {
     { value: "오래된순", name: "오래된순" },
     { value: "조회많은순", name: "조회많은순" },
     { value: "조회적은순", name: "조회적은순" },
-    { value: "좋아요많은순", name: "좋아요많은순" },
-    { value: "좋아요적은순", name: "좋아요적은순" },
   ];
 
   const SelectBox = (props) => (

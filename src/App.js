@@ -12,7 +12,7 @@ import Together from "./pages/Together";
 //import Festival from "./pages/Festival"; //등록된 정보 보기_축제 메인페이지
 //import SharingFestival from "./pages/SharingFestival"; //정보 공유_새로운 축제 메인페이지
 //import ReviewMain from "./pages/ReviewMain"; //정보 공유_후기 메인페이지
-//import TogetherMain from "./pages/TogetherMain"; //같이가요 메인페이지
+import TogetherMain from "./pages/TogetherMain"; //같이가요 메인페이지
 //import Serch from "./pages/Serch"; //검색결과
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
       <Reset />
       <Header />
       <Routes>
-        <Route path="/" element={<Main/>} />
+        <Route path="/" element={<TogetherMain/>} />
         <Route path="/view" element={<View />} />
         <Route path="/share" element={<Share />} />
         <Route path="/together" element={<Together />} />
