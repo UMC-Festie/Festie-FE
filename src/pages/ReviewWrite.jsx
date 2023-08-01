@@ -1,9 +1,8 @@
-import WriteInfo from "../components/WriteInfo";
+import WriteInfo from "../components/WriteInfoReview";
 import plusIcon from "../assets/plus.svg";
-
 import styled from "styled-components";
-import WriteTitleBody from "../components/WriteTitleBody";
 import SubmitButton from "../components/SubmitButton";
+import { AddImageInput } from "../components/WriteInfo";
 
 export default function ReviewWrite() {
   return (
@@ -16,9 +15,10 @@ export default function ReviewWrite() {
           <Title>상세정보</Title>
           <TextAreaWrap>
             <TextAreaBox placeholder="Bestie들에게 소개할 공연 및 축제에 대한 후기를 적어주세요"></TextAreaBox>
-            <AddImage>
+            <AddImage for="file">
               <IconImage src={plusIcon} alt="Plus Icon" />
               사진 추가하기
+              <AddImageInput type="file" name="file" id="file"></AddImageInput>
             </AddImage>
           </TextAreaWrap>
         </WriteBox>
@@ -104,7 +104,7 @@ const ButtonWrap = styled.div`
   margin-right: 20px;
   justify-content: right;
 `;
-const AddImage = styled.div`
+const AddImage = styled.label`
   width: 150px;
   height: 150px;
   border: 0.8px solid var(--festie-gray-600, #949494);

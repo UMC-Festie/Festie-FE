@@ -1,33 +1,14 @@
 import plusIcon from "../assets/plus.svg";
 import styled from "styled-components";
 import SubmitButton from "../components/SubmitButton";
-import searchIcon from "../assets/search.svg";
 
-import {
-  InfoBox,
-  InputBox,
-  SearchBox,
-  SearchInput,
-  PlusIcon,
-  AddImage,
-} from "../components/WriteInfo";
+import WriteInfo from "../components/WriteInfoTicketing";
 
 export default function TicketingWrite() {
   return (
     <WriteWrap>
       <WriteWrapBox>
-        <InfoBox>
-          <SearchBox>
-            <SearchInput placeholder="공연/축제 검색"></SearchInput>
-            <IconImage src={searchIcon} alt="Search Icon" />
-          </SearchBox>
-          <InputBox>
-            <AddImage>
-              <PlusIcon src={plusIcon} alt="Plus Icon" />
-              공연 정보 입력하기
-            </AddImage>
-          </InputBox>
-        </InfoBox>
+        <WriteInfo></WriteInfo>
         <WriteBox>
           <Title>제목</Title>
           <InputTitleBox placeholder="글제목을 입력해주세요"></InputTitleBox>

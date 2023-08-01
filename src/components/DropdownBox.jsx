@@ -1,11 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-import searchIcon from "../assets/search.svg";
 import selectArrow from "../assets/SelectArrow.svg";
-import plusIcon from "../assets/plus.svg";
 import CustomCalendar from "./Calander";
 
-export default function WriteInfo() {
+export default function DropdownBox() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
   const [selectedAmPm, setSelectedAmPm] = useState("");
@@ -14,6 +12,8 @@ export default function WriteInfo() {
   const [showCategoryOptions, setShowCategoryOptions] = useState(false);
   const [showRegionOptions, setShowRegionOptions] = useState(false);
   const [showTimeOptions, setShowTimeOptions] = useState(false);
+
+  const [value, onChange] = useState(new Date());
 
   const categories = [
     "뮤지컬",
@@ -69,119 +69,102 @@ export default function WriteInfo() {
     setShowTimeOptions(false);
   };
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
   return (
-    <InfoBox>
-      <SearchBox>
-        <SearchInput placeholder="공연/축제 검색"></SearchInput>
-        <IconImage src={searchIcon} alt="Search Icon" />
-      </SearchBox>
-      <InputBox>
-        <AddImage for="file">
-          <AddImageInput type="file" name="file" id="file"></AddImageInput>
-          <PlusIcon src={plusIcon} alt="Plus Icon" />
-          사진 추가하기
-        </AddImage>
-        <WriteTitle placeholder="공연 제목을 입력해주세요"></WriteTitle>
-        <CustomDropdown>
-          <DropdownToggle
-            onClick={() => setShowCategoryOptions((prev) => !prev)}
-          >
-            {selectedCategory || "카테고리"}
-          </DropdownToggle>
-          {showCategoryOptions && (
-            <DropdownOptions>
-              {categories.map((category, index) => (
-                <CategoryOption
-                  key={index}
-                  onClick={() => handleCategoryChange(category)}
-                  isSelected={category === selectedCategory}
-                >
-                  {category}
-                </CategoryOption>
-              ))}
-            </DropdownOptions>
-          )}
-        </CustomDropdown>
-        <CustomCalendar onChange={handleDateChange} value={selectedDate} />
-        <CustomDropdown>
-          <TimeDropdownToggle
-            onClick={() => setShowTimeOptions((prev) => !prev)}
-          >
-            {selectedAmPm || "시간 "}
-            {selectedHour ? ` ${selectedHour}` : ""}
+    <DropdownBoxWrap>
+      <WriteTitle placeholder="공연 제목을 입력해주세요"></WriteTitle>
+      <CustomDropdown>
+        <DropdownToggle onClick={() => setShowCategoryOptions((prev) => !prev)}>
+          {selectedCategory || "카테고리"}
+        </DropdownToggle>
+        {showCategoryOptions && (
+          <DropdownOptions>
+            {categories.map((category, index) => (
+              <CategoryOption
+                key={index}
+                onClick={() => handleCategoryChange(category)}
+                isSelected={category === selectedCategory}
+              >
+                {category}
+              </CategoryOption>
+            ))}
+          </DropdownOptions>
+        )}
+      </CustomDropdown>
+      <CustomCalendar onChange={onChange} value={value} />
+      <CustomDropdown>
+        <TimeDropdownToggle onClick={() => setShowTimeOptions((prev) => !prev)}>
+          {selectedAmPm || "시간 "}
+          {selectedHour ? ` ${selectedHour}` : ""}
 
-            {selectedMinute ? `:${selectedMinute}` : ""}
-          </TimeDropdownToggle>
-          {showTimeOptions && (
-            <TimeDropdownOptions>
-              <TimeSection>
-                {ampm.map((ap, index) => (
-                  <TimeOption
-                    key={index}
-                    onClick={() => handleAmPmChange(ap)}
-                    isSelected={ap === selectedAmPm}
-                  >
-                    {ap}
-                  </TimeOption>
-                ))}
-              </TimeSection>
-              <TimeSection>
-                {hour.map((h, index) => (
-                  <TimeOption
-                    key={index}
-                    onClick={() => handleHourChange(h)}
-                    isSelected={h === selectedHour}
-                  >
-                    {h}
-                  </TimeOption>
-                ))}
-              </TimeSection>
-              <TimeSection>
-                {minute.map((m, index) => (
-                  <TimeOption
-                    key={index}
-                    onClick={() => handleMinuteChange(m)}
-                    isSelected={m === selectedMinute}
-                  >
-                    {m}
-                  </TimeOption>
-                ))}
-              </TimeSection>
-            </TimeDropdownOptions>
-          )}
-        </CustomDropdown>
-        <CustomDropdown>
-          <DropdownToggle onClick={() => setShowRegionOptions((prev) => !prev)}>
-            {selectedRegion || "지역"}
-          </DropdownToggle>
-          {showRegionOptions && (
-            <DropdownRegioOptions>
-              {region.map((region, index) => (
-                <RegionOption
+          {selectedMinute ? `:${selectedMinute}` : ""}
+        </TimeDropdownToggle>
+        {showTimeOptions && (
+          <TimeDropdownOptions>
+            <TimeSection>
+              {ampm.map((ap, index) => (
+                <TimeOption
                   key={index}
-                  onClick={() => handleRegionChange(region)}
-                  isSelected={region === selectedRegion}
+                  onClick={() => handleAmPmChange(ap)}
+                  isSelected={ap === selectedAmPm}
                 >
-                  {region}
-                </RegionOption>
+                  {ap}
+                </TimeOption>
               ))}
-            </DropdownRegioOptions>
-          )}
-        </CustomDropdown>
-        <SearchPlace>
-          <WritePlace placeholder="장소 검색"></WritePlace>
-          <IconImage src={searchIcon} alt="Search Icon" />
-        </SearchPlace>
-      </InputBox>
-    </InfoBox>
+            </TimeSection>
+            <TimeSection>
+              {hour.map((h, index) => (
+                <TimeOption
+                  key={index}
+                  onClick={() => handleHourChange(h)}
+                  isSelected={h === selectedHour}
+                >
+                  {h}
+                </TimeOption>
+              ))}
+            </TimeSection>
+            <TimeSection>
+              {minute.map((m, index) => (
+                <TimeOption
+                  key={index}
+                  onClick={() => handleMinuteChange(m)}
+                  isSelected={m === selectedMinute}
+                >
+                  {m}
+                </TimeOption>
+              ))}
+            </TimeSection>
+          </TimeDropdownOptions>
+        )}
+      </CustomDropdown>
+      <CustomDropdown>
+        <DropdownToggle onClick={() => setShowRegionOptions((prev) => !prev)}>
+          {selectedRegion || "지역"}
+        </DropdownToggle>
+        {showRegionOptions && (
+          <DropdownRegioOptions>
+            {region.map((region, index) => (
+              <RegionOption
+                key={index}
+                onClick={() => handleRegionChange(region)}
+                isSelected={region === selectedRegion}
+              >
+                {region}
+              </RegionOption>
+            ))}
+          </DropdownRegioOptions>
+        )}
+      </CustomDropdown>
+    </DropdownBoxWrap>
   );
 }
+
+const DropdownBoxWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 18px;
+  height: 300px;
+`;
 
 export const InfoBox = styled.div`
   width: 200px;
@@ -221,10 +204,6 @@ export const SearchInput = styled.input`
   line-height: 140%;
 `;
 
-const IconImage = styled.img`
-  cursor: pointer;
-`;
-
 export const InputBox = styled.div`
   width: auto;
   height: auto;
@@ -236,54 +215,6 @@ export const InputBox = styled.div`
   height: 640px;
 `;
 
-const SelectCategory = styled.select`
-  width: 200px;
-  height: 48px;
-  border: 0.8px solid var(--festie-gray-600, #949494);
-  border-radius: 10px;
-  padding: 0px 12px;
-  color: var(--festie-gray-800, #3a3a3a);
-  font-family: SUIT Variable;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 140%;
-  appearance: none;
-  background-image: url(${selectArrow});
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 12px;
-`;
-const SearchPlace = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 0.8px solid var(--festie-gray-600, #949494);
-  border-radius: 10px;
-  padding: 0px 12px;
-
-  color: var(--festie-gray-800, #3a3a3a);
-  font-family: SUIT Variable;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 140%;
-`;
-const WritePlace = styled.input`
-  width: 154px;
-  height: 38px;
-  border: none;
-  border-radius: 10px;
-  padding: 0px;
-  outline: none;
-
-  color: var(--festie-gray-500, #b7b7b7);
-  font-family: SUIT Variable;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 140%;
-`;
 const WriteTitle = styled.input`
   width: 173px;
   height: 48px;
