@@ -1,10 +1,13 @@
-//등록된 정보보기_메인페이지
+//같이가요 메인페이지
 import React, { useState, useEffect } from 'react';
-import './Contents.css';
+import './Sharing.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Poster from './Poster';
-import image1 from '../components/image1.png';
+import image6 from '../components/image6.png';
+
 
 function ConcertMain() {
   const [showCategoriesBtn, setShowCategoriesBtn] = useState(true);
@@ -12,15 +15,31 @@ function ConcertMain() {
   const [categoryButtons, setCategoryButtons] = useState([]);
   const [areaButtons, setAreaButtons] = useState([]);
   const [periodButtons, setPeriodButtons] = useState([]);
+  const [typeButtons, setTypeButtons] = useState([]);
   const [activeButton, setActiveButton] = useState('');
   const [ScrollY, setScrollY] = useState(0);
   const [BtnStatus, setBtnStatus] = useState(false); // 버튼 상태
+  const [showButton, setShowButton] = useState(false);
   // 검색 결과 개수를 담는 상태
   const [searchResultCount, setSearchResultCount] = useState(0);
 
-  const [filteredPosters, setFilteredPosters] = useState([]);
-  const [posters, setPosters] = useState([]);
-  
+  useEffect(() => {
+    const handleScroll = () => { // 공연 공유 버튼
+      const scrollY = window.scrollY;
+      if (scrollY > 100) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const handleFollow = () => {
     setScrollY(window.pageYOffset);
     if (ScrollY > 100) {
@@ -50,31 +69,45 @@ function ConcertMain() {
       window.removeEventListener('scroll', handleFollow)
     }
   })
-
-  const handleCategoryClick = () => {
-    setShowCategoriesBtn(false);
-    setCategoryButtons(["뮤지컬", "연극", "콘서트", "클래식", "가족/아동", "뮤직페스티벌", "공연제"]);
+  const handleTypeClick = () => {
+    setShowCategoriesBtn(true);
+    setCategoryButtons([]);
     setAreaButtons([]);
     setPeriodButtons([]);
+    setTypeButtons(["공연", "축제"]);
+    setActiveButton('type');
+  };
+  
+  const handleCategoryClick = () => {
+    setShowCategoriesBtn(false);
+    setCategoryButtons(["바다", "여름먹거리", "연꽃", "토마토", "장미", "문화예술", "여름꽃"]);
+    setAreaButtons([]);
+    setPeriodButtons([]);
+    setTypeButtons([]);
     setActiveButton('category');
   };
-
+  
   const handleAreaClick = () => {
     setShowCategoriesBtn(true);
     setCategoryButtons([]);
-    setAreaButtons(["서울", "경기", "인천", "대전", "대구", "광주", "부산", "울산", "세종", "충청", "경상", "전라", "강원", "제주"]);
+    setAreaButtons([
+      "서울", "경기", "인천", "대전", "대구", "광주", "부산", "울산", "세종",
+      "충청", "경상", "전라", "강원", "제주", "공연", "축제"
+    ]);
     setPeriodButtons([]);
+    setTypeButtons([]);
     setActiveButton('area');
   };
-
+  
   const handlePeriodClick = () => {
     setShowCategoriesBtn(false);
     setCategoryButtons([]);
     setAreaButtons([]);
-    setPeriodButtons(["공연중", "공연예정", "공연종료"]);
+    setPeriodButtons(["모집중", "모집종료"]);
+    setTypeButtons([]);
     setActiveButton('period');
   };
-
+  
   const handleCategoryBtnClick = (button) => {
     if (!selectedButtons.includes(button)) {
       setSelectedButtons([...selectedButtons, button]);
@@ -92,16 +125,18 @@ function ConcertMain() {
 
   const CategoryButton = ({ button, isSelected, onClick }) => (
     <h1
+      tabIndex="0"
       className={`category ${isSelected ? 'selected' : ''}`}
       onClick={onClick}
     >
       {button}
     </h1>
   );
+  
   /*const backendData = {
     postertxt: 'D-day',
     concertName: '제목',
-    place: '장소',
+    place: '작성자',
     date: '날짜',
     img: '이미지 URL',
   };*/
@@ -109,32 +144,24 @@ function ConcertMain() {
   const [posterInfo, setPosterInfo] = useState(null);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts') // Fetch all posters
+    fetch('https://jsonplaceholder.typicode.com/posts/1') // JSONPlaceholder API에서 데이터 가져오기
       .then((response) => response.json())
       .then((data) => {
-        // Process the data and set the posters state
-        const postersData = data.slice(0, 12).map((item) => ({
-          id: item.id,
+        // 가져온 데이터를 가공하여 posterInfo 상태 업데이트
+        const { userId } = data;
+        setPosterInfo({
           postertxt: 'Day',
-          concertName: `Concert by User ${item.userId}`,
+          concertName: `Concert by User ${userId}`,
           place: 'Virtual Concert Hall',
           date: '2023-07-29',
-          imageUrl: 'http://tkfile.yes24.com/upload2/perfblog/202306/20230607/20230607-46113.jpg/dims/quality/70/',
-        }));
-        setPosters(postersData);
-        setFilteredPosters(postersData); // Also, update the filteredPosters state
+          imageUrl: 'http://tkfile.yes24.com/upload2/perfblog/202306/20230607/20230607-46113.jpg/dims/quality/70/', // 이미지 URL 추가
+        });
       })
       .catch((error) => {
         console.log('Error fetching data:', error);
       });
   }, []);
 
-  const [selectedOption, setSelectedOption] = useState(""); // 선택된 옵션을 저장하는 상태
-
-  const handleOptionChange = (event) => {
-    // 셀렉트박스에서 옵션을 선택했을 때 호출되는 함수
-    setSelectedOption(event.target.value);
-  };
   const OPTIONS = [
     { value: "최신순", name: "최신순" },
     { value: "오래된순", name: "오래된순" },
@@ -160,23 +187,33 @@ function ConcertMain() {
     // 여기에서는 임시로 180을 반환하도록 하겠습니다.
     return 180;
   };
-
-  useEffect(() => {
+   useEffect(() => {
     const resultCount = fetchSearchResultCount();
     setSearchResultCount(resultCount);
   }, []);
-
+  
   return (
     <div className="contents">
       <div className="breadcrumb">
-        <span>홈</span> &gt; <span>정보보기</span> &gt; <span>공연</span>
+        <span>홈</span> &gt; <span>정보보기</span> &gt; <span>후기</span>
       </div>
       <div className="banner">
-        <img src={image1} alt="이미지 1" />
-        <h1 className="banner-txt">공연 정보 보기(Festie가 제공하는 공연 정보)</h1>
-        <h2 className="banner-txt">Festie가 알려주는 국내 곳곳의 공연 정보를 구경해보세요.</h2>
+      <img src={image6} alt="이미지 6" />
+        <h1 className="banner-txt">축제/공연 같이가요</h1>
+        <h2 className="banner-txt">Festie에서 같이 가고 싶은 축제/ 공연을 찾고 친구를 만들어 보세요!</h2>
+        <button className="breadcrumb-button">
+          같이 갈 친구 만들기
+          <span className="arrow">
+            <FontAwesomeIcon icon={faArrowRight} />
+          </span>
+        </button>
       </div>
       <div className="categories">
+        <CategoryButton
+            button="유형" 
+            isSelected={activeButton === 'type'}
+            onClick={handleTypeClick}
+        />
         <CategoryButton
           button="카테고리"
           isSelected={activeButton === 'category'}
@@ -188,11 +225,24 @@ function ConcertMain() {
           onClick={handleAreaClick}
         />
         <CategoryButton
-          button="기간"
+          button="모집"
           isSelected={activeButton === 'period'}
           onClick={handlePeriodClick}
         />
       </div>
+      {showCategoriesBtn && activeButton === 'type' && (
+        <div className="categories-btn">
+          {typeButtons.map((button, index) => (
+            <button
+              key={index}
+              className="category-btn"
+              onClick={() => handleCategoryBtnClick(button)}
+            >
+              {button}
+            </button>
+          ))}
+        </div>
+      )}
       {showCategoriesBtn && activeButton === 'area' && (
         <div className="categories-btn">
           {areaButtons.map((button, index) => (
@@ -221,7 +271,7 @@ function ConcertMain() {
         </div>
       )}
       <div className="reset">
-        <button onClick={handleResetClick} className="reset-button">
+      <button onClick={handleResetClick} className="reset-button">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
             <path d="M15.333 3.1665V7.1665H11.333" stroke="#3A3A3A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M13.6602 10.5002C13.2269 11.7268 12.4066 12.7793 11.323 13.4992C10.2394 14.219 8.95122 14.5672 7.65253 14.4912C6.35383 14.4153 5.11501 13.9192 4.12275 13.078C3.13048 12.2367 2.43853 11.0957 2.15116 9.82688C1.86378 8.5581 1.99656 7.2303 2.52949 6.04355C3.06241 4.85681 3.9666 3.87541 5.10581 3.24726C6.24502 2.61912 7.55753 2.37824 8.84555 2.56093C10.1336 2.74363 11.3273 3.34 12.2469 4.26017L15.3336 7.16684" stroke="#3A3A3A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
@@ -242,7 +292,7 @@ function ConcertMain() {
         <h1>검색결과</h1>
         <h2>{searchResultCount}건</h2>
         <div className="serch-box">
-          <SelectBox options={OPTIONS} value={selectedOption} onChange={handleOptionChange} className="custom-select" />
+          <SelectBox options={OPTIONS} className="custom-select" />
         </div>
       </div>
       <div className="poster">
@@ -254,10 +304,23 @@ function ConcertMain() {
         >
           <FontAwesomeIcon icon={faArrowUp} className="fa-icon" />
         </button>
+        {showButton && (
+          <button className="addBtn">
+            <FontAwesomeIcon icon={faPlus} />
+            {' '}
+            같이가요 글쓰기
+          </button>
+        )}
         <div className="poster-wrap" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {filteredPosters.length > 0
-            ? filteredPosters.map((poster) => <Poster key={poster.id} posterInfo={poster} />)
-            : posters.map((poster) => <Poster key={poster.id} posterInfo={poster} />)}
+          {posterInfo && <Poster posterInfo={posterInfo} />}
+          {posterInfo && <Poster posterInfo={posterInfo} />}
+          {posterInfo && <Poster posterInfo={posterInfo} />}
+          {posterInfo && <Poster posterInfo={posterInfo} />}
+          {posterInfo && <Poster posterInfo={posterInfo} />}
+          {posterInfo && <Poster posterInfo={posterInfo} />}
+          {posterInfo && <Poster posterInfo={posterInfo} />}
+          {posterInfo && <Poster posterInfo={posterInfo} />}
+
         </div>
       </div>
     </div>
