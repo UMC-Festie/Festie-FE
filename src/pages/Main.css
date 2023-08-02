@@ -1,0 +1,188 @@
+@font-face { 
+    font-family: 'SUIT Variable';
+    src: url('./SUIT-Variable.ttf') format('truetype');
+  }
+
+  .main {
+    width: 1280px;
+    border: 0;
+    background-color: #ffffff;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .mainBanner {
+    width: 1190px;
+    border: 541px;
+    background-color: #ffffff;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .mainText{
+    color: #252525;
+    font-family: Sandoll Cameo;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 140%;
+    letter-spacing: 0.48px;
+  }
+
+  .mainsecondText{
+    color: #252525;
+    font-family: SUIT Variable;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .startBtn {
+    display: flex;
+    width: 104px;
+    height: 28px;
+    padding: 12px 20px;
+    background-color: #ff7a00;
+    color: #fff;
+    justify-content: space-between;
+    align-items: center;
+    font-family: SUIT Variable;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
+
+  .comingsoonImg {
+    width: 68.002px;
+    height: 48.667px;
+    flex-shrink: 0;
+    margin-top: 48px;
+    margin-left: 606px;
+  }
+
+  .comingsoonText{
+    color: #3a3a3a;
+    margin-top: 5.33px;
+    margin-bottom: 28px;
+    text-align: center;
+    font-family: Sandoll Cameo;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 140%;
+    letter-spacing: 0.3px;
+  }
+
+  .soonBtn {
+    display: inline-block;
+    width: 28px;
+    height: 20px;
+    padding: 8px 14px;
+    background-color: #fff;
+    color: #3a3a3a;
+    justify-content: center;
+    align-items: center;
+    vertical-align: top;
+    font-family: SUIT Variable;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 18px;
+    border: 1px solid #e8e8e8;
+  }
+
+  .soonBtn.clicked {
+    background-color: #ff7a00;
+    color: #fff;
+  }
+
+  .togoinfoBtn {
+    display: flex;
+    width: 200px;
+    height: 28px;
+    padding: 12px 20px;
+    margin-top: 32px;
+    margin-left: 520px;
+    background-color: #ff7a00;
+    color: #fff;
+    justify-content: space-between;
+    align-items: center;
+    font-family: SUIT Variable;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
+
+  .togetherImg {
+    width: 58px;
+    height: 28px;
+    flex-shrink: 0;
+    margin-top: 100px;
+    margin-left: 606px;
+  }
+
+  .togetherText{
+    color: #3a3a3a;
+    margin-top: 12px;
+    margin-bottom: 28px;
+    text-align: center;
+    font-family: Sandoll Cameo;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 140%;
+    letter-spacing: 0.3px;
+  }
+
+  .maintogetherBtn {
+    display: inline-block;
+    height: 20px;
+    padding: 8px 14px;
+    background-color: #fff;
+    color: #3a3a3a;
+    justify-content: center;
+    align-items: center;
+    vertical-align: top;
+    font-family: SUIT Variable;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 18px;
+    border: 1px solid #e8e8e8;
+  }
+
+  .maintogetherBtn.clicked {
+    background-color: #ff7a00;
+    color: #fff;
+  }
+
+  .togotogetherBtn {
+    display: flex;
+    width: 200px;
+    height: 28px;
+    padding: 12px 20px;
+    margin-top: 32px;
+    margin-left: 520px;
+    background-color: #ff7a00;
+    color: #fff;
+    justify-content: space-between;
+    align-items: center;
+    font-family: SUIT Variable;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
