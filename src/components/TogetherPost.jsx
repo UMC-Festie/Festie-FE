@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function TogetherPost() {
+export default function TogetherPost({ isWriter }) {
   const [title, setTitle] = useState('제목');
   const [requests, setRequests] = useState(12);
   const [views, setViews] = useState(320);
@@ -15,80 +15,96 @@ export default function TogetherPost() {
   `);
   const [preferenceContents, setPreferenceContents] = useState(`이상, 못할 밥을 끓는 찾아다녀도, 뿐이다. 든 놀이 그들은 때문이다. 못하다 더운지라 우리 하여도 그들은 그들에게 구하기 뿐이다. 인생을 곳으로 과실이 위하여 것은 석가는 열매를 뿐이다. 뼈 못하다 생의 않는 청춘 철환하였는가?`);
 
-    return (
-        <>
-          <PostBox>
-            <PostHeader>
-              <LeftWrap>
-                <TitleWrap>
-                  <Title>{title}</Title>
-                </TitleWrap>
-                <WriteInfoWrap>
-                  <WritterWrap>
-                    <Writter>{writter}</Writter>
-                  </WritterWrap>
-                  <DateWrap>
-                    <Date>{date}</Date>
-                  </DateWrap>
-                </WriteInfoWrap>
-              </LeftWrap>
-              <RightWrap>
-                <CountWrap>
-                  <RequestsWrap>
-                    <RequestsIcon>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M14.1654 17.5V15.8333C14.1654 14.9493 13.8142 14.1014 13.1891 13.4763C12.5639 12.8512 11.7161 12.5 10.832 12.5H4.16536C3.28131 12.5 2.43346 12.8512 1.80834 13.4763C1.18322 14.1014 0.832031 14.9493 0.832031 15.8333V17.5" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M7.5013 9.16667C9.34225 9.16667 10.8346 7.67428 10.8346 5.83333C10.8346 3.99238 9.34225 2.5 7.5013 2.5C5.66035 2.5 4.16797 3.99238 4.16797 5.83333C4.16797 7.67428 5.66035 9.16667 7.5013 9.16667Z" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M19.168 17.4991V15.8324C19.1674 15.0939 18.9216 14.3764 18.4691 13.7927C18.0166 13.209 17.3831 12.7921 16.668 12.6074" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M13.332 2.60742C14.049 2.79101 14.6846 3.20801 15.1384 3.79268C15.5922 4.37736 15.8386 5.09645 15.8386 5.83659C15.8386 6.57673 15.5922 7.29582 15.1384 7.8805C14.6846 8.46517 14.049 8.88217 13.332 9.06576" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    </RequestsIcon>
-                    <Requests>{requests}</Requests>
-                  </RequestsWrap>
-                  <ViewsWrap>
-                    <ViewsIcon>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M0.832031 10.0007C0.832031 10.0007 4.16536 3.33398 9.9987 3.33398C15.832 3.33398 19.1654 10.0007 19.1654 10.0007C19.1654 10.0007 15.832 16.6673 9.9987 16.6673C4.16536 16.6673 0.832031 10.0007 0.832031 10.0007Z" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M10 12.5C11.3807 12.5 12.5 11.3807 12.5 10C12.5 8.61929 11.3807 7.5 10 7.5C8.61929 7.5 7.5 8.61929 7.5 10C7.5 11.3807 8.61929 12.5 10 12.5Z" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    </ViewsIcon>
-                    <Views>{views}</Views>
-                  </ViewsWrap>
-                </CountWrap>
-                <ButtonWrap>
-                  <EditButtonWrap>
-                    <EditButton>수정</EditButton>
-                  </EditButtonWrap>
-                  <DeleteButtonWrap>
-                    <DeleteButton>삭제</DeleteButton>
-                  </DeleteButtonWrap>
-                </ButtonWrap>
-              </RightWrap>
-            </PostHeader>
-            <SeparationWrap>
-              <svg xmlns="http://www.w3.org/2000/svg" width="751" height="2" viewBox="0 0 751 2" fill="none">
-                <path d="M0 1H751" stroke="#E8E8E8"/>
-              </svg>
-            </SeparationWrap>
-            <ContentsWrap>
-              <Contents>{contents}</Contents>
-            </ContentsWrap>
-            <SeparationWrap>
-              <svg xmlns="http://www.w3.org/2000/svg" width="751" height="2" viewBox="0 0 751 2" fill="none">
-                <path d="M0 1H751" stroke="#E8E8E8"/>
-              </svg>
-            </SeparationWrap>
-            <PreferenceBox>
-              <PreferenceTitleWrap>
-                <PreferenceTitle>{writter}의 Bestie 선호 대상</PreferenceTitle>
-              </PreferenceTitleWrap>
-              <PreferenceContentWrp>
-                <PreferenceContent>{preferenceContents}</PreferenceContent>
-              </PreferenceContentWrp>
-            </PreferenceBox>
-          </PostBox>
-        </>
-    )
+  const onClickEditButton = () => {
+    alert('글 수정 페이지');
+    
+    // navigation
+    /*
+    navigation.navigate(`/${postId}`, {
+      state: podstId
+    }); 
+    */
+  };
+
+  const onClickDeleteButton = () => {
+    alert('글 삭제');
+    
+  };
+
+  return (
+    <>
+      <PostBox>
+        <PostHeader>
+          <LeftWrap>
+            <TitleWrap>
+              <Title>{title}</Title>
+            </TitleWrap>
+            <WriteInfoWrap>
+              <WritterWrap>
+                <Writter>{writter}</Writter>
+              </WritterWrap>
+              <DateWrap>
+                <Date>{date}</Date>
+              </DateWrap>
+            </WriteInfoWrap>
+          </LeftWrap>
+          <RightWrap>
+            <CountWrap>
+              <RequestsWrap>
+                <RequestsIcon>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M14.1654 17.5V15.8333C14.1654 14.9493 13.8142 14.1014 13.1891 13.4763C12.5639 12.8512 11.7161 12.5 10.832 12.5H4.16536C3.28131 12.5 2.43346 12.8512 1.80834 13.4763C1.18322 14.1014 0.832031 14.9493 0.832031 15.8333V17.5" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M7.5013 9.16667C9.34225 9.16667 10.8346 7.67428 10.8346 5.83333C10.8346 3.99238 9.34225 2.5 7.5013 2.5C5.66035 2.5 4.16797 3.99238 4.16797 5.83333C4.16797 7.67428 5.66035 9.16667 7.5013 9.16667Z" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M19.168 17.4991V15.8324C19.1674 15.0939 18.9216 14.3764 18.4691 13.7927C18.0166 13.209 17.3831 12.7921 16.668 12.6074" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M13.332 2.60742C14.049 2.79101 14.6846 3.20801 15.1384 3.79268C15.5922 4.37736 15.8386 5.09645 15.8386 5.83659C15.8386 6.57673 15.5922 7.29582 15.1384 7.8805C14.6846 8.46517 14.049 8.88217 13.332 9.06576" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </RequestsIcon>
+                <Requests>{requests}</Requests>
+              </RequestsWrap>
+              <ViewsWrap>
+                <ViewsIcon>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M0.832031 10.0007C0.832031 10.0007 4.16536 3.33398 9.9987 3.33398C15.832 3.33398 19.1654 10.0007 19.1654 10.0007C19.1654 10.0007 15.832 16.6673 9.9987 16.6673C4.16536 16.6673 0.832031 10.0007 0.832031 10.0007Z" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M10 12.5C11.3807 12.5 12.5 11.3807 12.5 10C12.5 8.61929 11.3807 7.5 10 7.5C8.61929 7.5 7.5 8.61929 7.5 10C7.5 11.3807 8.61929 12.5 10 12.5Z" stroke="#B7B7B7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </ViewsIcon>
+                <Views>{views}</Views>
+              </ViewsWrap>
+              </CountWrap>
+              <ButtonWrap $isWriter={isWriter}>
+                <EditButtonWrap>
+                  <EditButton onClick={onClickEditButton}>수정</EditButton>
+                </EditButtonWrap>
+                <DeleteButtonWrap>
+                  <DeleteButton onClick={onClickDeleteButton}>삭제</DeleteButton>
+                </DeleteButtonWrap>
+              </ButtonWrap>
+            </RightWrap>
+          </PostHeader>
+          <SeparationWrap>
+            <svg xmlns="http://www.w3.org/2000/svg" width="751" height="2" viewBox="0 0 751 2" fill="none">
+              <path d="M0 1H751" stroke="#E8E8E8"/>
+            </svg>
+          </SeparationWrap>
+          <ContentsWrap>
+            <Contents>{contents}</Contents>
+          </ContentsWrap>
+          <SeparationWrap>
+            <svg xmlns="http://www.w3.org/2000/svg" width="751" height="2" viewBox="0 0 751 2" fill="none">
+              <path d="M0 1H751" stroke="#E8E8E8"/>
+            </svg>
+          </SeparationWrap>
+          <PreferenceBox>
+          <PreferenceTitleWrap>
+            <PreferenceTitle>{writter}의 Bestie 선호 대상</PreferenceTitle>
+          </PreferenceTitleWrap>
+          <PreferenceContentWrp>
+            <PreferenceContent>{preferenceContents}</PreferenceContent>
+          </PreferenceContentWrp>
+        </PreferenceBox>
+      </PostBox>
+    </>
+  )
 }
 
 const PostBox = styled.div`
@@ -222,7 +238,7 @@ const Views = styled.div`
 `;
 
 const ButtonWrap = styled.div`
-  display: flex;
+  display: ${({ $isWriter }) => ($isWriter ? "flex" : "none")};
   justify-content: space-between;
   margin-top: 15px;
   /* border: 1px solid blue; */

@@ -2,16 +2,27 @@ import styled from "styled-components";
 import TogetherPost from '../components/TogetherPost';
 import TogetherInfo from '../components/TogetherInfo';
 import TogetherRequestList from '../components/TogetherRequestList';
+import TogetherRequestModal from "../components/TogetherRequestModal";
 import { useEffect, useState } from "react";
 
 export default function TogetherDetail() {
     const [showScrollButton, setShowScrollButton] = useState(false);
+    const [isWriter, setIsWriter] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const onClickScrollToTop = () => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         })
+    };
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+    
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
     };
 
     useEffect(() => {
@@ -42,8 +53,16 @@ export default function TogetherDetail() {
             </CategoryInfo>
             <ContentContainer>
                 <TogetherWrap>
-                    <TogetherPost />
-                    <TogetherRequestList />
+                    <TogetherPost isWriter={isWriter} />
+                    {
+                        isWriter 
+                        ? <TogetherRequestList /> 
+                        : <RequestBestieButton onClick={handleOpenModal}>Bestie가 되고 싶어요</RequestBestieButton>
+                    }
+                    {
+                        isModalOpen && 
+                            <TogetherRequestModal isOpen={isModalOpen} closeModal={handleCloseModal} />
+                    }
                 </TogetherWrap>
                 <FestivalWrap>
                     <div>
@@ -55,8 +74,8 @@ export default function TogetherDetail() {
                 showScrollButton &&
                     <ScrollUpButton onClick={onClickScrollToTop}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
-                            <path d="M14 22.1673V5.83398" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M5.83398 14.0007L14.0007 5.83398L22.1673 14.0007" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 22.1673V5.83398" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M5.83398 14.0007L14.0007 5.83398L22.1673 14.0007" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                     </ScrollUpButton>  
             }                 
@@ -67,7 +86,7 @@ export default function TogetherDetail() {
 const DetailPage = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 42px 90px 0 90px;
+    padding: 42px 90px 140px 90px;
 `;
 
 const CategoryInfo = styled.div`
@@ -120,6 +139,28 @@ const ScrollUpButton = styled.button`
     flex-shrink: 0;
     border-radius: 24px;
     background: var(--festie-primary-yellow, #FFE500);
+
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+const RequestBestieButton = styled.button`
+    display: flex;
+    width: 245px;
+    padding: 12px 0px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 26px;
+    background: var(--festie-primary-orange, #FF7A00);
+    color: var(--festie-white, #FFF);
+    font-family: SUIT Variable;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%; 
 
     &:hover {
         cursor: pointer;

@@ -7,6 +7,17 @@ export default function TogetherInfo() {
   const [location, setLocation] = useState('공연 위치');
   const [date, setDate] = useState('2023.6.30');
   const [time, setTime] = useState('17:00');
+
+  const onClickFestivalInfoButton = () => {
+    alert('공연 정보 상세 페이지');
+    
+    // navigation
+    /*
+    navigation.navigate(`/${festivalId}`, {
+      state: festivalId
+    }); 
+    */
+  };
  
     return (
       <>
@@ -28,7 +39,7 @@ export default function TogetherInfo() {
               <FestivalTime>{time}</FestivalTime>
             </FestivalTimeWrap>
             <MoreButtonWrap>
-              <MoreButton>공연 정보 보기</MoreButton>
+              <MoreButton onClick={onClickFestivalInfoButton}>공연 정보 보기</MoreButton>
               <MoreButtonIcon>
               <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
                 <path d="M5.5 12H19.5" stroke="#555555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

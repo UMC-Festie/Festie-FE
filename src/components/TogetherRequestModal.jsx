@@ -1,25 +1,34 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function TogetherRequestModal() {
+export default function TogetherRequestModal({ isOpen, closeModal }) {
     const [nickname, setNickname] = useState('덕구');
     const [name, setName] = useState('부산푸드필름페스타');
     const [location, setLocation] = useState('부산광역시 해운대구');
     const [date, setDate] = useState('2023.6.30');
     const [time, setTime] = useState('17:00');
+
+    const onClickCloseModal = () => {
+        closeModal();
+    };
+
+    const onClickSendRequest = () => {
+        alert('같이 가요 신청을 보냈어요!');
+        closeModal();
+    };
     
     return (
-        <>
+        <ModalWrap $isOpen={isOpen}>
             <RequestModal>
                 <RequestModalHeader>
                     <TitleWrap>
                         <Title>{nickname}님의 같이가요</Title>
                     </TitleWrap>
                     <CloseButtonWrap>
-                        <CloseButton>
+                        <CloseButton onClick={onClickCloseModal}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M18 6L6 18" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M6 6L18 18" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18 6L6 18" stroke="#6F6F6F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M6 6L18 18" stroke="#6F6F6F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg></CloseButton>
                     </CloseButtonWrap>
                 </RequestModalHeader>
@@ -50,12 +59,25 @@ export default function TogetherRequestModal() {
                     <ContentInput placeholder='Bestie에게 전달될 메세지를 작성해주세요.'></ContentInput>
                 </ContentWrap>
                 <RequestButtonWrap>
-                    <RequestButton>같이가요 신청 보내기</RequestButton>
+                    <RequestButton onClick={onClickSendRequest}>같이가요 신청 보내기</RequestButton>
                 </RequestButtonWrap>
             </RequestModal>
-        </>
+        </ModalWrap>
     )
 }
+
+const ModalWrap = styled.div`
+  display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.40);
+  z-index: 9999;
+`;
 
 const RequestModal =  styled.div`
     display: flex;
