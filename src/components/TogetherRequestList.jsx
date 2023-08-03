@@ -72,10 +72,10 @@ export default function TogetherRequestList() {
                 <RequestTitleWrap>
                     <RequestTitle>같이가요 신청내역</RequestTitle>
                 </RequestTitleWrap>
-                <MatchingButtonWrap onClick={onClickMatchingButton} $isVisible={(!isClicked).toString()}>
+                <MatchingButtonWrap onClick={onClickMatchingButton} $isVisible={!isClicked}>
                     <MatchingButton>Bestie 매칭하기</MatchingButton>
                 </MatchingButtonWrap>
-                <ConfirmButtonWrap $isVisible={isClicked.toString()}>
+                <ConfirmButtonWrap $isVisible={isClicked}>
                     {   
                         isAnyRequestChecked === true 
                         ? <ConfirmButton onClick={onClickConfirmButton}>매칭 메세지 보내기</ConfirmButton>

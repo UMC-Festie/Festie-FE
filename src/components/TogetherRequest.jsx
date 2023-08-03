@@ -16,7 +16,7 @@ export default function TogetherRequest({ userid, isChecked, onClickCheckButton,
                         <Gender>{gender}</Gender>
                     </GenderWrap>
                 </InfoWrap>
-                <CheckButtonWrap $isVisible={isClicked.toString()}>
+                <CheckButtonWrap $isVisible={isClicked}>
                     {
                         isChecked === true ?
                             <CheckedButton onClick={onClickCheckButton}>
