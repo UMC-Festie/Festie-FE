@@ -3,11 +3,15 @@ import TogetherPost from '../components/TogetherPost';
 import TogetherInfo from '../components/TogetherInfo';
 import TogetherRequestList from '../components/TogetherRequestList';
 import TogetherRequestModal from "../components/TogetherRequestModal";
+import TogetherMessage from "../components/TogetherMessage";
 import { useEffect, useState } from "react";
 
 export default function TogetherDetail() {
     const [showScrollButton, setShowScrollButton] = useState(false);
-    const [isWriter, setIsWriter] = useState(true);
+    const [isWriter, setIsWriter] = useState(false);
+    const [isApplicant, setIsApplicant] = useState(false);
+    const [isApplicantSuccess, setIsApplicantSuccess] = useState(true);
+    const [status, setStatus] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const onClickScrollToTop = () => {
@@ -45,24 +49,42 @@ export default function TogetherDetail() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M6 12L10 8L6 4" stroke="#B7B7B7" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <Category>정보공유</Category>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M6 12L10 8L6 4" stroke="#B7B7B7" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <Category>후기</Category>
+                <Category>같이가요</Category>
             </CategoryInfo>
             <ContentContainer>
                 <TogetherWrap>
-                    <TogetherPost isWriter={isWriter} />
                     {
-                        isWriter 
-                        ? <TogetherRequestList /> 
-                        : <RequestBestieButton onClick={handleOpenModal}>Bestie가 되고 싶어요</RequestBestieButton>
+                        !isWriter && isApplicant ? (
+                            <>
+                                {
+                                    status === 0 ? (
+                                        <MatchingState $isSuccess={isApplicantSuccess}>매칭 중이에요</MatchingState>
+                                    ) : isApplicantSuccess ? (
+                                        <>
+                                            <MatchingState $isSuccess={isApplicantSuccess}>매칭에 성공했어요</MatchingState>
+                                            <TogetherMessage></TogetherMessage>
+                                        </>
+                                    ) : (
+                                        <MatchingState $isSuccess={isApplicantSuccess}s>매칭에 실패했어요</MatchingState>
+                                )}
+                            </>
+                        ) : <></>
                     }
+                    <TogetherPost isWriter={isWriter} />
                     {
                         isModalOpen && 
                             <TogetherRequestModal isOpen={isModalOpen} closeModal={handleCloseModal} />
                     }
+                    {
+                        isWriter ? (
+                            <TogetherRequestList />
+                        ) : !isApplicant ? (
+                            <RequestBestieButton onClick={handleOpenModal}>
+                            Bestie가 되고 싶어요
+                            </RequestBestieButton>
+                        ) : (
+                            <></>
+                    )}
                 </TogetherWrap>
                 <FestivalWrap>
                     <div>
@@ -112,7 +134,7 @@ const ContentContainer = styled.div`
 const TogetherWrap = styled.section`
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 12px;
 `;
 
 const FestivalWrap = styled.section`
@@ -161,8 +183,29 @@ const RequestBestieButton = styled.button`
     font-style: normal;
     font-weight: 700;
     line-height: 140%; 
+    margin-top: 12px;
 
     &:hover {
         cursor: pointer;
     }
+`;
+
+const MatchingState = styled.div`
+    background: ${props => (props.$isSuccess 
+        ? 'var(--festie-primary-orange, #FF7A00)' 
+        : 'var(--festie-gray-400, #C8C8C8)')};
+    display: flex;
+    width: 245px;
+    padding: 12px 0px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 26px;
+    color: var(--festie-white, #FFF);
+    font-family: SUIT Variable;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
 `;

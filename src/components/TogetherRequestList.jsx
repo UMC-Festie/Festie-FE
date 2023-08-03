@@ -110,6 +110,7 @@ const RequestListBox = styled.div`
     border-radius: 20px;
     border: 1px solid var(--festie-primary-orange, #FF7A00);
     padding: 16px 32px 0 32px;
+    margin-top: 12px;
 `;
 
 const RequestHeader = styled.div`
