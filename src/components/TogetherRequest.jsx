@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-export default function TogetherRequest({ userId, isChecked, onClickCheckButton, isClicked, nickname, age, gender, message }) {
+export default function TogetherRequest({ userid, isChecked, onClickCheckButton, isClicked, nickname, age, gender, message }) {
     return (
       <>
-        <RequestBox userId={userId}>
+        <RequestBox userId={userid}>
             <RequestHeader>
                 <InfoWrap>
                     <NicknameWrap>
@@ -16,17 +16,17 @@ export default function TogetherRequest({ userId, isChecked, onClickCheckButton,
                         <Gender>{gender}</Gender>
                     </GenderWrap>
                 </InfoWrap>
-                <CheckButtonWrap isVisible={isClicked}>
+                <CheckButtonWrap $isVisible={isClicked.toString()}>
                     {
                         isChecked === true ?
                             <CheckedButton onClick={onClickCheckButton}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                    <path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M10 3L4.5 8.5L2 6" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
                             </CheckedButton>
                             : <UncheckedButton onClick={onClickCheckButton}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                    <path d="M10 3L4.5 8.5L2 6" stroke="#949494" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M10 3L4.5 8.5L2 6" stroke="#949494" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
                             </UncheckedButton>
                     }
@@ -103,7 +103,7 @@ const Gender = styled.div`
 `;
 
 const CheckButtonWrap = styled.div`
-    display: ${props => (props.isVisible ? "flex" : "none")};
+    display: ${props => (props.$isVisible ? "flex" : "none")};
 `;
 
 const UncheckedButton = styled.button`

@@ -72,10 +72,10 @@ export default function TogetherRequestList() {
                 <RequestTitleWrap>
                     <RequestTitle>같이가요 신청내역</RequestTitle>
                 </RequestTitleWrap>
-                <MatchingButtonWrap onClick={onClickMatchingButton} isVisible={!isClicked}>
+                <MatchingButtonWrap onClick={onClickMatchingButton} $isVisible={(!isClicked).toString()}>
                     <MatchingButton>Bestie 매칭하기</MatchingButton>
                 </MatchingButtonWrap>
-                <ConfirmButtonWrap isVisible={isClicked}>
+                <ConfirmButtonWrap $isVisible={isClicked.toString()}>
                     {   
                         isAnyRequestChecked === true 
                         ? <ConfirmButton onClick={onClickConfirmButton}>매칭 메세지 보내기</ConfirmButton>
@@ -133,7 +133,7 @@ const RequestTitle = styled.span`
 `;
 
 const MatchingButtonWrap = styled.div`
-    display: ${props => (props.isVisible ? "flex" : "none")};
+    display: ${props => (props.$isVisible ? "flex" : "none")};
 `;
 
 const MatchingButton = styled.button`
@@ -157,7 +157,7 @@ const MatchingButton = styled.button`
 `;
 
 const ConfirmButtonWrap = styled.div`
-    display: ${props => (props.isVisible ? "flex" : "none")};
+    display: ${props => (props.$isVisible ? "flex" : "none")};
 `;
 
 const DisableConfirmButton = styled.button`
