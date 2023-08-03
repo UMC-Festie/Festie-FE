@@ -21,8 +21,8 @@ function App() {
       <Reset />
       <Header />
       <Routes>
-      {/* <Route path="/" element={<ResetPasswordForm/>} /> */}
-        <Route path="/" element={<Main />} />
+      <Route path="/" element={<FindPasswordForm/>} />
+        {/* <Route path="/" element={<Main />} /> */}
         <Route path="/view" element={<View />} />
         <Route path="/share" element={<Share />} />
         <Route path="/together" element={<Together />} />

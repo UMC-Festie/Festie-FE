@@ -128,7 +128,6 @@ const SignupForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 여기서 제출 처리 로직을 추가하세요.
     console.log("제출됨!");
   };
 
@@ -151,6 +150,7 @@ const SignupForm = () => {
             onBlur={handleBlurEmail}
           />
           {!isValidEmail && <span><img src={alertredIcon} className="alertredIcon" style={{ marginLeft: '469px', verticalAlign: 'sub' }} /><p className="emailalert">올바른 형식의 이메일을 입력해주세요.</p></span>}
+          {isValidEmail && <span><p className="emptyalertform" style={{ marginLeft: '469px', verticalAlign: 'sub' }}>에러메시지공간</p></span>}
           <li><strong>비밀번호</strong></li>
           <li></li>
           <input
@@ -172,7 +172,14 @@ const SignupForm = () => {
             onBlur={handleBlurPasswordCheck}
           />
           {!isPasswordMatch && <span><img src={alertredIcon} className="alertredIcon" style={{ marginLeft: '469px', verticalAlign: 'sub' }} /><p className="pwcheckalert">비밀번호가 일치하지 않아요.</p></span>}
-          <div className="signupnextBtn" type="submit" disabled={isSubmitDisabled}>다음</div>
+          {isPasswordMatch && isSpecialCharIncluded && <span><p className="emptyalertform" style={{ marginLeft: '469px', verticalAlign: 'sub' }}>에러메시지공간</p></span>}
+          <div
+            className={`signupnextBtn ${isSubmitDisabled ? "disabled" : "enabled"}`}
+            onClick={handleSubmit}
+            disabled={isSubmitDisabled}
+          >
+            다음
+          </div>
         </ul>
       </form>
     </div>

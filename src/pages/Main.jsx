@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import './Main.css';
 import background from '../components/main_background.png';
 import hand from '../components/main_hand.png';
@@ -7,14 +7,18 @@ import curvetop from '../components/Vector_7072.png';
 import comingsoon from '../components/main_comingsoon.svg';
 import together from '../components/main_together.svg';
 import arrowright from '../components/arrow_right.svg';
+import MainPoster from './Mainposter';
+import TogetherPoster from './Togetherposter';
+import soonposterImage from '../components/poster_1.png';
+import togetherposterImage from '../components/poster_6.png';
 
 export default function Main() {
-    const [selectedSoon, setSelectedSoon] = useState(null);
+    const [selectedSoon, setSelectedSoon] = useState('공연');
     const handleSoonClick = (Soon) => {
         setSelectedSoon(Soon);
     };
 
-    const [selectedTogether, setSelectedTogether] = useState(null);
+    const [selectedTogether, setSelectedTogether] = useState('새로운');
     const handleTogetherClick = (Together) => {
         setSelectedTogether(Together);
     };
@@ -65,6 +69,53 @@ export default function Main() {
         color: "white",
         fontSize: "20px",
       };   
+
+      const [posterInfo, setPosterInfo] = useState(null);
+      useEffect(() => {
+        fetch('https://jsonplaceholder.typicode.com/posts/1')
+          .then((response) => response.json())
+          .then((data) => {
+            //posterInfo 상태 업데이트
+            const { userId } = data;
+            setPosterInfo({
+              concertName: '뮤지컬 <보이A>',
+            //   concertName: `Concert by User ${userId}`,
+              place: '예사스테이지 3관',
+              date: '2023.5.30 - 2023.8.20',
+              imageUrl: soonposterImage,
+            });
+            // setPosterInfo({
+            //     concertName: '가족음악극 `슈베르트와 장미요...',
+            //   //   concertName: `Concert by User ${userId}`,
+            //     place: '세종문화회관 체임버홀',
+            //     date: '2023.5.30 - 2023.8.20',
+            //     imageUrl: posterImage,
+            //   });
+          })
+          .catch((error) => {
+            console.log('Error fetching data:', error);
+          });
+      }, []);
+
+      const [togetherInfo, setTogetherInfo] = useState(null);
+      useEffect(() => {
+        fetch('https://jsonplaceholder.typicode.com/posts/1')
+          .then((response) => response.json())
+          .then((data) => {
+            //togetherInfo 상태 업데이트
+            const { userId } = data;
+            setTogetherInfo({
+              togetherTitle: '펍크롤링투어 2일차 함께 가실 분',
+            //   concertName: `Concert by User ${userId}`,
+              togetherNickname: '덕구',
+              togetherDate: '2023.5.30',
+              imageUrl: togetherposterImage,
+            });
+          })
+          .catch((error) => {
+            console.log('Error fetching data:', error);
+          });
+      }, []);
     
     return (
         <div>
@@ -102,6 +153,12 @@ export default function Main() {
                 >
                     공연
                 </span>
+                <div className="main_posterwrap" style={{ display: 'flex', height:'442px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    {posterInfo && <MainPoster posterInfo={posterInfo} />}
+                    {posterInfo && <MainPoster posterInfo={posterInfo} />}
+                    {posterInfo && <MainPoster posterInfo={posterInfo} />}
+                    {posterInfo && <MainPoster posterInfo={posterInfo} />}
+                </div>
                 <div className="togoinfoBtn">공연정보 더 보러가기<img src={arrowright}/></div>
                 <div className='togetherImg'>
                     <img src={together}/>
@@ -121,6 +178,12 @@ export default function Main() {
                 >
                     새로운
                 </span>
+                <div className="main_posterwrap" style={{ display: 'flex', height:'442px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    {togetherInfo && <TogetherPoster posterInfo={togetherInfo} />}
+                    {togetherInfo && <TogetherPoster posterInfo={togetherInfo} />}
+                    {togetherInfo && <TogetherPoster posterInfo={togetherInfo} />}
+                    {togetherInfo && <TogetherPoster posterInfo={togetherInfo} />}
+                </div>
                 <div className="togotogetherBtn">같이가요 더 보러가기<img src={arrowright}/></div>
             </div>
         </div>

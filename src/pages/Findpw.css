@@ -132,4 +132,45 @@ li {
     cursor: pointer;
     border-radius: 26px;
   }
+
+  .findpwnextBtn.enabled {
+    display: flex;
+    width: 295px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 58px;
+    margin-left: 469px;
+    background-color: #FF7A00;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
+
+  .findpwnextBtn.disabled {
+    display: flex;
+    width: 295px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 58px;
+    margin-left: 469px;
+    background-color: #c8c8c8;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: not-allowed;
+    border-radius: 26px;
+  }
+  
   

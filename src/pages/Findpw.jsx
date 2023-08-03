@@ -17,6 +17,14 @@ const FindPasswordForm = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("제출됨!");
+  };
+
+  const isSubmitDisabled = isEmailNotFound;
+
+
   // 서벼 연결
   // const handleBlur = async (event) => {
   //   const inputEmail = event.target.value; // 입력한 이메일
@@ -51,14 +59,11 @@ const FindPasswordForm = () => {
             />
             {isEmailNotFound && (
               <div>
-                <img
-                  src={alertredIcon}
-                  className="alertredIcon"
-                  style={{ marginLeft: '469px', verticalAlign: 'sub' }}
-                />
+                <img src={alertredIcon} className="alertredIcon" style={{ marginLeft: '469px', verticalAlign: 'sub' }}/>
                 <p className="Findpwemailalert">등록되지 않은 이메일이에요</p>
               </div>
             )}
+            {!isEmailNotFound && <span><p className="emptyalertform" style={{ marginLeft: '469px', verticalAlign: 'sub' }}>에러메시지공간</p></span>}
           </div>
           <li>
             <strong>닉네임</strong>
@@ -66,7 +71,14 @@ const FindPasswordForm = () => {
           <li>
             <input type="text" className="FindpwnicknameText" placeholder="닉네임을 입력해주세요" />
           </li>
-          <div className="findpwnextBtn">다음</div>
+          {/* <div className="findpwnextBtn">다음</div> */}
+          <div
+            className={`findpwnextBtn ${isSubmitDisabled ? "disabled" : "enabled"}`}
+            onClick={handleSubmit}
+            disabled={isSubmitDisabled}
+          >
+            다음
+          </div>
         </ul>
       </form>
     </div>

@@ -1,5 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import './Mypage.css';
+import Poster from './Mainposter';
+import posterImage from '../components/poster_5.png';
 
 function MyPage() {
     const [activeTab, setActiveTab] = useState("정보공유"); // 외부 탭 메뉴 상태, 기본값 설정
@@ -45,19 +47,52 @@ function MyPage() {
         ))}
       </select>
     );
+
+    const [posterInfo, setPosterInfo] = useState(null);
+      useEffect(() => {
+        fetch('https://jsonplaceholder.typicode.com/posts/1')
+          .then((response) => response.json())
+          .then((data) => {
+            //posterInfo 상태 업데이트
+            const { userId } = data;
+            setPosterInfo({
+              concertName: '부산푸드필름페스타',
+            //   concertName: `Concert by User ${userId}`,
+              place: '부산광역시 해운대구',
+              date: '2023.5.30 - 2023.8.20',
+              imageUrl: posterImage,
+            });
+          })
+          .catch((error) => {
+            console.log('Error fetching data:', error);
+          });
+      }, []);
+
+      const nickname = '페스티';
+      const email = 'festie2023@gmail.com';
+      const birth = '2023. 7. 12';
+      const sex = '여성';
   
   return (
     <div className="mypageForm">
       <div className="breadCrumb">
         <span>홈</span> &gt; <span>마이페이지</span>
       </div>
-      <p className="welcome">오늘 하루도 Festie하세요, 운히님!</p>
+      <p className="welcome">오늘 하루도 Festie하세요, 페스티님!</p>
       <div className="myinfoForm">
         <span>
-          <label>닉네임</label>
-          <label>이메일</label>
-          <label>생년월일</label>
-          <label>성별</label>
+        <span className='mypageNickname' style={{ marginRight: '16px' }}>닉네임</span>
+        <span className='mypageData'>{nickname}</span>
+        <span className='mypageEmail' style={{ marginRight: '16px' }}>이메일</span>
+        <span className='mypageData'>{email}</span>
+        <span className='mypageEmail' style={{ marginRight: '16px' }}>생년월일</span>
+        <span className='mypageData'>{birth}</span>
+        <span className='mypageEmail' style={{ marginRight: '16px' }}>성별</span>
+        <span className='mypageData'>{sex}</span>
+          {/* <span className='mypageNickname'>닉네임</span>
+          <span className='mypageEmail'>이메일</span>
+          <span className='mypageBirth'>생년월일</span>
+          <span className='mypageSex'>성별</span> */}
         </span>
         <span className="logoutBtn">로그아웃</span>
         <span className="resetpwBtn">비밀번호 수정하기</span>
@@ -155,29 +190,17 @@ function MyPage() {
         </svg>
       </div>
       <div className="mypageContent">
-      {activeTab === "축제" && (
-          <div>
-            {/* Content for Tab 1 */}
-            <div className="serch-box">
-              <SelectBox option={OPTIONS} className="selectBTn" />
+      {innerActiveTab === "축제" && (
+            <div className="poster_wrap" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    {posterInfo && <Poster posterInfo={posterInfo} />}
+                    {posterInfo && <Poster posterInfo={posterInfo} />}
+                    {posterInfo && <Poster posterInfo={posterInfo} />}
+                    {posterInfo && <Poster posterInfo={posterInfo} />}
+                    {posterInfo && <Poster posterInfo={posterInfo} />}
+                    {posterInfo && <Poster posterInfo={posterInfo} />}
+                    {posterInfo && <Poster posterInfo={posterInfo} />}
+                    {posterInfo && <Poster posterInfo={posterInfo} />}
             </div>
-            {/* <div>
-        <button onClick={handleDropdownToggle}>선택하기: {selectedOption}</button>
-        {isDropdownOpen && (
-          <div style={{ border: "1px solid #ccc" }}>
-            {options.map((option, index) => (
-              <div
-                key={index}
-                onClick={() => handleOptionSelect(option)}
-                style={{ padding: "8px", cursor: "pointer" }}
-              >
-                {option}
-              </div>
-            ))}
-          </div>
-        )}
-      </div> */}
-          </div>
         )}
       </div>
 
