@@ -1,9 +1,9 @@
-import { Reset } from 'styled-reset'
+import { Reset } from "styled-reset";
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Main from "./pages/Main"
-import View from "./pages/View"
+import Main from "./pages/Main";
+import View from "./pages/View";
 import Share from "./pages/Share";
 import Together from "./pages/Together";
 //import Contents from "./pages/Contents"; //등록된 정보보기_메인페이지
@@ -14,16 +14,19 @@ import Together from "./pages/Together";
 //import ReviewMain from "./pages/ReviewMain"; //정보 공유_후기 메인페이지
 import TogetherMain from "./pages/TogetherMain"; //같이가요 메인페이지
 //import Serch from "./pages/Serch"; //검색결과
+import GlobalStyle from "./GlobalStyle";
 
 function App() {
   return (
     <>
+      <GlobalStyle />
       <Reset />
       <Header />
       <Routes>
         <Route path="/" element={<TogetherMain/>} />
         <Route path="/view" element={<View />} />
         <Route path="/share" element={<Share />} />
+        <Route path="/together" element={<Together />} />
         <Route path="/together" element={<Together />} />
       </Routes>
       <Footer />
