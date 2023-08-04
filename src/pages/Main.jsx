@@ -8,7 +8,7 @@ import comingsoon from '../assets/main_comingsoon.svg';
 import together from '../assets/main_together.svg';
 import arrowright from '../assets/arrow_right.svg';
 import MainPoster from '../components/Mainposter';
-import TogetherPoster from './Togetherposter';
+import TogetherPoster from '../components/Togetherposter';
 import soonposterImage from '../assets/poster_1.png';
 import togetherposterImage from '../assets/poster_6.png';
 
