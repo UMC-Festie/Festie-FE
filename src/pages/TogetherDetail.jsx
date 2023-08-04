@@ -43,67 +43,74 @@ export default function TogetherDetail() {
 
 
     return (
-        <DetailPage>
-            <CategoryInfo>
-                <Category>홈</Category>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M6 12L10 8L6 4" stroke="#B7B7B7" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <Category>같이가요</Category>
-            </CategoryInfo>
-            <ContentContainer>
-                <TogetherWrap>
-                    {
-                        !isWriter && isApplicant ? (
-                            <>
-                                {
-                                    status === 0 ? (
-                                        <MatchingState $isSuccess={isApplicantSuccess}>매칭 중이에요</MatchingState>
-                                    ) : isApplicantSuccess ? (
-                                        <>
-                                            <MatchingState $isSuccess={isApplicantSuccess}>매칭에 성공했어요</MatchingState>
-                                            <TogetherMessage></TogetherMessage>
-                                        </>
-                                    ) : (
-                                        <MatchingState $isSuccess={isApplicantSuccess}s>매칭에 실패했어요</MatchingState>
-                                )}
-                            </>
-                        ) : <></>
-                    }
-                    <TogetherPost isWriter={isWriter} />
-                    {
-                        isModalOpen && 
-                            <TogetherRequestModal isOpen={isModalOpen} closeModal={handleCloseModal} />
-                    }
-                    {
-                        isWriter ? (
-                            <TogetherRequestList />
-                        ) : !isApplicant ? (
-                            <RequestBestieButton onClick={handleOpenModal}>
-                            Bestie가 되고 싶어요
-                            </RequestBestieButton>
-                        ) : (
-                            <></>
-                    )}
-                </TogetherWrap>
-                <FestivalWrap>
-                    <div>
-                        <TogetherInfo />
-                    </div>
-                </FestivalWrap>
-            </ContentContainer>    
-            {
-                showScrollButton &&
-                    <ScrollUpButton onClick={onClickScrollToTop}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
-                            <path d="M14 22.1673V5.83398" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path d="M5.83398 14.0007L14.0007 5.83398L22.1673 14.0007" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                    </ScrollUpButton>  
-            }                 
-        </DetailPage>
+        <DetailPageContainer>
+            <DetailPage>
+                <CategoryInfo>
+                    <Category>홈</Category>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 12L10 8L6 4" stroke="#B7B7B7" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <Category>같이가요</Category>
+                </CategoryInfo>
+                <ContentContainer>
+                    <TogetherWrap>
+                        {
+                            !isWriter && isApplicant ? (
+                                <>
+                                    {
+                                        status === 0 ? (
+                                            <MatchingState $isSuccess={isApplicantSuccess}>매칭 중이에요</MatchingState>
+                                        ) : isApplicantSuccess ? (
+                                            <>
+                                                <MatchingState $isSuccess={isApplicantSuccess}>매칭에 성공했어요</MatchingState>
+                                                <TogetherMessage></TogetherMessage>
+                                            </>
+                                        ) : (
+                                            <MatchingState $isSuccess={isApplicantSuccess}s>매칭에 실패했어요</MatchingState>
+                                    )}
+                                </>
+                            ) : <></>
+                        }
+                        <TogetherPost isWriter={isWriter} />
+                        {
+                            isModalOpen && 
+                                <TogetherRequestModal isOpen={isModalOpen} closeModal={handleCloseModal} />
+                        }
+                        {
+                            isWriter ? (
+                                <TogetherRequestList />
+                            ) : !isApplicant ? (
+                                <RequestBestieButton onClick={handleOpenModal}>
+                                Bestie가 되고 싶어요
+                                </RequestBestieButton>
+                            ) : (
+                                <></>
+                        )}
+                    </TogetherWrap>
+                    <FestivalWrap>
+                        <div>
+                            <TogetherInfo />
+                        </div>
+                    </FestivalWrap>
+                </ContentContainer>    
+                {
+                    showScrollButton &&
+                        <ScrollUpButton onClick={onClickScrollToTop}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+                                <path d="M14 22.1673V5.83398" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M5.83398 14.0007L14.0007 5.83398L22.1673 14.0007" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </ScrollUpButton>  
+                }                 
+            </DetailPage>
+        </DetailPageContainer>
     )
 }
+
+const DetailPageContainer = styled.div`
+    display: flex;
+    justify-content: center;
+`;
 
 const DetailPage = styled.div`
     display: flex;
@@ -113,7 +120,9 @@ const DetailPage = styled.div`
 
 const CategoryInfo = styled.div`
     display: flex; 
+    align-items: center;
     margin-bottom: 14px;
+    gap: 16px;
 `;
 
 const Category = styled.span`

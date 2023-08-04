@@ -24,7 +24,7 @@ export default function TogetherInfo() {
         <InfoBox>
           <div>
             <FestivalImageWrap>
-              <FestivalImage alt='공연 포스터' /*src={require(`${image}`)}*/></FestivalImage>
+              <FestivalImage alt='공연 포스터' src={require(`${image}`)} ></FestivalImage>
             </FestivalImageWrap>
             <FestivalNameWrap>
               <FestivalName>{name}</FestivalName>
@@ -61,6 +61,7 @@ const InfoBox = styled.div`
   flex-shrink: 0;
   border-radius: 20px;
   border: 1px solid var(--festie-gray-200, #E8E8E8);
+  background-color: #FFFFFF;
 `;
 
 const FestivalImageWrap = styled.div`
