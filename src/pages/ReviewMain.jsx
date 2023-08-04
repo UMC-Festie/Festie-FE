@@ -1,6 +1,6 @@
 //정보 공유_후기 메인페이지
 import React, { useState, useEffect } from "react";
-import { ReviewCard, dummyReviews } from "./ReviewCard";
+import { ReviewCard, dummyReviews } from "../components/ReviewCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';

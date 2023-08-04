@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './Search.css';
 import image7 from '../assets/image7.png';
-import { ReviewCard, dummyReviews } from "./ReviewCard";
+import { ReviewCard, dummyReviews } from "../components/ReviewCard";
 
 function ConcertMain() {
     const [showCategoriesBtn, setShowCategoriesBtn] = useState(true);

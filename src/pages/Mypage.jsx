@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Mypage.css';
-import Poster from './Mainposter';
+import Poster from '../components/Mainposter';
 import posterImage from '../assets/poster_5.png';
 
 function MyPage() {

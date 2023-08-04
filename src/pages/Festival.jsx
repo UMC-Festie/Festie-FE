@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './Contents.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import Poster from './Poster';
+import Poster from '../components/Poster';
 import image3 from '../assets/image3.png';
 
 function ConcertMain() {

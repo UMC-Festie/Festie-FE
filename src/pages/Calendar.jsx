@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Calendar.css";
 import { faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import { ReviewCard, dummyReviews } from "./ReviewCard";
-import Modal from "./Modal"; 
+import { ReviewCard, dummyReviews } from "../components/ReviewCard";
+import Modal from "../components/Modal"; 
 const Calendar = () => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today);
