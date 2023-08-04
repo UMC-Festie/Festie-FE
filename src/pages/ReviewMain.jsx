@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import image5 from '../components/image5.png';
+import image5 from '../assets/image5.png';
 import './ReviewMain.css';
 const MainPage = () => {
   // 메인 페이지에서 보여줄 후기 데이터를 저장하는 상태 변수입니다.

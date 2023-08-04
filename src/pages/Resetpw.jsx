@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Resetpw.css';
-import alertredIcon from '../components/alert_circle_red.svg';
-import alertgrayIcon from '../components/alert_circle_gray.svg';
+import alertredIcon from '../assets/alert_circle_red.svg';
+import alertgrayIcon from '../assets/alert_circle_gray.svg';
 
 const ResetPasswordForm = () => {
   const [password, setPassword] = useState("");

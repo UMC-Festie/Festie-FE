@@ -1,7 +1,7 @@
-@font-face { 
+/* @font-face { 
   font-family: 'SUIT Variable';
   src: url('./SUIT-Variable.ttf') format('truetype');
-}
+} */
 
 li {
     list-style: none;
@@ -112,7 +112,7 @@ li {
     border-radius: 9px;
     border: 1px solid #949494;
     cursor: pointer;
-    background: url("../components/check_gray.svg") no-repeat;
+    background: url("../assets/check_gray.svg") no-repeat;
     background-size: cover;
   }
   
@@ -127,19 +127,19 @@ li {
     border-radius: 9px;
     border: 1px solid #949494;
     cursor: pointer;
-    background: url("../components/check_gray.svg") no-repeat;
+    background: url("../assets/check_gray.svg") no-repeat;
     background-size: cover;
   }
   
   input#saveEmail:checked + label span {
-    background: url("../components/check_white.svg") no-repeat;
+    background: url("../assets/check_white.svg") no-repeat;
     border: 1px solid #ff7a00;
     background-color: #ff7a00;
     background-size: cover;
   }
   
   input#autoLogin:checked + label span {
-    background: url("../components/check_white.svg") no-repeat;
+    background: url("../assets/check_white.svg") no-repeat;
     border: 1px solid #ff7a00;
     background-color: #ff7a00;
     background-size: cover;

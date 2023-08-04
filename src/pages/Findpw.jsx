@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Findpw.css';
-import alertredIcon from '../components/alert_circle_red.svg';
+import alertredIcon from '../assets/alert_circle_red.svg';
 
 const FindPasswordForm = () => {
   const [isEmailNotFound, setIsEmailNotFound] = useState(false);

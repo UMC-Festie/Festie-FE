@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
     font-family: 'SUIT';
     font-weight: 100;
     src: local('SUIT Thin'), url('../components/SUIT.ttf') format('woff2');
@@ -50,7 +50,7 @@
     font-family: 'SUIT';
     font-weight: 900;
     src: local('SUIT Heavy'), url('../components/SUIT.ttf') format('woff2');
-}
+} */
 
 .modal {
     position: fixed;

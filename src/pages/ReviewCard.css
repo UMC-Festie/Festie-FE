@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
 	font-family: 'SUIT';
 	font-weight: 100;
 	src: local('SUIT Thin'), url('../components/SUIT.ttf') format('woff2');
@@ -42,7 +42,7 @@
 	font-family: 'SUIT';
 	font-weight: 900;
 	src: local('SUIT Heavy'), url('../components/SUIT.ttf') format('woff2');
-}
+} */
 .main-pagetxt {
   /* 전체 컨테이너를 가로로 나열하고 중앙 정렬합니다. */
   display: flex;

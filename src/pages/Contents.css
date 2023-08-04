@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
 	font-family: 'SUIT';
 	font-weight: 100;
 	src: local('SUIT Thin'), url('../components/SUIT.ttf') format('woff2');
@@ -42,7 +42,7 @@
 	font-family: 'SUIT';
 	font-weight: 900;
 	src: local('SUIT Heavy'), url('../components/SUIT.ttf') format('woff2');
-}
+} */
 .breadcrumb span {
     margin: 0 15px;
 }
@@ -229,7 +229,7 @@
     -moz-appearance: none;
     appearance: none;
     /* 배경 이미지로 PNG 파일을 사용하여 화살표를 대체합니다 */
-    background-image: url('/src/components/chevron-down.png');
+    background-image: url('/src/assets/chevron-down.png');
     /* PNG 파일의 경로로 대체해주세요 */
     background-repeat: no-repeat;
     background-position: right center;

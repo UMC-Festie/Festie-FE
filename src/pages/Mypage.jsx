@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Mypage.css';
 import Poster from './Mainposter';
-import posterImage from '../components/poster_5.png';
+import posterImage from '../assets/poster_5.png';
 
 function MyPage() {
     const [activeTab, setActiveTab] = useState("정보공유"); // 외부 탭 메뉴 상태, 기본값 설정

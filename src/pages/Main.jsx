@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import './Main.css';
-import background from '../components/main_background.png';
-import hand from '../components/main_hand.png';
-import curve from '../components/Vector_7071.png';
-import curvetop from '../components/Vector_7072.png';
-import comingsoon from '../components/main_comingsoon.svg';
-import together from '../components/main_together.svg';
-import arrowright from '../components/arrow_right.svg';
+import background from '../assets/main_background.png';
+import hand from '../assets/main_hand.png';
+import curve from '../assets/Vector_7071.png';
+import curvetop from '../assets/Vector_7072.png';
+import comingsoon from '../assets/main_comingsoon.svg';
+import together from '../assets/main_together.svg';
+import arrowright from '../assets/arrow_right.svg';
 import MainPoster from './Mainposter';
 import TogetherPoster from './Togetherposter';
-import soonposterImage from '../components/poster_1.png';
-import togetherposterImage from '../components/poster_6.png';
+import soonposterImage from '../assets/poster_1.png';
+import togetherposterImage from '../assets/poster_6.png';
 
 export default function Main() {
     const [selectedSoon, setSelectedSoon] = useState('공연');

@@ -6,7 +6,7 @@ import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Poster from './Poster';
-import image6 from '../components/image6.png';
+import image6 from '../assets/image6.png';
 
 
 function ConcertMain() {

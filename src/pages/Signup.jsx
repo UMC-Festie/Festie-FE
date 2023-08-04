@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Signup.css';
-import alertredIcon from '../components/alert_circle_red.svg';
-import alertgrayIcon from '../components/alert_circle_gray.svg';
+import alertredIcon from '../assets/alert_circle_red.svg';
+import alertgrayIcon from '../assets/alert_circle_gray.svg';
 
 // function SignupForm() {
 //   // // Handle form submission and validation here (if needed)

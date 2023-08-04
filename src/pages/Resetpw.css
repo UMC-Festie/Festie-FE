@@ -1,7 +1,7 @@
-@font-face { 
+/* @font-face { 
   font-family: 'SUIT Variable';
   src: url('./SUIT-Variable.ttf') format('truetype');
-}
+} */
 
 li {
     list-style: none;
@@ -178,7 +178,7 @@ li {
   }
   
   input.togoBtn {
-    background: url("../components/chevron_down.svg") no-repeat;
+    background: url("../assets/chevron_down.svg") no-repeat;
     border: none;
     width: 20px;
     height: 20px;

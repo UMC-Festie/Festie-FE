@@ -4,7 +4,7 @@ import './Contents.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import Poster from './Poster';
-import image1 from '../components/image1.png';
+import image1 from '../assets/image1.png';
 
 function ConcertMain() {
   const [showCategoriesBtn, setShowCategoriesBtn] = useState(true);

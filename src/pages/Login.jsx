@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
-import lineIcon from "../components/vector_7079.svg";
+import lineIcon from "../assets/vector_7079.svg";
 
 function LoginForm() {
   return (

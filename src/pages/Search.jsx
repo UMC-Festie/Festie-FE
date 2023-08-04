@@ -1,7 +1,7 @@
 //검색결과
 import React, { useState, useEffect } from 'react';
-import './Serch.css';
-import image7 from '../components/image7.png';
+import './Search.css';
+import image7 from '../assets/image7.png';
 import { ReviewCard, dummyReviews } from "./ReviewCard";
 
 function ConcertMain() {

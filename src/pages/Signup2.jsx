@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Signup2.css';
-import alertredIcon from '../components/alert_circle_red.svg';
+import alertredIcon from '../assets/alert_circle_red.svg';
 
 const Signup2Form = () => {
   const [selectedSex, setSelectedSex] = useState(null);
