@@ -1,0 +1,201 @@
+@font-face { 
+  font-family: 'SUIT Variable';
+  src: url('./SUIT-Variable.ttf') format('truetype');
+}
+
+li {
+    list-style: none;
+  }
+  
+  .loginForm {
+    width: 1280px;
+    border: 0;
+    background-color: #ffffff;
+    margin: 0 auto;
+    align-items: center;
+  }
+  
+  .loginForm > h2 {
+    color: #3a3a3a;
+    margin-top: 70px;
+    margin-bottom: 36px;
+    text-align: center;
+    font-family: "Sandoll Cameo";
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 140%;
+    letter-spacing: 0.3px;
+  }
+  
+  .loginForm strong {
+    color: #555;
+    margin-left: 469px;
+    font-family: "SUIT Variable", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  .loginemailText {
+    /* display: flex; */
+    width: 295px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-left: 469px;
+    margin-bottom: 12px;
+    background-color: white;
+    color: black;
+    font-family: "SUIT Variable";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 26px;
+    border: 1px solid var(--festie-gray-600, #949494);
+  }
+  
+  .loginpasswordText {
+    display: flex;
+    width: 295px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 4px;
+    margin-left: 469px;
+    background-color: white;
+    color: black;
+    font-family: "SUIT Variable";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 26px;
+    border: 1px solid var(--festie-gray-600, #949494);
+  }
+  
+  /* 클릭 시 테두리 색 변경 */
+  .emailText:focus {
+    border: 1px solid #ff7a00;
+    outline: none;
+  }
+  
+  .passwordText:focus {
+    border: 1px solid #ff7a00;
+    outline: none;
+  }
+  
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  .checkboxWrap{
+    color: #6f6f6f;
+    font-family: "SUIT Variable";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  input#saveEmail + label span {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-top: 13px;
+    margin-left: 469px;
+    margin-right: 4px;
+    vertical-align: sub;
+    border-radius: 9px;
+    border: 1px solid #949494;
+    cursor: pointer;
+    background: url("../components/check_gray.svg") no-repeat;
+    background-size: cover;
+  }
+  
+  input#autoLogin + label span {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-top: 13px;
+    margin-left: 16px;
+    margin-right: 4px;
+    vertical-align: sub;
+    border-radius: 9px;
+    border: 1px solid #949494;
+    cursor: pointer;
+    background: url("../components/check_gray.svg") no-repeat;
+    background-size: cover;
+  }
+  
+  input#saveEmail:checked + label span {
+    background: url("../components/check_white.svg") no-repeat;
+    border: 1px solid #ff7a00;
+    background-color: #ff7a00;
+    background-size: cover;
+  }
+  
+  input#autoLogin:checked + label span {
+    background: url("../components/check_white.svg") no-repeat;
+    border: 1px solid #ff7a00;
+    background-color: #ff7a00;
+    background-size: cover;
+  }
+  
+  .loginBtn {
+    display: flex;
+    width: 295px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 16px;
+    margin-left: 469px;
+    margin-bottom: 16px;
+    background-color: #ff7a00;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: "SUIT Variable";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
+  
+  .joinBtn {
+    color: #3a3a3a;
+    margin-left: 534px;
+    font-family: "SUIT Variable";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+  }
+  
+  .findBtn {
+    color: #3a3a3a;
+    margin-left: 32px;
+    font-family: "SUIT Variable";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+  }
+  
+  .easyLogin {
+    color: #6f6f6f;
+    margin-top: 31px;
+    margin-left: 605px;
+    font-family: "SUIT Variable";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
