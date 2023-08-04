@@ -24,7 +24,7 @@ export default function TogetherInfo() {
         <InfoBox>
           <div>
             <FestivalImageWrap>
-              <FestivalImage alt='공연 포스터' src={require(`${image}`)} ></FestivalImage>
+              <FestivalImage alt='공연 포스터' /*src={require(`${image}`)}*/ ></FestivalImage>
             </FestivalImageWrap>
             <FestivalNameWrap>
               <FestivalName>{name}</FestivalName>
