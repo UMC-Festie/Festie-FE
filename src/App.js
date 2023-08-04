@@ -1,12 +1,10 @@
 import { Reset } from "styled-reset";
 import { Route, Routes } from "react-router-dom";
+import GlobalStyle from "./GlobalStyle";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
-import View from "./pages/View";
-import Share from "./pages/Share";
-import Together from "./pages/Together";
 import Signup2Form from './pages/Signup2';
 import FindPasswordForm from './pages/Findpw';
 import FindPwFinishForm from './pages/Findpwfin';
@@ -26,7 +24,6 @@ import PerformanceWrite from "./pages/PerformanceWrite";
 import TicketingWrite from "./pages/TicketingWrite";
 import TogetherWrite from "./pages/TogetherWrite";
 import ReviewWrite from "./pages/ReviewWrite";
-import GlobalStyle from "./GlobalStyle";
 import TogetherDetail from './pages/TogetherDetail';
 
 function App() {
@@ -36,15 +33,37 @@ function App() {
       <Reset />
       <Header />
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/view" element={<View />} />
-        <Route path="/share" element={<Share />} />
-        <Route path="/together" element={<Together />} />
-        <Route path="/share/performance_write" element={<PerformanceWrite />} />
-        <Route path="/share/review_write" element={<ReviewWrite />} />
-        <Route path="/share/ticketing_write" element={<TicketingWrite />} />
-        <Route path="/together_write" element={<TogetherWrite />} />
-        <Route path="/togetherDetail" element={<TogetherDetail />} />
+        <Route path="/" element={<Main />} />  {/* 메인 */} 
+        <Route path="/signUp" element={<SignupForm />} />  {/* 회원가입 */}
+        <Route path="/signUp/next" element={<Signup2Form />} />  {/* 회원가입2 */}
+        <Route path="/login" element={<Login />} />  {/* 로그인 */}
+        <Route path="/findPw" element={<FindPasswordForm />} />  {/* 비밀번호 찾기 */}
+        <Route path="/findPw/finish" element={<FindPwFinishForm />} />  {/* 비밀번호 찾기 완료 */}
+        <Route path="/resetPw" element={<ResetPasswordForm />} />  {/* 비밀번호 수정 */}
+        <Route path="/resetPw/finish" element={<ResetPasswordFinishForm />} />  {/* 비밀번호 수정 완료 */}
+       
+
+        <Route path="/search" element={<Search />} /> {/* 검색 결과 */}
+        <Route path="/mypage" element={<MyPage />} />  {/* 마이 페이지 */}
+        
+        
+        <Route path="/view/perfomance" element={<Contents />} />  {/* 정보 보기 > 등록된 공연 메인 */} 
+        <Route path="/view/festival" element={<Festival />} />  {/* 정보 보기 > 등록된 축제 메인 */} 
+        
+
+        <Route path="/share/perfomance" element={<SharingConcert />} />  {/* 정보 공유 > 새로운 공연 메인 */} 
+        <Route path="/share/perfomance/write" element={<PerformanceWrite />} /> {/* 정보 공유 > 새로운 공연 작성 */} 
+        <Route path="/share/festival" element={<SharingFestival />} />  {/* 정보 공유 > 새로운 축제 메인 */} 
+        <Route path="/share/review" element={<ReviewMain />} />  {/* 정보 공유 > 후기 메인 */} 
+        <Route path="/share/review/write" element={<ReviewWrite />} />  {/* 정보 공유 > 후기 작성 */} 
+        <Route path="/share/ticketing" element={<Calendar />} />  {/* 정보 공유 > 티켓팅 메인 */} 
+        <Route path="/share/ticketing/write" element={<TicketingWrite />} />  {/* 정보 공유 > 티켓팅 작성 */} 
+
+
+        <Route path="/together" element={<TogetherMain />} />  {/* 같이가요 메인 */} 
+        <Route path="/together/write" element={<TogetherWrite />} />  {/* 같이가요  작성 */} 
+        <Route path="/together/detail" element={<TogetherDetail />} />  {/* 같이가요 상세 */} 
+
       </Routes>
       <Footer />
     </>
