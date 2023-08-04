@@ -1,0 +1,303 @@
+/* <link href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css" rel="stylesheet"> */
+@font-face { 
+  font-family: 'SUIT Variable';
+  src: url('./SUIT-Variable.ttf') format('truetype');
+}
+
+.mypageForm {
+    width: 1280px;
+    border: 0;
+    background-color: #ffffff;
+    margin: 0 auto;
+    align-items: center;
+  }
+  
+  .breadCrumb span {
+    margin: 0 16px;
+  }
+  
+  .breadCrumb {
+    color: #b7b7b7;
+    margin-top: 42px;
+    margin-left: 74px;
+    margin-bottom: 14px;
+    font-family: SUIT Variable;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  .welcome {
+    color: #252525;
+    margin-top: 14px;
+    margin-left: 90px;
+    margin-bottom: 12px;
+    font-family: SUIT Variable;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    letter-spacing: 0.3px;
+  }
+  
+  .myinfoForm {
+    flex-shrink: 0;
+    width: 1100px;
+    height: 54px;
+    margin-left: 90px;
+    align-items: center;
+    padding-top: 14px;
+    background-color: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 20px;
+  }
+  
+  .mypageNickname {
+    color: #3a3a3a;
+    margin-left: 32px;
+    margin-bottom: 14px;
+    font-family: SUIT Variable;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .mypageEmail{
+    color: #3a3a3a;
+    margin-left: 48px;
+    margin-bottom: 14px;
+    font-family: SUIT Variable;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  .mypageBirth {
+    color: #3a3a3a;
+    margin-left: 48px;
+    margin-bottom: 14px;
+    font-family: SUIT Variable;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .mypageSex {
+    color: #3a3a3a;
+    margin-left: 48px;
+    margin-bottom: 14px;
+    font-family: SUIT Variable;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .mypageData{
+    color: #6f6f6f;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .logoutBtn {
+    display: inline-flex;
+    width: 56px;
+    height: 22px;
+    padding: 8px 16px;
+    margin-left: 164px;
+    margin-right: 12px;
+    background-color: #fff;
+    color: #6f6f6f;
+    justify-content: center;
+    align-items: center;
+    font-family: SUIT Variable;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border: 1px solid #c8c8c8;
+    border-radius: 21px;
+  }
+  
+  .resetpwBtn {
+    display: inline-flex;
+    width: 116px;
+    height: 22px;
+    padding: 8px 16px;
+    background-color: #ff7a00;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    font-family: SUIT Variable;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border: 1px solid #ff7a00;
+    border-radius: 21px;
+  }
+
+  .tabMenu {
+    display: flex;
+    margin-top: 44px;
+    margin-left: 70px;
+  }
+  
+  .tabMenu button {
+    background: none;
+    color: #949494;
+    border: none;
+    padding: 0 20px;
+    font-family: SUIT Variable;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    letter-spacing: 0.24px;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .tabMenu button.active {
+    background: none;
+    color: #252525;
+    border: none;
+    font-family: SUIT Variable;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    letter-spacing: 0.24px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .horizontalLine {
+    display: flex;
+    margin-left: 90px;
+  }
+  
+  /* 정보공유 탭메뉴 */
+  .tabShare {
+    display: flex;
+    margin-left: 71px;
+  }
+
+  .tabShare button {
+    background: none;
+    color: #6f6f6f;
+    border: none;
+    padding: 0 16px;
+    font-family: SUIT Variable;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .tabShare button.active {
+    background: none;
+    color: #ff7a00;
+    border: none;
+    padding: 0 16px;
+    font-family: SUIT Variable;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    cursor: pointer;
+    outline: none;
+  }
+
+  /* 정보보기 탭메뉴 */
+  .tabShare {
+    display: flex;
+    margin-left: 71px;
+  }
+
+  .tabShare button {
+    background: none;
+    color: #6f6f6f;
+    border: none;
+    padding: 0 16px;
+    font-family: SUIT Variable;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .tabShare button.active {
+    background: none;
+    color: #ff7a00;
+    border: none;
+    padding: 0 16px;
+    font-family: SUIT Variable;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    cursor: pointer;
+    outline: none;
+  }
+
+  /* 같이가요 탭메뉴 */
+  .tabShare {
+    display: flex;
+    margin-left: 71px;
+  }
+
+  .tabShare button {
+    background: none;
+    color: #6f6f6f;
+    border: none;
+    padding: 0 16px;
+    font-family: SUIT Variable;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .tabShare button.active {
+    background: none;
+    color: #ff7a00;
+    border: none;
+    padding: 0 16px;
+    font-family: SUIT Variable;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .tabmenuContent {
+    display: flex;
+    margin-left: 5px;
+  }
+
+  .mypageContent {
+    display: flex;
+    margin-left: 5px;
+  }
+
+  .poster_wrap{
+    margin-bottom: 49px;
+  }

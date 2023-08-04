@@ -1,0 +1,176 @@
+@font-face { 
+  font-family: 'SUIT Variable';
+  src: url('./SUIT-Variable.ttf') format('truetype');
+}
+
+li {
+    list-style: none;
+  }
+  
+  .findpwForm {
+    width: 1280px;
+    border: 0;
+    background-color: #ffffff;
+    margin: 0 auto;
+    align-items: center;
+  }
+  
+  .findpwForm h2 {
+    color: #3A3A3A;
+    margin-top: 70px;
+    text-align: center;
+    font-family: Sandoll Cameo;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 140%;
+    letter-spacing: 0.3px;
+  }
+  
+  .findpwExplain{
+    color: #555;
+    margin-top: 24px;
+    margin-bottom: 44px;
+    text-align: center;
+    font-family: SUIT Variable;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  .findpwForm strong {
+    color: #555;
+    margin-left: 469px;
+    font-family: 'SUIT Variable', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  .FindpwemailText {
+    display: flex;
+    width: 295px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 4px;
+    margin-left: 469px;
+    margin-bottom: 4px;
+    background-color: white;
+    color: black;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 26px;
+    border: 1px solid var(--festie-gray-600, #949494);
+  }
+
+  .Findpwemailalert {
+    display: inline-block;
+    color: #E90000;
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-bottom: 12px;
+    font-family: SUIT Variable;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  .FindpwnicknameText {
+    display: flex;
+    width: 295px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 4px;
+    margin-left: 469px;
+    background-color: white;
+    color: black;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 26px;
+    border: 1px solid var(--festie-gray-600, #949494);
+  }
+  
+  /* 클릭 시 테두리 색 변경 */
+  .FindpwemailText:focus {
+    border: 1px solid #FF7A00;
+    outline: none;
+  }
+  
+  .FindpwnicknameText:focus {
+    border: 1px solid #FF7A00;
+    outline: none;
+  }
+  
+  .findpwnextBtn {
+    display: flex;
+    width: 295px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 58px;
+    margin-left: 469px;
+    background-color: #c8c8c8;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
+
+  .findpwnextBtn.enabled {
+    display: flex;
+    width: 295px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 58px;
+    margin-left: 469px;
+    background-color: #FF7A00;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
+
+  .findpwnextBtn.disabled {
+    display: flex;
+    width: 295px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 58px;
+    margin-left: 469px;
+    background-color: #c8c8c8;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: not-allowed;
+    border-radius: 26px;
+  }
+  
+  
