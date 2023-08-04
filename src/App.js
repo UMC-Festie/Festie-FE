@@ -27,6 +27,7 @@ import TicketingWrite from "./pages/TicketingWrite";
 import TogetherWrite from "./pages/TogetherWrite";
 import ReviewWrite from "./pages/ReviewWrite";
 import GlobalStyle from "./GlobalStyle";
+import TogetherDetail from './pages/TogetherDetail';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path="/share/review_write" element={<ReviewWrite />} />
         <Route path="/share/ticketing_write" element={<TicketingWrite />} />
         <Route path="/together_write" element={<TogetherWrite />} />
+        <Route path="/togetherDetail" element={<TogetherDetail />} />
       </Routes>
       <Footer />
     </>
