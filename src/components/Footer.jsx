@@ -139,6 +139,7 @@ const FooterWrap = styled.div`
   background: var(--festie-gray-50, #fcfcfc);
   height: 126px;
   padding: 32px 151px 42px 90px;
+  margin-top: 128px;
 `;
 
 const LogoWrap = styled.div`

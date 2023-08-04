@@ -22,6 +22,10 @@ import SignupForm from './pages/Signup';
 //import ReviewMain from "./pages/ReviewMain"; //정보 공유_후기 메인페이지
 import TogetherMain from "./pages/TogetherMain"; //같이가요 메인페이지
 //import Serch from "./pages/Serch"; //검색결과
+import PerformanceWrite from "./pages/PerformanceWrite";
+import TicketingWrite from "./pages/TicketingWrite";
+import TogetherWrite from "./pages/TogetherWrite";
+import ReviewWrite from "./pages/ReviewWrite";
 import GlobalStyle from "./GlobalStyle";
 
 function App() {
@@ -35,6 +39,10 @@ function App() {
         <Route path="/view" element={<View />} />
         <Route path="/share" element={<Share />} />
         <Route path="/together" element={<Together />} />
+        <Route path="/share/performance_write" element={<PerformanceWrite />} />
+        <Route path="/share/review_write" element={<ReviewWrite />} />
+        <Route path="/share/ticketing_write" element={<TicketingWrite />} />
+        <Route path="/together_write" element={<TogetherWrite />} />
       </Routes>
       <Footer />
     </>
