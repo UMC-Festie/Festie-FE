@@ -47,12 +47,12 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />  {/* 마이 페이지 */}
         
         
-        <Route path="/view/perfomance" element={<Contents />} />  {/* 정보 보기 > 등록된 공연 메인 */} 
+        <Route path="/view/performance" element={<Contents />} />  {/* 정보 보기 > 등록된 공연 메인 */} 
         <Route path="/view/festival" element={<Festival />} />  {/* 정보 보기 > 등록된 축제 메인 */} 
         
 
-        <Route path="/share/perfomance" element={<SharingConcert />} />  {/* 정보 공유 > 새로운 공연 메인 */} 
-        <Route path="/share/perfomance/write" element={<PerformanceWrite />} /> {/* 정보 공유 > 새로운 공연 작성 */} 
+        <Route path="/share/performance" element={<SharingConcert />} />  {/* 정보 공유 > 새로운 공연 메인 */} 
+        <Route path="/share/performance/write" element={<PerformanceWrite />} /> {/* 정보 공유 > 새로운 공연 작성 */} 
         <Route path="/share/festival" element={<SharingFestival />} />  {/* 정보 공유 > 새로운 축제 메인 */} 
         <Route path="/share/review" element={<ReviewMain />} />  {/* 정보 공유 > 후기 메인 */} 
         <Route path="/share/review/write" element={<ReviewWrite />} />  {/* 정보 공유 > 후기 작성 */} 
