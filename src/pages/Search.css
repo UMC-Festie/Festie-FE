@@ -17,7 +17,7 @@
 }
 
 .banner3 img {
-    width: 1330px;
+    width: 1337px;
     height: 220px;
     border-radius: 40px;
     margin-bottom: 33px;
@@ -33,7 +33,7 @@
     /* 42px */
     letter-spacing: 0.3px;
     top: 25%;
-    left: 10%;
+    left: 11%;
     position: absolute;
 }
 
@@ -47,7 +47,7 @@
     line-height: 140%;
     position: absolute;
     top: 45%;
-    left: 10%;
+    left: 11%;
 }
 
 .categories {

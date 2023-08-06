@@ -193,14 +193,14 @@ function ConcertMain() {
   return (
     <div className="contents">
       <div className="breadcrumb">
-        <span>홈</span> &gt; <span>정보보기</span> &gt; <span>후기</span>
+        <span>홈</span> &gt; <span>같이가요</span>
       </div>
       <div className="banner">
       <img src={image6} alt="이미지 6" />
-        <h1 className="banner-txt">축제/공연 같이가요</h1>
-        <h2 className="banner-txt">Festie에서 같이 가고 싶은 축제/ 공연을 찾고 친구를 만들어 보세요!</h2>
+        <h1 className="banner-txt">같이가요</h1>
+        <h2 className="banner-txt">Festie에서 추억과 취향을 공유할 친구를 만들어보세요. 같이 가고 싶은 축제/공연을 찾아보고, Bestie가 되어보세요!</h2>
         <button className="breadcrumb-button">
-          같이 갈 친구 만들기
+          같이 갈 Bestie 만들기
           <span className="arrow">
             <FontAwesomeIcon icon={faArrowRight} />
           </span>
