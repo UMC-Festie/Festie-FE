@@ -17,8 +17,8 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/share" element={<Share />} />
         <Route path="/together" element={<Together />} />
-        <Route path="/view/performance_detail" element={<PerformanceDetail />} />
-        <Route path="/view/festival_detail" element={<FestivalDetail />} />
+        <Route path="/view/performance/detail" element={<PerformanceDetail />} />
+        <Route path="/view/festival/detail" element={<FestivalDetail />} />
 
       </Routes>
       <Footer />
