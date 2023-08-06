@@ -14,10 +14,10 @@ export default function Header() {
       <NavLink to="/">
         <LogoImage src={Logo} alt="Logo"></LogoImage>
       </NavLink>
-      <Menu to="/view/perfomance" style={({ isActive }) => (isActive ? activeStyle : {})}>
+      <Menu to="/view/performance" style={({ isActive }) => (isActive ? activeStyle : {})}>
         정보 보기
       </Menu>
-      <Menu to="/share/perfomance" style={({ isActive }) => (isActive ? activeStyle : {})}>
+      <Menu to="/share/performance" style={({ isActive }) => (isActive ? activeStyle : {})}>
         정보 공유
       </Menu>
       <Menu
