@@ -178,14 +178,14 @@ function ConcertMain() {
   return (
     <div className="contents">
       <div className="breadcrumb">
-        <span>홈</span> &gt; <span>정보보기</span> &gt; <span>공연</span>
+        <span>홈</span> &gt; <span>정보공유</span> &gt; <span>공연</span>
       </div>
       <div className="banner">
       <img src={image2} alt="이미지 2" />
-        <h1 className="banner-txt">공연 정보 공유(BESTIE끼리 공유하는 공연 정보)</h1>
+        <h1 className="banner-txt">공연 정보 공유</h1>
         <h2 className="banner-txt">Festie가 소개하는 공연 정보에 내가 좋아하는 아티스트의 공연이  없었나요? 그렇다면 BESTIE들에게 직접 소개해보세요!</h2>
         <button className="breadcrumb-button">
-          Bestie들에게 알려주러 가기
+          새로운 공연 정보 공유하기
           <span className="arrow">
             <FontAwesomeIcon icon={faArrowRight} />
           </span>

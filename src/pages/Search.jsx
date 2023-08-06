@@ -151,7 +151,7 @@ function ConcertMain() {
       <div className="breadcrumb">
         <span>홈</span> &gt; <span>통합검색</span> &gt; <span>검색결과</span>
       </div>
-      <div className="banner">
+      <div className="banner3">
       <img src={image7} alt="이미지 7" />
         <h1 className="banner-txt">통합검색</h1>
         <h2 className="banner-txt">현재 진행중인 국내 곳곳의 공연 정보를 조회할 수 있습니다.</h2>
@@ -189,7 +189,7 @@ function ConcertMain() {
         />
       </div>
       <div className="result-container">
-        <div className="serch-box">
+        <div className="serch-box3">
           <SelectBox options={OPTIONS} className="custom-select" />
       </div>
       <div className="result-counts">
