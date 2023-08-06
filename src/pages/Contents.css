@@ -49,26 +49,26 @@
 
 .breadcrumb {
     margin-left: 90px;
-    margin-top: 122px;
+    margin-top: 50px !important;
     font-size: 13px;
     color: #B7B7B7;
 	font-family: 'SUIT';
 }
 
-.banner {
+.banner1 {
     position: relative;
     text-align: center;
     margin-top: 20px;
 }
 
-.banner img {
+.banner1 img {
     width: 1330px;
     height: 220px;
     border-radius: 40px;
     margin-bottom: 33px;
 }
 
-.banner h1 {
+.banner1 h1 {
     color: var(--festie-white, #FFF);
     /* heading */
     font-family: Sandoll Cameo;
@@ -83,7 +83,7 @@
     position: absolute;
 }
 
-.banner h2 {
+.banner1 h2 {
     color: var(--festie-white, #FFF);
     /* body */
 	font-family: 'SUIT';
@@ -99,7 +99,7 @@
 .categories {
     display: flex;
     border-bottom: 1px solid #E8E8E8;
-    margin-bottom: 11px;
+    margin-bottom: 10px !important;
     margin-left: 90px;
     margin-right: 100px;
 	font-family: 'SUIT';
@@ -201,7 +201,7 @@
 .serch {
     display: flex;
     margin-left: 92px;
-    margin-bottom: -50px;
+    margin-bottom: -50px !important;
     font-family: 'SUIT';
 }
 
@@ -242,7 +242,7 @@
     /* 배경 이미지를 오른쪽에 위치시킬 공간을 확보합니다 */
 }
 .serch-box {
-    margin-left: 1090px;
+    margin-left: 1090px !important;
 }
 .topBtn {
     position: fixed;

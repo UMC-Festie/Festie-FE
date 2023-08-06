@@ -107,7 +107,7 @@ const MainPage = () => {
       <div className="breadcrumb">
         <span>홈</span> &gt; <span>정보공유</span> &gt; <span>후기</span>
       </div>
-      <div className="banner">
+      <div className="banner2">
         <img src={image5} alt="이미지 5" />
         <h1 className="banner-txt">Festie 후기 공유</h1>
         <h2 className="banner-txt">좋았던, 혹은 Bestie들에게 공유하고 싶은 공연 및 축제 후기가 있나요? 그렇다면 Bestie들에게 소개해주세요!</h2>
@@ -135,7 +135,7 @@ const MainPage = () => {
         <FontAwesomeIcon icon={faArrowUp} className="fa-icon" />
       </button>
       {showButton && (
-        <button className="addBtn">
+        <button className="addBtn2">
           <FontAwesomeIcon icon={faPlus} />
           {' '}
           후기 작성하기

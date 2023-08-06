@@ -165,7 +165,7 @@ function ConcertMain() {
       <div className="breadcrumb">
         <span>홈</span> &gt; <span>정보보기</span> &gt; <span>축제</span>
       </div>
-      <div className="banner">
+      <div className="banner1">
         <img src={image3} alt="이미지 3" />
         <h1 className="banner-txt">축제 정보 보기(Festie가 제공하는 축제 정보)</h1>
         <h2 className="banner-txt">Festie가 알려주는 국내 곳곳의 축제 정보를 구경해보세요.</h2>
