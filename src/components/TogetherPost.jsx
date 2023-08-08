@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import DeleteModal from "../components/DeleteModal";
 
 export default function TogetherPost({ isWriter }) {
   const [title, setTitle] = useState('제목');
@@ -14,6 +15,15 @@ export default function TogetherPost({ isWriter }) {
   평화스러운 곧 만물은 있으랴? 그들의 인간에 인생을 지혜는 우리 앞이 풀이 안고, 있는가? 그것은 곧 발휘하기 힘있다. 그들은 군영과 인생에 가진 얼음이 이 끓는 눈이 구하기 것이다. 천하를 황금시대의 뛰노는 듣기만 칼이다. 만천하의 갑 대고, 사막이다. 물방아 불어 가지에 실로 바이며, 무엇을 힘있다. 피어나기 그와 창공에 하였으며, 심장은 인생의 할지라도 있는가? 인생에 피부가 든 풀이 돋고, 어디 청춘의 우리는 못하다 것이다.
   `);
   const [preferenceContents, setPreferenceContents] = useState(`이상, 못할 밥을 끓는 찾아다녀도, 뿐이다. 든 놀이 그들은 때문이다. 못하다 더운지라 우리 하여도 그들은 그들에게 구하기 뿐이다. 인생을 곳으로 과실이 위하여 것은 석가는 열매를 뿐이다. 뼈 못하다 생의 않는 청춘 철환하였는가?`);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const handleOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   const onClickEditButton = () => {
     alert('글 수정 페이지');
@@ -27,8 +37,7 @@ export default function TogetherPost({ isWriter }) {
   };
 
   const onClickDeleteButton = () => {
-    alert('글 삭제');
-    
+    handleOpenDeleteModal();
   };
 
   return (
@@ -77,6 +86,10 @@ export default function TogetherPost({ isWriter }) {
                 </EditButtonWrap>
                 <DeleteButtonWrap>
                   <DeleteButton onClick={onClickDeleteButton}>삭제</DeleteButton>
+                  {
+                    isDeleteModalOpen && 
+                    <DeleteModal isOpen={isDeleteModalOpen} closeModal={handleCloseDeleteModal} />
+                  }
                 </DeleteButtonWrap>
               </ButtonWrap>
             </RightWrap>
