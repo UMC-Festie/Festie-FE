@@ -30,6 +30,7 @@ const Modal = ({ selectedDate, setSelectedDate, selectedTime, setSelectedTime, o
   };
 
   return (
+    <div className="modal_background">
     <div className="modal">
       <h1>티켓팅 일정 추가</h1>
       <div className="serch1">
@@ -198,6 +199,7 @@ const Modal = ({ selectedDate, setSelectedDate, selectedTime, setSelectedTime, o
         </div>
       </div>
       {(showDateModal || showTimeModal) && <div className="modal-backdrop" onClick={handleModalClose} />}
+    </div>
     </div>
   );
 };

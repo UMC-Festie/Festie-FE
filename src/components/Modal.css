@@ -51,7 +51,6 @@
     font-weight: 900;
     src: local('SUIT Heavy'), url('../components/SUIT.ttf') format('woff2');
 } */
-
 .modal {
     position: fixed;
     top: 50%;

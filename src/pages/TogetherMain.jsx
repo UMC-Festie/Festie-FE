@@ -22,6 +22,17 @@ function ConcertMain() {
   const [showButton, setShowButton] = useState(false);
   // 검색 결과 개수를 담는 상태
   const [searchResultCount, setSearchResultCount] = useState(0);
+  const [filteredPosters, setFilteredPosters] = useState([]);
+  const [posters, setPosters] = useState([]);
+  const [searchButtonActive, setSearchButtonActive] = useState(false); // "조회하기" 버튼 클릭 상태를 관리
+  const [selectedCategoryButton, setSelectedCategoryButton] = useState('');
+  const [selectedCategoryButtons, setSelectedCategoryButtons] = useState([]);
+
+  const handleSearchButtonClick = () => {
+    setSearchButtonActive(true);
+    setSearchButtonActive(!searchButtonActive);
+    setSelectedCategoryButtons([]);
+  };
 
   useEffect(() => {
     const handleScroll = () => { // 공연 공유 버튼
@@ -77,7 +88,7 @@ function ConcertMain() {
     setTypeButtons(["공연", "축제"]);
     setActiveButton('type');
   };
-  
+
   const handleCategoryClick = () => {
     setShowCategoriesBtn(false);
     setCategoryButtons(["바다", "여름먹거리", "연꽃", "토마토", "장미", "문화예술", "여름꽃"]);
@@ -86,7 +97,7 @@ function ConcertMain() {
     setTypeButtons([]);
     setActiveButton('category');
   };
-  
+
   const handleAreaClick = () => {
     setShowCategoriesBtn(true);
     setCategoryButtons([]);
@@ -98,7 +109,7 @@ function ConcertMain() {
     setTypeButtons([]);
     setActiveButton('area');
   };
-  
+
   const handlePeriodClick = () => {
     setShowCategoriesBtn(false);
     setCategoryButtons([]);
@@ -107,7 +118,7 @@ function ConcertMain() {
     setTypeButtons([]);
     setActiveButton('period');
   };
-  
+
   const handleCategoryBtnClick = (button) => {
     if (!selectedButtons.includes(button)) {
       setSelectedButtons([...selectedButtons, button]);
@@ -116,6 +127,7 @@ function ConcertMain() {
 
   const handleResetClick = () => {
     setSelectedButtons([]);
+    setSearchButtonActive(false);
   };
 
   const handleRemoveButtonClick = (button) => {
@@ -132,7 +144,7 @@ function ConcertMain() {
       {button}
     </h1>
   );
-  
+
   /*const backendData = {
     postertxt: 'D-day',
     concertName: '제목',
@@ -185,18 +197,18 @@ function ConcertMain() {
     // 여기에서는 임시로 180을 반환하도록 하겠습니다.
     return 180;
   };
-   useEffect(() => {
+  useEffect(() => {
     const resultCount = fetchSearchResultCount();
     setSearchResultCount(resultCount);
   }, []);
-  
+
   return (
     <div className="contents">
       <div className="breadcrumb">
         <span>홈</span> &gt; <span>같이가요</span>
       </div>
       <div className="banner">
-      <img src={image6} alt="이미지 6" />
+        <img src={image6} alt="이미지 6" />
         <h1 className="banner-txt">같이가요</h1>
         <h2 className="banner-txt">Festie에서 추억과 취향을 공유할 친구를 만들어보세요. 같이 가고 싶은 축제/공연을 찾아보고, Bestie가 되어보세요!</h2>
         <button className="breadcrumb-button">
@@ -208,9 +220,9 @@ function ConcertMain() {
       </div>
       <div className="categories">
         <CategoryButton
-            button="유형" 
-            isSelected={activeButton === 'type'}
-            onClick={handleTypeClick}
+          button="유형"
+          isSelected={activeButton === 'type'}
+          onClick={handleTypeClick}
         />
         <CategoryButton
           button="카테고리"
@@ -230,10 +242,11 @@ function ConcertMain() {
       </div>
       {showCategoriesBtn && activeButton === 'type' && (
         <div className="categories-btn">
+          {/* 유형 버튼에 해당하는 하위 버튼들을 보여줍니다. */}
           {typeButtons.map((button, index) => (
             <button
               key={index}
-              className="category-btn"
+              className={`category-btn1 ${selectedButtons.includes(button) ? 'selected' : ''} ${searchButtonActive && activeButton === 'type' && selectedButtons.includes(button) ? 'active' : ''}`}
               onClick={() => handleCategoryBtnClick(button)}
             >
               {button}
@@ -243,48 +256,83 @@ function ConcertMain() {
       )}
       {showCategoriesBtn && activeButton === 'area' && (
         <div className="categories-btn">
+          {/* 지역 버튼에 해당하는 하위 버튼들을 보여줍니다. */}
           {areaButtons.map((button, index) => (
-            <button key={index} className="category-btn" onClick={() => handleCategoryBtnClick(button)}>
+            <button
+              key={index}
+              className={`category-btn1 ${selectedButtons.includes(button) ? 'selected' : ''} ${searchButtonActive && activeButton === 'area' && selectedButtons.includes(button) ? 'active' : ''}`}
+              onClick={() => handleCategoryBtnClick(button)}
+            >
               {button}
             </button>
           ))}
         </div>
       )}
+
       {!showCategoriesBtn && activeButton === 'category' && (
         <div className="categories-btn">
+          {/* 카테고리 버튼에 해당하는 하위 버튼들을 보여줍니다. */}
           {categoryButtons.map((button, index) => (
-            <button key={index} className="category-btn" onClick={() => handleCategoryBtnClick(button)}>
+            <button
+              key={index}
+              className={`category-btn1 ${selectedButtons.includes(button) ? 'selected' : ''} ${searchButtonActive && activeButton === 'category' && selectedButtons.includes(button) ? 'active' : ''}`}
+              onClick={() => handleCategoryBtnClick(button)}
+            >
               {button}
             </button>
           ))}
         </div>
       )}
+
       {!showCategoriesBtn && activeButton === 'period' && (
         <div className="categories-btn">
+          {/* 기간 버튼에 해당하는 하위 버튼들을 보여줍니다. */}
           {periodButtons.map((button, index) => (
-            <button key={index} className="category-btn" onClick={() => handleCategoryBtnClick(button)}>
+            <button
+              key={index}
+              className={`category-btn1 ${selectedButtons.includes(button) ? 'selected' : ''} ${searchButtonActive && activeButton === 'period' && selectedButtons.includes(button) ? 'active' : ''}`}
+              onClick={() => handleCategoryBtnClick(button)}
+            >
               {button}
             </button>
           ))}
         </div>
       )}
+
       <div className="reset">
-      <button onClick={handleResetClick} className="reset-button">
+        {/* "조회하기" 버튼 */}
+        <button
+          className={`search-button1 ${searchButtonActive ? 'active' : ''}`}
+          onClick={handleSearchButtonClick}
+        > {searchButtonActive ? (
+          // 이미지가 변경되었을 때의 SVG 코드
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M7.33333 12.6667C10.2789 12.6667 12.6667 10.2789 12.6667 7.33333C12.6667 4.38781 10.2789 2 7.33333 2C4.38781 2 2 4.38781 2 7.33333C2 10.2789 4.38781 12.6667 7.33333 12.6667Z" stroke="#3A3A3A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M14.0006 14.0001L11.1006 11.1001" stroke="#3A3A3A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M7.33333 12.6667C10.2789 12.6667 12.6667 10.2789 12.6667 7.33333C12.6667 4.38781 10.2789 2 7.33333 2C4.38781 2 2 4.38781 2 7.33333C2 10.2789 4.38781 12.6667 7.33333 12.6667Z" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M14.0006 14.0001L11.1006 11.1001" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>)}
+          조회하기
+        </button>
+        {selectedButtons.map((button, index) => (
+          <button
+            key={index}
+            className={`selected-button1 ${searchButtonActive ? 'active' : ''}`}
+            onClick={() => handleRemoveButtonClick(button)}
+          >
+            {button} X
+          </button>
+        ))}
+        <button onClick={handleResetClick} className="reset-button">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
             <path d="M15.333 3.1665V7.1665H11.333" stroke="#3A3A3A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M13.6602 10.5002C13.2269 11.7268 12.4066 12.7793 11.323 13.4992C10.2394 14.219 8.95122 14.5672 7.65253 14.4912C6.35383 14.4153 5.11501 13.9192 4.12275 13.078C3.13048 12.2367 2.43853 11.0957 2.15116 9.82688C1.86378 8.5581 1.99656 7.2303 2.52949 6.04355C3.06241 4.85681 3.9666 3.87541 5.10581 3.24726C6.24502 2.61912 7.55753 2.37824 8.84555 2.56093C10.1336 2.74363 11.3273 3.34 12.2469 4.26017L15.3336 7.16684" stroke="#3A3A3A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           초기화
         </button>
-        {selectedButtons.map((button, index) => (
-          <button
-            key={index}
-            className="selected-button"
-            onClick={() => handleRemoveButtonClick(button)}
-          >
-            {button} X
-          </button>
-        ))}
       </div>
       <div className="serch">
         <h1>검색결과</h1>
