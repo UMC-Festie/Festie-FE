@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import TogetherRequest from "./TogetherRequest";
+import ToastMessage from "./ToastMessage";
 
 export default function TogetherRequestList() {
     /* Dummy Data */
@@ -28,6 +29,8 @@ export default function TogetherRequestList() {
     const [isClicked, setIsClicked] = useState(false);
     const [isAnyRequestChecked, setIsAnyRequestChecked] = useState(false);
     const [checkedRequestIndex, setCheckedRequestIndex] = useState(null);
+    const [showToast, setShowToast] = useState(false);
+    const [nickname, setNickname] = useState('');
 
     useEffect(() => {
         setIsAnyRequestChecked(requests.some((request) => request.isChecked));
@@ -53,9 +56,16 @@ export default function TogetherRequestList() {
         // 임시 코드
         const checkedRequest = requests.find((request, index) => index === checkedRequestIndex);
        
+        console.log(checkedRequest)
         if (checkedRequest) {
-            const { userId } = checkedRequest;
-            alert(`**${userId}** user에게 매칭 메세지를 보냈습니다.`);
+            setNickname(checkedRequest[nickname]);
+            console.log(nickname);
+            
+            setShowToast(true);
+
+            setTimeout(() => {
+                setShowToast(false);
+            }, 3000)
         } 
 
         // *** TO DO : 신청 수락 버큰 클릭 후 프로세스 구현 ***
@@ -99,6 +109,10 @@ export default function TogetherRequestList() {
                 ))}
             </RequestList>
         </RequestListBox>
+        {
+            showToast && 
+                <ToastMessage title='매칭 메세지 전달 성공' content='매칭 메세지가 성공적으로 전달됐어요!'/>
+        }
       </>
     )
 }

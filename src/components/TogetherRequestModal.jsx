@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import ToastMessage from "./ToastMessage";
 
 export default function TogetherRequestModal({ isOpen, closeModal }) {
     const [nickname, setNickname] = useState('덕구');
@@ -7,17 +8,27 @@ export default function TogetherRequestModal({ isOpen, closeModal }) {
     const [location, setLocation] = useState('부산광역시 해운대구');
     const [date, setDate] = useState('2023.6.30');
     const [time, setTime] = useState('17:00');
+    const [showToast, setShowToast] = useState(false);
 
     const onClickCloseModal = () => {
         closeModal();
     };
 
     const onClickSendRequest = () => {
-        alert('같이 가요 신청을 보냈어요!');
-        closeModal();
+        setShowToast(true);
+
+        setTimeout(() => {
+            setShowToast(false);
+            closeModal();
+        }, 3000)
     };
-    
+
+    useEffect(() => {
+        console.log(showToast);
+    }, [showToast])
+
     return (
+        <>
         <ModalWrap $isOpen={isOpen}>
             <RequestModal>
                 <RequestModalHeader>
@@ -63,8 +74,14 @@ export default function TogetherRequestModal({ isOpen, closeModal }) {
                 </RequestButtonWrap>
             </RequestModal>
         </ModalWrap>
+        {
+            showToast &&
+                <ToastMessage title='같이가요 신청 완료' content={`${nickname}님에게 같이가요 신청을 보냈어요!`} />
+        }
+        </>
     )
 }
+
 
 const ModalWrap = styled.div`
   display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
