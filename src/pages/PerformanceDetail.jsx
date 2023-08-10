@@ -3,6 +3,9 @@ import styled from "styled-components";
 import icon from "../assets/image.jpg";
 import image43 from "../assets/image 43.png";
 
+
+
+
 export default function Main() {
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
@@ -15,8 +18,8 @@ export default function Main() {
     setCount2((prevCount) => prevCount + 1);
   };
 
-  const Manager = "(사)부산국제매직페스티벌 조직위원회";
-  const Inquiry = "051-626-7002 / https://www.hibimf.org/";
+  const Manager = "(사)부산국제매직페스티벌 조직위원회"
+  const Inquiry = "051-626-7002 / https://www.hibimf.org/"
 
   const [isMoreView, setIsMoreView] = useState(false); // 더보기&접기 상태 저장
 
@@ -26,14 +29,16 @@ export default function Main() {
 
   const DetailsContent = () => {
     return (
-      <ContentsWrap isMoreView={isMoreView}>
-        <ImageMoreWrap isMoreView={isMoreView}>
-          {isMoreView === false && <WhiteGradientOverlay />}
-          <Image43 src={image43} alt="Your Image" />
+      <ContentsWrap isMoreView={isMoreView}> 
+      <ImageMoreWrap  isMoreView={isMoreView}>
+        {isMoreView === false && (
+            <WhiteGradientOverlay />
+          )}
+        <Image43 src={image43} alt="Your Image" />
         </ImageMoreWrap>
         {isMoreView === false && (
-          <PlusButton onClick={onClickImageMoreViewButton}>더보기</PlusButton>
-        )}
+        <PlusButton onClick={onClickImageMoreViewButton}>더보기</PlusButton>
+      )}
       </ContentsWrap>
     );
   };
@@ -43,37 +48,13 @@ export default function Main() {
       <ContentContainer>
         <TextContainer>
           <Word className="Word">홈</Word>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M6 12L10 8L6 4"
-              stroke="#B7B7B7"
-              stroke-width="1.33333"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M6 12L10 8L6 4" stroke="#B7B7B7" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           <Word className="Word">정보보기</Word>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M6 12L10 8L6 4"
-              stroke="#B7B7B7"
-              stroke-width="1.33333"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M6 12L10 8L6 4" stroke="#B7B7B7" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           <Word className="Word">공연</Word>
         </TextContainer>
         <Image src={icon} alt="Your Image" />
@@ -116,8 +97,11 @@ export default function Main() {
           </Rectangle>
         </RectangleContainer>
         <TextContainerSelect>
-          <WordSelect>상세정보</WordSelect>
-
+          <WordSelect
+          >
+            상세정보
+          </WordSelect>
+         
           <HorizontalLine />
         </TextContainerSelect>
       </ContentContainer>
@@ -208,17 +192,13 @@ export default function Main() {
         </ContentWrapper>
       </ContentInfo>
       <SelectWrapper>
-        <DetailsContent />
+          <DetailsContent />
       </SelectWrapper>
-      <ManagerInquiryWrap>
-        <ManagerInquiry>관리자</ManagerInquiry>
-        <ManagerInquiryText>{Manager}</ManagerInquiryText>
-        <ManagerInquiry>문의처</ManagerInquiry>
-        <ManagerInquiryText>{Inquiry}</ManagerInquiryText>
-      </ManagerInquiryWrap>
+          <ManagerInquiryWrap><ManagerInquiry>관리자</ManagerInquiry><ManagerInquiryText>{Manager}</ManagerInquiryText><ManagerInquiry>문의처</ManagerInquiry><ManagerInquiryText>{Inquiry}</ManagerInquiryText></ManagerInquiryWrap>
     </Container>
   );
 }
+
 
 const Container = styled.div`
   display: flex;
@@ -265,6 +245,7 @@ const Image = styled.img`
 
 const Image43 = styled.img`
   width: 910px;
+
 `;
 
 const Rectangle = styled.div`
@@ -452,7 +433,7 @@ const Wrapper = styled.div`
 `;
 
 const TogetherText = styled.div`
-  cursor: pointer;
+cursor: pointer;
   display: flex;
   align-items: center;
   color: var(--festie-white, #fff);
@@ -471,7 +452,7 @@ const TogetherText = styled.div`
 `;
 
 const WordSelect = styled.div`
-  color: var(--festie-primary-orange, #ff7a00);
+  color: var(--festie-primary-orange, #FF7A00);
   font-family: SUIT Variable;
   font-size: 18px;
   font-style: normal;
@@ -510,7 +491,7 @@ const ContentsWrap = styled.div`
   margin-top: 50px;
   flex-wrap: wrap;
   justify-content: center;
-`;
+`
 
 const ImageMoreWrap = styled.div`
   position: relative;
@@ -524,10 +505,8 @@ const WhiteGradientOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    rgba(255, 255, 255, 0) 0%,
-    rgb(255, 255, 255) 90%
-  );
+  background: linear-gradient(rgba(255, 255, 255, 0) 0%,
+      rgb(255, 255, 255) 90%);
 `;
 
 const ManagerInquiryWrap = styled.div`
@@ -535,14 +514,14 @@ const ManagerInquiryWrap = styled.div`
   margin-bottom: 128px;
   display: flex;
   height: 50px;
-  border: 1px solid var(--festie-gray-300, #dfdfdf);
-`;
+  border: 1px solid var(--festie-gray-300, #DFDFDF);
+`
 
 const ManagerInquiry = styled.div`
   width: 106.374px;
-  border-right: 1px solid var(--festie-gray-300, #dfdfdf);
-  background: var(--festie-gray-100, #f5f5f5);
-  color: var(--festie-gray-800, #3a3a3a);
+  border-right: 1px solid var(--festie-gray-300, #DFDFDF);
+  background: var(--festie-gray-100, #F5F5F5);
+  color: var(--festie-gray-800, #3A3A3A);
   font-family: SUIT Variable;
   font-size: 14px;
   font-style: normal;
@@ -551,20 +530,20 @@ const ManagerInquiry = styled.div`
   letter-spacing: 0.14px;
   text-align: center;
   padding: 15px 0px;
-`;
+;`
 
 const ManagerInquiryText = styled.div`
   padding: 15px 100px;
   justify-content: center;
   align-items: center;
-  color: var(--festie-gray-800, #3a3a3a);
+  color: var(--festie-gray-800, #3A3A3A);
   font-family: SUIT Variable;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 19.6px */
   letter-spacing: 0.14px;
-`;
+;`
 
 const PlusButton = styled.div`
   display: flex;
@@ -573,7 +552,7 @@ const PlusButton = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 25px;
-  border: 1px solid var(--festie-gray-300, #dfdfdf);
-  background: #fff;
+  border: 1px solid var(--festie-gray-300, #DFDFDF);
+  background: #FFF;
   cursor: pointer;
-`;
+`

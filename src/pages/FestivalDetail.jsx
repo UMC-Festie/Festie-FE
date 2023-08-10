@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import InstagramLogo from "../assets/InstagramLogo.png";
-import FestivalMain from "../assets/FestivalMainImage.png";
-import FestivalImage from "../assets/FestivalImage1.png";
-import FestivalImage2 from "../assets/FestivalImage2.png";
-import FestivalImage3 from "../assets/FestivalImage3.png";
+import InstagramLogo from "../assets/InstagramLogo.png"
+import FestivalMain from "../assets/FestivalMainImage.png"
+import FestivalImage from "../assets/FestivalImage1.png"
+import FestivalImage2 from "../assets/FestivalImage2.png"
+import FestivalImage3 from "../assets/FestivalImage3.png"
 
 export default function Main() {
   const [count1, setCount1] = useState(0);
@@ -56,8 +56,8 @@ export default function Main() {
     후원/협찬 : 부산광역시, 해운대구, 부산예술대학교\n
     예매처 : YES24, 네이버, 놀이의발견 등\n
 `;
-  const Manager = "덕구";
-  const Inquiry = "010-1234-5678 / https://www.hibimf.org/";
+const Manager = "덕구"
+const Inquiry = "010-1234-5678 / https://www.hibimf.org/"
 
   const handleRectangle1Click = () => {
     setCount1((prevCount) => prevCount + 1);
@@ -72,7 +72,9 @@ export default function Main() {
   };
   const DetailsContent = () => {
     return (
-      <ContentsWrap style={{ width: "910px" }}>{eventDetails}</ContentsWrap>
+      <ContentsWrap style={{ width: "910px" }}>
+        {eventDetails}
+      </ContentsWrap>
     );
   };
 
@@ -97,51 +99,22 @@ export default function Main() {
     const onNextImage = () => {
       setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     };
-
+  
     const onPrevImage = () => {
       setSelectedImageIndex((prevIndex) =>
         prevIndex === 0 ? images.length - 1 : prevIndex - 1
       );
     };
-
+  
     return (
       <ImageContentWrap>
         <FestivalMainImageWrap>
-          <ButtonIcon
-            xmlns="http://www.w3.org/2000/svg"
-            width="40"
-            height="40"
-            viewBox="0 0 40 40"
-            fill="none"
-            onClick={onPrevImage}
-          >
-            <path
-              d="M25 30L15 20L25 10"
-              stroke="#949494"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+          <ButtonIcon xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" onClick={onPrevImage}>
+            <path d="M25 30L15 20L25 10" stroke="#949494" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </ButtonIcon>
-          <FestivalMainImage
-            src={images[selectedImageIndex].source}
-            alt="Festival Image"
-          ></FestivalMainImage>
-          <ButtonIcon
-            xmlns="http://www.w3.org/2000/svg"
-            width="40"
-            height="40"
-            viewBox="0 0 40 40"
-            fill="none"
-            onClick={onNextImage}
-          >
-            <path
-              d="M15 30L25 20L15 10"
-              stroke="#949494"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+        <FestivalMainImage src={images[selectedImageIndex].source} alt="Festival Image"></FestivalMainImage>
+          <ButtonIcon xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" onClick={onNextImage}>
+            <path d="M15 30L25 20L15 10" stroke="#949494" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </ButtonIcon>
         </FestivalMainImageWrap>
         {images.map((image, index) => (
@@ -149,7 +122,7 @@ export default function Main() {
             key={index}
             src={image.source}
             alt={`Image ${index}`}
-            onClick={() => onClickImage(index)}
+            onClick={() =>onClickImage(index)}
           />
         ))}
       </ImageContentWrap>
@@ -161,36 +134,12 @@ export default function Main() {
       <ContentContainer>
         <TextContainer>
           <Word className="Word">홈</Word>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M6 12L10 8L6 4"
-              stroke="#B7B7B7"
-              stroke-width="1.33333"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M6 12L10 8L6 4" stroke="#B7B7B7" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <Word className="Word">정보보기</Word>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              d="M6 12L10 8L6 4"
-              stroke="#B7B7B7"
-              stroke-width="1.33333"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M6 12L10 8L6 4" stroke="#B7B7B7" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <Word className="Word">축제</Word>
         </TextContainer>
@@ -234,7 +183,7 @@ export default function Main() {
           </Rectangle>
         </RectangleContainer>
         <TextContainerSelect>
-          <WordSelect
+        <WordSelect
             active={activeTab === "상세정보"}
             onClick={() => handleTabClick("상세정보")}
           >
@@ -254,7 +203,9 @@ export default function Main() {
           <TextInsideRectangle>행사중</TextInsideRectangle>
         </RectangleRight>
         <ContentWrapper style={{ paddingBottom: "40px" }}>
-          <ContentTitle>부산국제매직페스티벌</ContentTitle>
+          <ContentTitle>
+            부산국제매직페스티벌
+          </ContentTitle>
           <Wrapper>
             <TextWrapper>
               <Text>기간</Text>
@@ -341,21 +292,18 @@ export default function Main() {
               </TogetherText>
             </RelatedInfoWrapper>
           </Wrapper>
+          
         </ContentWrapper>
       </ContentInfo>
       <SelectWrapper>
-        {activeTab === "상세정보" && <DetailsContent />}
-        {activeTab === "이미지" && <ImageContent />}
-      </SelectWrapper>
-      <ManagerInquiryWrap>
-        <ManagerInquiry>관리자</ManagerInquiry>
-        <ManagerInquiryText>{Manager}</ManagerInquiryText>
-        <ManagerInquiry>문의처</ManagerInquiry>
-        <ManagerInquiryText>{Inquiry}</ManagerInquiryText>
-      </ManagerInquiryWrap>
+            {activeTab === "상세정보" && <DetailsContent />}
+            {activeTab === "이미지" && <ImageContent />}
+          </SelectWrapper>
+          <ManagerInquiryWrap><ManagerInquiry>관리자</ManagerInquiry><ManagerInquiryText>{Manager}</ManagerInquiryText><ManagerInquiry>문의처</ManagerInquiry><ManagerInquiryText>{Inquiry}</ManagerInquiryText></ManagerInquiryWrap>
     </Container>
   );
 }
+
 
 const Container = styled.div`
   display: flex;
@@ -466,6 +414,7 @@ const Text = styled.div`
   margin-top: 20px;
 `;
 
+
 const Info = styled.div`
   color: var(--festie-gray-800, #3a3a3a);
   margin-top: 22px;
@@ -491,12 +440,12 @@ const InfoText = styled.div`
   font-weight: 500;
   line-height: 140%;
   letter-spacing: 0.2px;
-`;
+`
 
-const InstaLogo = styled.img`
+const InstaLogo = styled.img `
   cursor: pointer;
   margin-left: 30px;
-`;
+`
 
 const ContentTitle = styled.div`
   color: var(--festie-gray-900, #252525);
@@ -568,7 +517,7 @@ const Wrapper = styled.div`
 `;
 
 const TogetherText = styled.div`
-  cursor: pointer;
+cursor: pointer;
   display: flex;
   align-items: center;
   color: var(--festie-white, #fff);
@@ -627,7 +576,7 @@ const ContentsWrap = styled.div`
   margin-top: 50px;
   display: flex;
   justify-content: center;
-  color: var(--festie-gray-800, #3a3a3a);
+  color: var(--festie-gray-800, #3A3A3A);
   font-family: SUIT Variable;
   font-size: 18px;
   font-style: normal;
@@ -635,21 +584,21 @@ const ContentsWrap = styled.div`
   line-height: 140%;
   letter-spacing: 0.18px;
   white-space: pre-line;
-`;
+`
 
 const ManagerInquiryWrap = styled.div`
   margin-top: 64px;
   margin-bottom: 128px;
   display: flex;
   height: 50px;
-  border: 1px solid var(--festie-gray-300, #dfdfdf);
-`;
+  border: 1px solid var(--festie-gray-300, #DFDFDF);
+`
 
 const ManagerInquiry = styled.div`
   width: 106.374px;
-  border-right: 1px solid var(--festie-gray-300, #dfdfdf);
-  background: var(--festie-gray-100, #f5f5f5);
-  color: var(--festie-gray-800, #3a3a3a);
+  border-right: 1px solid var(--festie-gray-300, #DFDFDF);
+  background: var(--festie-gray-100, #F5F5F5);
+  color: var(--festie-gray-800, #3A3A3A);
   font-family: SUIT Variable;
   font-size: 14px;
   font-style: normal;
@@ -658,28 +607,28 @@ const ManagerInquiry = styled.div`
   letter-spacing: 0.14px;
   text-align: center;
   padding: 15px 0px;
-`;
+;`
 
 const ManagerInquiryText = styled.div`
   padding: 15px 100px;
   justify-content: center;
   align-items: center;
-  color: var(--festie-gray-800, #3a3a3a);
+  color: var(--festie-gray-800, #3A3A3A);
   font-family: SUIT Variable;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 19.6px */
   letter-spacing: 0.14px;
-`;
+;`
 
-const ImageContentWrap = styled.div`
+const ImageContentWrap = styled.div `
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-`;
+`
 
-const FestivalMainImage = styled.img`
+const FestivalMainImage = styled.img `
   width: 800px;
   margin-top: 50px;
   border-radius: 30px;
@@ -690,19 +639,20 @@ const FestivalMainImageWrap = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
-`;
+`
 
-const PreviewImage = styled.img`
+const PreviewImage = styled.img `
   width: 80px;
   height: 80px;
   object-fit: cover;
   margin-right: 10px; /*사진 크기에 맞게 잘라짐*/
   cursor: pointer;
-`;
 
-const ButtonIcon = styled.svg`
+`
+
+const ButtonIcon = styled.svg `
   cursor: pointer;
   margin-top: 21%;
   margin-left: 30px;
   margin-right: 30px;
-`;
+`
