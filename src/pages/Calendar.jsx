@@ -8,6 +8,7 @@ import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { ReviewCard, dummyReviews } from "../components/ReviewCard";
 import Modal from "../components/Modal"; 
 const Calendar = () => {
+  const [scheduledEvents, setScheduledEvents] = useState([]);
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today);
   const [ScrollY, setScrollY] = useState(0);
@@ -18,6 +19,11 @@ const Calendar = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeButton, setActiveButton] = useState(1);
   const [selectedOption, setSelectedOption] = useState("최신순"); // 기본값을 첫 번째 옵션으로 설정
+  const [selectedTitle, setSelectedTitle] = useState(""); 
+  const addEvent = (event) => {
+    setScheduledEvents([...scheduledEvents, event]);
+  };
+
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
@@ -211,16 +217,41 @@ const Calendar = () => {
       </button>
       {showModal && (
         <Modal
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          selectedTime={selectedTime}
-          setSelectedTime={setSelectedTime}
-          onClose={handleModalClose}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        selectedTime={selectedTime}
+        setSelectedTime={setSelectedTime}
+        selectedTitle={selectedTitle}  // 이 부분 추가
+        setSelectedTitle={setSelectedTitle}  // 이 부분 추가
+        onClose={handleModalClose}
+        onAddSchedule={(event) => {
+          handleAddSchedule(event);
+          handleModalClose(); // 일정 등록 후 모달 닫기
+        }}
         />
       )}
         </div>
         <div className="days-of-week">{getDaysOfWeek()}</div>
-        <div className="days">{getDays()}</div>
+        <div className="days">
+  {getDays().map((day) => (
+    <div key={day} className="day-cell">
+      <div className="day-number">{day}</div>
+      <div className="event-content">
+        {scheduledEvents.map((event) => {
+          if (isSameDay(event.date, new Date(day))) {
+            return (
+              <div key={event.date} className="event">
+                {event.title} - {event.time}
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
+    </div>
+  ))}
+</div>
+
       </div>
       <button
         className={BtnStatus ? "topBtn active" : "topBtn"}

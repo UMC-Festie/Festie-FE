@@ -26,11 +26,7 @@ function ConcertMain() {
   const [searchButtonActive, setSearchButtonActive] = useState(false); // "조회하기" 버튼 클릭 상태를 관리
   const [selectedCategoryButton, setSelectedCategoryButton] = useState('');
   const [selectedCategoryButtons, setSelectedCategoryButtons] = useState([]);
-  const handleSearchButtonClick = () => {
-    setSearchButtonActive(true);
-    setSearchButtonActive(!searchButtonActive);
-    setSelectedCategoryButtons([]);
-  };
+
   useEffect(() => {
     const handleScroll = () => { // 공연 공유 버튼
       const scrollY = window.scrollY;
@@ -77,10 +73,43 @@ function ConcertMain() {
       window.removeEventListener('scroll', handleFollow)
     }
   })
-
+  const handleSearchButtonClick = async () => {
+    setSearchButtonActive(true);
+    setSearchButtonActive(!searchButtonActive);
+    setSelectedCategoryButtons([]);    // 필터링 조건 객체 생성
+    const filterParams = {
+      page: 0,
+      category: '대중음악',
+      region: '서울',
+      status: '모집중',
+      sortBy: 'LATEST'
+    };
+  
+    // 필터링 조건 객체를 쿼리 파라미터 문자열로 변환
+    const queryString = Object.keys(filterParams)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join('&');
+  
+    // API 엔드포인트
+    const apiEndpoint = '백엔드_API_URL';
+  
+    try {
+      // 필터링된 데이터를 백엔드로 전송하고 응답 받기
+      const response = await fetch(`${apiEndpoint}/filter?${queryString}`);
+      if (response.ok) {
+        const data = await response.json();
+        // 받아온 데이터를 활용하여 필요한 처리를 수행
+        console.log('Filtered data:', data);
+      } else {
+        console.error('Error fetching data from the server');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   const handleCategoryClick = () => {
     setShowCategoriesBtn(false);
-    setCategoryButtons(["뮤지컬", "연극", "콘서트", "클래식", "가족/아동", "뮤직페스티벌", "공연제"]);
+    setCategoryButtons(["뮤지컬", "연극", "한국음악", "서양음악", "대중음악", "무용", "대중무용", "서커스-마술", "복합"]);
     setAreaButtons([]);
     setPeriodButtons([]);
     setActiveButton('category');
@@ -154,6 +183,39 @@ function ConcertMain() {
         console.log('Error fetching data:', error);
       });
   }, []);
+  const [selectedOption, setSelectedOption] = useState(""); // 선택된 옵션을 저장하는 상태
+
+  const handleOptionChange = async (event) => {
+    const selectedValue = event.target.value;
+    setSelectedOption(selectedValue);
+
+    // 필터링 조건 객체 생성
+    const filterParams = {
+      page: 0,
+      type: '공연',
+      // ... (다른 필터링 조건 추가)
+      sortBy: selectedValue  // 선택한 값을 sortBy 필터로 설정
+    };
+
+    // 필터링 조건 객체를 쿼리 파라미터 문자열로 변환
+    const queryString = Object.keys(filterParams)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join('&');
+
+    const apiEndpoint = '백엔드_API_URL';
+
+    try {
+      const response = await fetch(`${apiEndpoint}/filter?${queryString}`);
+      if (response.ok) {
+        const data = await response.json();
+        setFilteredPosters(data); // 필터링된 데이터 설정
+      } else {
+        console.error('Error fetching data from the server');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const OPTIONS = [
     { value: "최신순", name: "최신순" },
@@ -302,7 +364,7 @@ function ConcertMain() {
         <h1>검색결과</h1>
         <h2>{searchResultCount}건</h2>
         <div className="serch-box">
-          <SelectBox options={OPTIONS} className="custom-select" />
+        <SelectBox options={OPTIONS} value={selectedOption} onChange={handleOptionChange} className="custom-select" />        
         </div>
       </div>
       <div className="poster">
