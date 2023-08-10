@@ -16,12 +16,8 @@ export default function TogetherWrite() {
           <TextAreaWrap>
             <TextAreaBox
               placeholder="같이 갈 공연 및 축제에 대한 정보를 예비 Bestie가 볼 수 있게 설명을 입력해주세요."
-              height="202px"
+              height="400px"
             ></TextAreaBox>
-            <AddImage>
-              <IconImage src={plusIcon} alt="Plus Icon" />
-              사진 추가하기
-            </AddImage>
           </TextAreaWrap>
           <Title>선호대상</Title>
           <TextAreaWrap>
