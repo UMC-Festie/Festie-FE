@@ -37,6 +37,7 @@ const Modal = ({ selectedDate, setSelectedDate, selectedTime, setSelectedTime, s
   const handleTitleChange = (e) => {
     setSelectedTitle(e.target.value);
   };
+  console.log("selectedTime inside Modal:", selectedTime);
 
   return (
     <div className="modal_background">

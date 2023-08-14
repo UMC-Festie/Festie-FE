@@ -23,7 +23,7 @@ const Calendar = () => {
   const addEvent = (event) => {
     setScheduledEvents([...scheduledEvents, event]);
   };
-
+  const [selectedEvents, setSelectedEvents] = useState([]); // useState를 통해 selectedEvents를 정의
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
@@ -31,9 +31,19 @@ const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
 
-  const handleAddSchedule = () => {
-    setShowModal(true);
-  };
+  const handleAddSchedule = (event) => {
+  setSelectedDate(event.date);
+  setSelectedTime(event.time);
+  setSelectedTitle(event.title);
+  setShowModal(true);
+};
+
+useEffect(() => {
+  console.log("Selected Date:", selectedDate);
+  console.log("Selected Time:", selectedTime);
+  console.log("Selected Title:", selectedTitle);
+}, [selectedDate, selectedTime, selectedTitle]);
+
 
   const handleModalClose = () => {
     setShowModal(false);
@@ -164,13 +174,14 @@ const Calendar = () => {
           ${isToday ? "today" : ""} 
           ${day.getDay() === 0 || day.getDay() === 6 ? "weekend" : ""} 
           ${day === startDate || day === endDate ? "start-end" : ""}`}
-          key={day}
+          key={day.toString()}
           style={{ position: "relative" }}
         >
           {format(day, dateFormat)}
           {isToday && <div className="orange-circle"></div>}
         </div>
       );
+      
       day = addDays(day, 1);
     }
     return days;
@@ -230,11 +241,12 @@ const Calendar = () => {
         }}
         />
       )}
+      
         </div>
         <div className="days-of-week">{getDaysOfWeek()}</div>
         <div className="days">
   {getDays().map((day) => (
-    <div key={day} className="day-cell">
+    <div key={day.toString()} className="day-cell">
       <div className="day-number">{day}</div>
       <div className="event-content">
         {scheduledEvents.map((event) => {
@@ -247,6 +259,11 @@ const Calendar = () => {
           }
           return null;
         })}
+        {selectedEvents.map((event, index) => (
+            <div key={`${event.date}-${event.time}-${index}`}>
+            {event.title} - {event.time}
+          </div>
+        ))}
       </div>
     </div>
   ))}
