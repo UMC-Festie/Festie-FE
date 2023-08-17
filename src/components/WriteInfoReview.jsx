@@ -11,17 +11,24 @@ export default function WriteInfo() {
   const [selectedHour, setSelectedHour] = useState("");
   const [selectedMinute, setSelectedMinute] = useState("");
   const [showCategoryOptions, setShowCategoryOptions] = useState(false);
-  const [showTimeOptions, setShowTimeOptions] = useState(false);
+  const [selectedFestivalPerformance, setSelectedFestivalPerformance] =
+    useState("");
+  const [showFestivalPerformanceOptions, setShowFestivalPerformanceOptions] =
+    useState(false);
 
+  const [showTimeOptions, setShowTimeOptions] = useState(false);
   const categories = [
-    "뮤지컬",
     "연극",
-    "콘서트",
-    "클래식",
-    "가족/아동",
-    "뮤직페스티벌",
-    "공연제",
+    "뮤지컬",
+    "서양음악(클래식)",
+    "한국음악(국악)",
+    "대중음악",
+    "무용(서양/한국무용)",
+    "대중 무용",
+    "서커스/마술",
+    "복합",
   ];
+  const festivalPerformance = ["공연", "축제"];
 
   const ampm = ["오전", "오후"];
   const hour = Array.from({ length: 12 }, (_, index) =>
@@ -30,6 +37,11 @@ export default function WriteInfo() {
   const minute = Array.from({ length: 60 }, (_, index) =>
     String(index).padStart(2, "0")
   );
+
+  const handleFestivalPerformanceChange = (value) => {
+    setSelectedFestivalPerformance(value);
+    setShowFestivalPerformanceOptions(false);
+  };
 
   const handleCategoryChange = (value) => {
     setSelectedCategory(value);
@@ -69,7 +81,28 @@ export default function WriteInfo() {
         </AddImage>
         <WriteTitle placeholder="공연 제목을 입력해주세요"></WriteTitle>
         <CustomDropdown>
-          <DropdownToggle>{"공연/축제 유형"}</DropdownToggle>
+          <DropdownToggle
+            onClick={() => setShowFestivalPerformanceOptions((prev) => !prev)}
+          >
+            {selectedFestivalPerformance || "공연/축제 유형"}
+          </DropdownToggle>
+          {showFestivalPerformanceOptions && (
+            <DropdownFestivalPerformance>
+              {festivalPerformance.map((festivalPerformance, index) => (
+                <FestivalPerfomanceOption
+                  key={index}
+                  onClick={() =>
+                    handleFestivalPerformanceChange(festivalPerformance)
+                  }
+                  isSelected={
+                    festivalPerformance === selectedFestivalPerformance
+                  }
+                >
+                  {festivalPerformance}
+                </FestivalPerfomanceOption>
+              ))}
+            </DropdownFestivalPerformance>
+          )}
         </CustomDropdown>
         <CustomDropdown>
           <DropdownToggle
@@ -249,8 +282,31 @@ const DropdownOptions = styled.ul`
   border-radius: 10px;
 `;
 
+const DropdownFestivalPerformance = styled.ul`
+  z-index: 101;
+  position: absolute;
+  width: 197px;
+  background-color: var(--festie-white, #fff);
+  border: 0.8px solid var(--festie-gray-600, #949494);
+  border-radius: 10px;
+`;
+
 const CategoryOption = styled.li`
   z-index: 9;
+  padding: 12px 16px;
+  cursor: pointer;
+  background-color: ${(props) =>
+    props.isSelected ? "#ff7a00" : "transparent"};
+  color: ${(props) =>
+    props.isSelected ? "#fff" : "var(--festie-gray-800, #3a3a3a)"};
+  &:hover {
+    background-color: #ff7a00;
+    color: #fff;
+  }
+`;
+
+const FestivalPerfomanceOption = styled.li`
+  z-index: 10;
   padding: 12px 16px;
   cursor: pointer;
   background-color: ${(props) =>

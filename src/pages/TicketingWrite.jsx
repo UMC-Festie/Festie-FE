@@ -1,7 +1,6 @@
 import plusIcon from "../assets/plus.svg";
 import styled from "styled-components";
 import SubmitButton from "../components/SubmitButton";
-
 import WriteInfo from "../components/WriteInfoTicketing";
 
 export default function TicketingWrite() {

@@ -16,13 +16,15 @@ export default function WriteInfo() {
   const [showTimeOptions, setShowTimeOptions] = useState(false);
 
   const categories = [
-    "뮤지컬",
     "연극",
-    "콘서트",
-    "클래식",
-    "가족/아동",
-    "뮤직페스티벌",
-    "공연제",
+    "뮤지컬",
+    "서양음악(클래식)",
+    "한국음악(국악)",
+    "대중음악",
+    "무용(서양/한국무용)",
+    "대중 무용",
+    "서커스/마술",
+    "복합",
   ];
 
   const region = [
@@ -37,8 +39,10 @@ export default function WriteInfo() {
     "세종",
     "충청",
     "경상",
+    "전라",
+    "강원",
+    "제주",
   ];
-
   const ampm = ["오전", "오후"];
   const hour = Array.from({ length: 12 }, (_, index) =>
     String(index + 1).padStart(2, "0")

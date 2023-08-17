@@ -1,38 +1,94 @@
 import WriteInfo from "../components/WriteInfo";
-import plusIcon from "../assets/plus.svg";
 import { Title, InputBox } from "../components/WriteTitleBody";
 import styled from "styled-components";
 import SubmitButton from "../components/SubmitButton";
+import { commonAxios } from "../common/commonAxios";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function TogetherWrite() {
+  const [formData, setFormData] = useState({
+    festivalId: null,
+    boardType: null,
+    festivalTitle: "",
+    festivalType: 1,
+    togetherDate: "",
+    togetherTime: "",
+    category: 1,
+    region: "",
+    title: "",
+    content: "",
+    target: "",
+    message: "",
+  });
+
+  const handleSubmit = () => {
+    const postData = {
+      data: formData,
+    };
+
+    axios
+      .post("/api/together", postData)
+      .then((response) => {
+        console.log("글 작성 완료:", response.data);
+      })
+      .catch((error) => {
+        console.error("에러 발생:", error);
+      });
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <WriteWrap>
       <WriteWrapBox>
         <WriteInfo></WriteInfo>
         <WriteBox>
           <Title>제목</Title>
-          <InputBox placeholder="글제목을 입력해주세요."></InputBox>
+          <InputBox
+            placeholder="글제목을 입력해주세요."
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+          ></InputBox>
           <Title>설명</Title>
           <TextAreaWrap>
             <TextAreaBox
               placeholder="같이 갈 공연 및 축제에 대한 정보를 예비 Bestie가 볼 수 있게 설명을 입력해주세요."
               height="400px"
+              name="content"
+              value={formData.content}
+              onChange={handleInputChange}
             ></TextAreaBox>
           </TextAreaWrap>
           <Title>선호대상</Title>
           <TextAreaWrap>
-            <TextAreaBox placeholder="선호하는 Bestie의 특징을 입력해주세요."></TextAreaBox>
+            <TextAreaBox
+              placeholder="선호하는 Bestie의 특징을 입력해주세요."
+              name="target"
+              value={formData.target}
+              onChange={handleInputChange}
+            ></TextAreaBox>
           </TextAreaWrap>
           <Title>매칭 메세지</Title>
           <TextAreaWrap>
             <TextAreaBox
               placeholder="매칭된 Bestie에게만 보여질 메세지에요.
 Bestie와 원활하게 연락할 수 있게 연락처, 카카오톡 오픈채팅방 링크 등을 남겨주세요!"
+              name="message"
+              value={formData.message}
+              onChange={handleInputChange}
             ></TextAreaBox>
           </TextAreaWrap>
         </WriteBox>
         <ButtonWrap>
-          <SubmitButton></SubmitButton>
+          <SubmitButton onClick={handleSubmit}></SubmitButton>
         </ButtonWrap>
       </WriteWrapBox>
     </WriteWrap>
@@ -106,4 +162,3 @@ const AddImage = styled.div`
   line-height: 140%;
   cursor: pointer;
 `;
-const IconImage = styled.img``;
