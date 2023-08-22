@@ -5,19 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import Poster from '../components/Poster';
 import image1 from '../assets/image1.png';
-import { commonAxios } from "../common/commonAxios";
-
-
-commonAxios({
-  url: 'hello',
-  method: 'get'
-}).then((res) => {
-  console.log(res);
-}).catch((error) => {
-  console.log(error);
+//import { commonAxios } from "../common/commonAxios";
+import axios from "axios";
+axios.get('/api/hello')
+.then((Response) => {
+    console.log(Response); 
 })
-
-
+.catch((Error) => {
+    console.log(Error);
+});
 function ConcertMain() {
   const [showCategoriesBtn, setShowCategoriesBtn] = useState(true);
   const [selectedButtons, setSelectedButtons] = useState([]);

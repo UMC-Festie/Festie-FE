@@ -1,0 +1,116 @@
+.breadcrumb span {
+    margin: 0 15px;
+}
+
+.breadcrumb {
+    margin-left: 90px;
+    margin-top: 122px;
+    font-size: 13px;
+    color: #B7B7B7;
+    font-family: 'SUIT Variable', sans-serif;
+}
+
+.banner {
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.banner img {
+    width: 1330px;
+    height: 220px;
+    border-radius: 40px;
+    margin-bottom: 33px;
+}
+.banner h1 {
+    color: var(--festie-white, #FFF);
+    /* heading */
+    font-family: Sandoll Cameo;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 140%;
+    /* 42px */
+    letter-spacing: 0.3px;
+    top: 25%;
+    left: 10%;
+    position: absolute;
+}
+
+.banner h2 {
+    color: var(--festie-white, #FFF);
+    /* body */
+	font-family: 'SUIT';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    position: absolute;
+    top: 45%;
+    left: 10%;
+}
+
+.categories {
+    display: flex;
+    border-bottom: 1px solid #E8E8E8;
+    margin-bottom: 42px;
+    margin-left: 90px;
+    margin-right: 100px;
+	font-family: 'SUIT';
+}
+.categories .category {
+    margin-right: 22px;
+    font-size: 18px;
+    color: #6F6F6F;
+    cursor: pointer;
+    margin-bottom: 12px;
+    margin-top: 20px;
+    font-family: 'SUIT';
+}
+
+.categories .category.selected {
+    font-weight: bold;
+    color: #3A3A3A;
+}
+.serch-box select {
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* 배경 이미지로 PNG 파일을 사용하여 화살표를 대체합니다 */
+    background-image: url('/src/components/chevron-down.png');
+    /* PNG 파일의 경로로 대체해주세요 */
+    background-repeat: no-repeat;
+    background-position: right center;
+    outline: none;
+    background-position: 100% center;
+    /* 셀렉트 박스의 크기를 설정합니다 */
+    width: 108px;
+    /* 적절한 크기로 조정해주세요 */
+    padding-right: 0px;
+    /* 배경 이미지를 오른쪽에 위치시킬 공간을 확보합니다 */
+    margin-bottom: 42px;
+    font-family: 'SUIT';
+}
+.serch-box {
+    margin-left: 1300px;
+}
+.result-counts p{
+    color: var(--festie-gray-700, #555);
+    margin-left: 91px;
+    margin-right: 95px;
+    /* subheading */
+	font-family: 'SUIT';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%; /* 25.2px */
+    margin-top: -60px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #E8E8E8;
+    padding-bottom: 16px;
+}

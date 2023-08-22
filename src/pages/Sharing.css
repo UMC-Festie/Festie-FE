@@ -304,15 +304,27 @@
     flex-wrap: wrap;
     margin-bottom: 20px;
 }
+.poster2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-top: 100px;
+}
+.poster-item {
+    flex: 1; /* 4개의 포스터를 한 줄에 배치 */
+    margin-right: 120px;
+    margin-left: 120px;
+}
 .poster-img {
     width: 244.888px;
     height: 347px;
     flex-shrink: 0;
     border-radius: 20px;
-    margin-right: 25px;
 }
 .poster-wrap {
-    position: relative;
     margin: 40px;
 }
 .postertxt {

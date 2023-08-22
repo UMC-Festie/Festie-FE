@@ -7,7 +7,10 @@ import { faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { ReviewCard, dummyReviews } from "../components/ReviewCard";
 import Modal from "../components/Modal"; 
+import { useNavigate } from 'react-router-dom';
+
 const Calendar = () => {
+  const navigate = useNavigate();
   const [scheduledEvents, setScheduledEvents] = useState([]);
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today);
@@ -201,7 +204,7 @@ useEffect(() => {
       <div className="banner">
         <h1 className="banner-txt">나만 아는 티켓팅 꿀팁이 있나요? </h1>
         <h2 className="banner-txt">Bestie들과 함께 정보를 공유해요!</h2>
-        <button className="breadcrumb-button">
+        <button className="breadcrumb-button" onClick={()=>navigate('/share/ticketing/write')}>
           티켓팅 정보 공유하기
           <span className="arrow">
             <FontAwesomeIcon icon={faArrowRight} />
@@ -249,10 +252,12 @@ useEffect(() => {
     <div key={day.toString()} className="day-cell">
       <div className="day-number">{day}</div>
       <div className="event-content">
-        {scheduledEvents.map((event) => {
+      {scheduledEvents.map((event, index) => {
           if (isSameDay(event.date, new Date(day))) {
+            const uniqueKey = `${event.date}-${index}`;
+
             return (
-              <div key={event.date} className="event">
+              <div key={uniqueKey} className="event">
                 {event.title} - {event.time}
               </div>
             );
@@ -279,7 +284,7 @@ useEffect(() => {
         <FontAwesomeIcon icon={faArrowUp} className="fa-icon" />
       </button>
       {showButton && (
-        <button className="addBtn">
+        <button className="addBtn" onClick={()=>navigate('/share/ticketing/write')}>
           <FontAwesomeIcon icon={faPlus} />
           {' '}
           정보 공유하기

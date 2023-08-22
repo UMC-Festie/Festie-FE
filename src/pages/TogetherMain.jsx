@@ -5,11 +5,29 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import Poster from '../components/Poster';
 import image6 from '../assets/image6.png';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-
+axios.get('/api/together?page=0')
+  .then((Response) => {
+    console.log(Response);
+  })
+  .catch((Error) => {
+    console.log(Error);
+  });
+axios
+  .get('/api/together?page=0')
+  .then((response) => {
+    const data = response.data.data; // "data" 변수에 데이터 배열을 할당
+    const thumbnailUrls = data.map((item) => item.thumbnailUrl); // 각 데이터 아이템의 thumbnailUrl 추출
+    console.log(response.data);
+  })
+  .catch((Error) => {
+    console.log(Error);
+  });
 function ConcertMain() {
+  const navigate = useNavigate();
   const [showCategoriesBtn, setShowCategoriesBtn] = useState(true);
   const [selectedButtons, setSelectedButtons] = useState([]);
   const [categoryButtons, setCategoryButtons] = useState([]);
@@ -74,7 +92,7 @@ function ConcertMain() {
       window.removeEventListener('scroll', handleFollow)
     }
   })
-    const handleSearchButtonClick = async () => {
+  const handleSearchButtonClick = async () => {
     setSearchButtonActive(true);
     setSearchButtonActive(!searchButtonActive);
     setSelectedCategoryButtons([]);    // 필터링 조건 객체 생성
@@ -85,15 +103,15 @@ function ConcertMain() {
       status: '모집중',
       sortBy: 'LATEST'
     };
-  
+
     // 필터링 조건 객체를 쿼리 파라미터 문자열로 변환
     const queryString = Object.keys(filterParams)
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
       .join('&');
-  
+
     // API 엔드포인트
     const apiEndpoint = '백엔드_API_URL';
-  
+
     try {
       // 필터링된 데이터를 백엔드로 전송하고 응답 받기
       const response = await fetch(`${apiEndpoint}/filter?${queryString}`);
@@ -181,27 +199,56 @@ function ConcertMain() {
     date: '날짜',
     img: '이미지 URL',
   };*/
-
-  const [posterInfo, setPosterInfo] = useState(null);
-
+  //const [status, setStatus] = useState([]); // 축제 상태 데이터를 담을 상태
+  const [titles, setTitles] = useState([]); // 축제 제목 데이터를 담을 상태 변수
+  const [festivalDates, setFestivalDates] = useState([]); // 축제 날짜 데이터를 담을 상태 변수
+  const [nicknames, setNicknames] = useState([]); // 닉네임 데이터를 담을 상태 변수
+  const [thumbnailUrls, setThumbnailUrls] = useState([]);
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts/1') // JSONPlaceholder API에서 데이터 가져오기
-      .then((response) => response.json())
-      .then((data) => {
-        // 가져온 데이터를 가공하여 posterInfo 상태 업데이트
-        const { userId } = data;
-        setPosterInfo({
-          postertxt: 'Day',
-          concertName: `Concert by User ${userId}`,
-          place: 'Virtual Concert Hall',
-          date: '2023-07-29',
-          imageUrl: 'http://tkfile.yes24.com/upload2/perfblog/202306/20230607/20230607-46113.jpg/dims/quality/70/', // 이미지 URL 추가
-        });
+    const backendApiUrl = '/api/together?page=1';
+
+    axios
+      .get(backendApiUrl)
+      .then((response) => {
+        const data = response.data.data;
+        const extractedUrls = data.map((item) => item.thumbnailUrl);
+        setThumbnailUrls(extractedUrls);
+        // festivalDate와 nickname 추출 및 상태로 저장
+        const festivalDates = data.map((item) => item.festivalDate);
+        const nicknames = data.map((item) => item.nickname);
+        const titles = data.map((item) => item.title);
+        //const status = data.map((item) => item.status);
+
+        // 추출한 데이터를 상태로 설정
+        setFestivalDates(festivalDates);
+        setNicknames(nicknames);
+        setTitles(titles);
+        //setStatus(status);
       })
       .catch((error) => {
-        console.log('Error fetching data:', error);
+        console.log('데이터 가져오기 오류:', error);
       });
   }, []);
+  /* 
+   useEffect(() => {
+     axios
+       .get('https://jsonplaceholder.typicode.com/posts/1')
+       .then((response) => {
+         const data = response.data;
+         const { userId } = data;
+         setPosterInfo({
+           postertxt: 'Day',
+           concertName: `User ${userId}의 공연`,
+           place: '가상 콘서트 홀',
+           date: '2023-07-29',
+           imageUrl: 'http://tkfile.yes24.com/upload2/perfblog/202306/20230607/20230607-46113.jpg/dims/quality/70/',
+         });
+       })
+       .catch((error) => {
+         console.log('데이터 가져오기 오류:', error);
+       });
+   }, []);
+   */
   const [selectedOption, setSelectedOption] = useState(""); // 선택된 옵션을 저장하는 상태
 
   const handleOptionChange = async (event) => {
@@ -273,7 +320,7 @@ function ConcertMain() {
         <img src={image6} alt="이미지 6" />
         <h1 className="banner-txt">같이가요</h1>
         <h2 className="banner-txt">Festie에서 추억과 취향을 공유할 친구를 만들어보세요. 같이 가고 싶은 축제/공연을 찾아보고, Bestie가 되어보세요!</h2>
-        <button className="breadcrumb-button">
+        <button className="breadcrumb-button" onClick={() => navigate('/together/write')}>
           같이 갈 Bestie 만들기
           <span className="arrow">
             <FontAwesomeIcon icon={faArrowRight} />
@@ -400,7 +447,7 @@ function ConcertMain() {
         <h1>검색결과</h1>
         <h2>{searchResultCount}건</h2>
         <div className="serch-box">
-        <SelectBox options={OPTIONS} value={selectedOption} onChange={handleOptionChange} className="custom-select" />        
+          <SelectBox options={OPTIONS} value={selectedOption} onChange={handleOptionChange} className="custom-select" />
         </div>
       </div>
       <div className="poster">
@@ -413,22 +460,25 @@ function ConcertMain() {
           <FontAwesomeIcon icon={faArrowUp} className="fa-icon" />
         </button>
         {showButton && (
-          <button className="addBtn">
+          <button className="addBtn" onClick={() => navigate('/together/write')}>
             <FontAwesomeIcon icon={faPlus} />
             {' '}
             같이가요 글쓰기
           </button>
         )}
-        <div className="poster-wrap" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-
+        <div className="poster2">
+          {thumbnailUrls.map((url, index) => (
+            <div key={index} className="poster-item">
+              <img src={url} alt={`Thumbnail ${index}`} className='poster-img'/>
+              {/*<p className='postertxt'>{status[index]}</p>*/}
+              <div className="poster-info">
+                {/* 여기에 이미지와 관련된 정보 표시 (예: festivalDate, nickname 등) */}
+                <p className='concertName'>{titles[index]}</p>
+                <p className='place'>{nicknames[index]}</p>
+                <p className='date'>{festivalDates[index]}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

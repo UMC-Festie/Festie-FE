@@ -7,9 +7,11 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Poster from '../components/Poster';
 import image2 from '../assets/image2.png';
+import { useNavigate } from 'react-router-dom';
 
 
 function ConcertMain() {
+  const navigate = useNavigate();
   const [showCategoriesBtn, setShowCategoriesBtn] = useState(true);
   const [selectedButtons, setSelectedButtons] = useState([]);
   const [categoryButtons, setCategoryButtons] = useState([]);
@@ -256,7 +258,7 @@ function ConcertMain() {
       <img src={image2} alt="이미지 2" />
         <h1 className="banner-txt">공연 정보 공유</h1>
         <h2 className="banner-txt">Festie가 소개하는 공연 정보에 내가 좋아하는 아티스트의 공연이  없었나요? 그렇다면 BESTIE들에게 직접 소개해보세요!</h2>
-        <button className="breadcrumb-button">
+        <button className="breadcrumb-button" onClick={()=>navigate('/share/performance/write')}>
           새로운 공연 정보 공유하기
           <span className="arrow">
             <FontAwesomeIcon icon={faArrowRight} />
@@ -377,7 +379,7 @@ function ConcertMain() {
           <FontAwesomeIcon icon={faArrowUp} className="fa-icon" />
         </button>
         {showButton && (
-          <button className="addBtn">
+          <button className="addBtn" onClick={()=>navigate('/share/performance/write')}>
             <FontAwesomeIcon icon={faPlus} />
             {' '}
             새로운 공연 공유

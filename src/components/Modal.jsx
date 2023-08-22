@@ -139,45 +139,46 @@ const Modal = ({ selectedDate, setSelectedDate, selectedTime, setSelectedTime, s
             </svg>
           </button>
           {showTimeModal && (
-            <div className="time-select">
-              {/* 시간 선택 옵션 */}
-              <select
-                value={selectedTime ? selectedTime.split(":")[0] : currentDate.getHours()}
-                onChange={(e) =>
-                  setSelectedTime(
-                    selectedTime
-                      ? e.target.value + `:${selectedTime.split(":")[1]}`
-                      : `${e.target.value.toString().padStart(2, "0")}:${currentDate.getMinutes().toString().padStart(2, "0")}`
-                  )
-                }
-              >
-                {/* 시간 옵션 */}
-                {Array.from({ length: 24 }, (_, i) => (
-                  <option key={i} value={i}>
-                    {`${i.toString().padStart(2, "0")}시`}
-                  </option>
-                ))}
-              </select>
-              {/* 분 옵션 */}
-              <select
-                value={selectedTime ? selectedTime.split(":")[1] : currentDate.getMinutes()}
-                onChange={(e) =>
-                  setSelectedTime(
-                    selectedTime
-                      ? selectedTime.split(":")[0] + `:${e.target.value.toString().padStart(2, "0")}`
-                      : `${currentDate.getHours().toString().padStart(2, "0")}:${e.target.value.toString().padStart(2, "0")}`
-                  )
-                }
-              >
-                {/* 분 옵션 */}
-                {Array.from({ length: 60 }, (_, i) => (
-                  <option key={i} value={i}>
-                    {`${i.toString().padStart(2, "0")}분`}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+  <div className="time-select">
+    {/* 시간 선택 옵션 */}
+    <select
+      value={selectedTime ? selectedTime.split(":")[0] : currentDate.getHours()}
+      onChange={(e) =>
+        setSelectedTime(
+          selectedTime
+            ? e.target.value + `:${selectedTime.split(":")[1]}`
+            : `${e.target.value.toString().padStart(2, "0")}:${currentDate.getMinutes().toString().padStart(2, "0")}`
+        )
+      }
+    >
+      {/* 시간 옵션 */}
+      {Array.from({ length: 24 }, (_, i) => (
+        <option key={`hour-${i}`} value={i}>
+          {`${i.toString().padStart(2, "0")}시`}
+        </option>
+      ))}
+    </select>
+    {/* 분 옵션 */}
+    <select
+      value={selectedTime ? selectedTime.split(":")[1] : currentDate.getMinutes()}
+      onChange={(e) =>
+        setSelectedTime(
+          selectedTime
+            ? selectedTime.split(":")[0] + `:${e.target.value.toString().padStart(2, "0")}`
+            : `${currentDate.getHours().toString().padStart(2, "0")}:${e.target.value.toString().padStart(2, "0")}`
+        )
+      }
+    >
+      {/* 분 옵션 */}
+      {Array.from({ length: 60 }, (_, i) => (
+        <option key={`minute-${i}`} value={i}>
+          {`${i.toString().padStart(2, "0")}분`}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
+
         </div>
         <div className="modal-buttons">
         <button onClick={handleAddButtonClick}>일정 등록하기</button>        </div>
