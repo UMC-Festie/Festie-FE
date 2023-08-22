@@ -1,26 +1,136 @@
 import React, { useState } from 'react';
 import './Signup2.css';
 import alertredIcon from '../assets/alert_circle_red.svg';
+import { commonAxios } from "../common/commonAxios";
+import { NavLink, useNavigate } from 'react-router-dom';
+import axios from "axios";
 
-const Signup2Form = () => {
+const Signup2Form = (props) => {
+  const navigate = useNavigate();
+
   const [selectedSex, setSelectedSex] = useState(null);
   const [isNicknameTaken, setIsNicknameTaken] = useState(false);
+  const [birthDate, setBirthDate] = useState(""); // 생년월일 입력값
+  const [isSignupButtonEnabled, setIsSignupButtonEnabled] = useState(false);
+
+  const [nickname, setNickname] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [gender, setGender] = useState('');
+
+  const [email, setEmail] = useState(props.email || '');
+  const [password, setPassword] = useState(props.password || '');
+  const [checkPassword, setCheckPassword] = useState(props.checkPassword || '');
+
 
   const handleSexClick = (sex) => {
+    console.log(`Clicked gender button with value: ${sex}`);
     setSelectedSex(sex);
+    checkAllFields();
   };
   
   const handleBlur = (event) => {
     const inputNickname = event.target.value; // 입력한 닉네임
-    // 여기에서 닉네임 중복 여부를 확인하는 로직을 추가합니다.
-    // 만약 중복된 닉네임이라면 setIsNicknameTaken(true)로 설정합니다.
-    const existingNicknames = ['운히', '포디', '히동', '쥬쥬']; // 기존에 가입된 닉네임 리스트(프론트엔드파트원들로 임의로 설정)
-    if (existingNicknames.includes(inputNickname)) {
-      setIsNicknameTaken(true);
+    // 여기에서 닉네임 중복 여부를 확인하는 로직을 추가
+    // 만약 중복된 닉네임이라면 setIsNicknameTaken(true)로 설정
+    const existingNicknames = ['포디', '히동', '쥬쥬']; // 기존에 가입된 닉네임 리스트(프론트엔드파트원들로 임의로 설정)
+    setIsNicknameTaken(existingNicknames.includes(inputNickname));
+    checkAllFields();
+  };
+
+  const handleBirthChange = (event) => {
+    const inputBirthDate = event.target.value; // 입력한 생년월일
+
+    // YYYY-MM-DD인지 확인하는 정규식
+    const birthDatePattern = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/;
+    
+
+    if (birthDatePattern.test(inputBirthDate)) {
+      setBirthDate(inputBirthDate);
+      checkAllFields();
     } else {
-      setIsNicknameTaken(false);
+      setBirthDate(""); // 입력이 올바르지 않으면 생년월일 초기화
+      setIsSignupButtonEnabled(false); // 버튼 비활성화
     }
   };
+
+  const checkAllFields = () => {
+    // 모든 필드가 입력되었는지 확인
+    setIsSignupButtonEnabled(selectedSex !== null && birthDate !== "" && !isNicknameTaken);
+  };
+
+  // const handleSubmit = () => {
+  //   // 완료 버튼 클릭 시 동작
+  //   if (isSignupButtonEnabled) {
+  //     console.log("가입 완료!");
+  //   }
+  // };
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 스크롤을 최상단으로 이동
+  };
+
+  // const onClickSignup = () => {
+  //   axios({
+  //     url: '/user/signup',
+  //     method: 'POST',
+  //     body: { email, password, passwordCheck, nickName, birthday, gender },
+  //   })
+  //     .then((res) => {
+  //       localStorage.setItem('accessToken', res.data.accessToken);
+  //       alert('회원가입 성공.');
+  //       window.location.replace('/login');
+  //     })
+  //     .catch((err) => {
+  //       alert('회원가입 실패');
+  //     });
+  // };
+
+  const handleSignup = () => {
+    const requestData = {
+      email,
+      password,
+      checkPassword,
+      nickname,
+      birthday,
+      gender,
+    };
+
+    axios
+    .post('/api/user/signup', requestData)
+    .then((res) => {
+      if (res.status === 201) {
+        localStorage.setItem('accessToken', res.data.accessToken);
+        alert('회원가입 성공.');
+        navigate('/login');
+      } else {
+        alert('회원가입 실패');
+      }
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.error('API Error:', error.response.data);
+        alert('회원가입 실패: ' + error.response.data.message);
+      } else if (error.request) {
+        console.error('No response from server:', error.request);
+        alert('서버 응답 없음');
+      } else {
+        console.error('Request Error:', error.message);
+        alert('오류 발생');
+      }
+    });
+
+    // axios
+    //   .post('/api/user/signup', requestData)
+    //   .then((res) => {
+    //     localStorage.setItem('accessToken', res.data.accessToken);
+    //     alert('회원가입 성공.');
+    //     navigate('/login');
+    //   })
+    //   .catch((err) => {
+    //     alert('회원가입 실패');
+    //   });
+  };
+
 
   return (
     <div className="signup2Form">
@@ -44,45 +154,48 @@ const Signup2Form = () => {
             placeholder="닉네임을 입력해주세요"
             onBlur={handleBlur}
           />
-          {isNicknameTaken && (
-            <div>
-              <img
-                src={alertredIcon}
-                className="alertredIcon"
-                style={{ marginLeft: '469px', verticalAlign: 'sub' }}
-              />
-              <p className="nicknamealert">이미 가입된 닉네임입니다</p>
-            </div>
-          )}
+          {isNicknameTaken && <span><img src={alertredIcon} className="alertredIcon" style={{ marginLeft: '469px', verticalAlign: 'sub' }} /><p className="nicknamealert">이미 가입된 닉네임입니다</p></span>}
+          {!isNicknameTaken && <span><p className="emptyalertform" style={{ marginLeft: '469px', verticalAlign: 'sub' }}>에러메시지공간</p></span>}
         </div>
-        {/* <div>
-          <span className="text">닉네임</span>
-          <input type="text" className="nicknameText" placeholder="닉네임을 입력해주세요" />
-          <img src={alertredIcon} className="alertredIcon" style={{ marginLeft: '469px', verticalAlign: 'sub' }} />
-          <p className="emailalert">이미 가입된 닉네임입니다</p>
-        </div> */}
         <div>
           <span className="text">생년월일</span>
           <span className="textSex">성별</span>
         </div>
         <div className="inputBirthsex">
-          <input type="text" className="birthText" placeholder="YYYY-MM-DD" />
+          <input type="text" className="birthText" placeholder="YYYY-MM-DD" onChange={handleBirthChange} maxLength="10"/>
           <span
-            className={`sexBtn ${selectedSex === '남자' ? 'clicked' : ''}`}
+            className={`sexBtn ${selectedSex === 'M' ? 'clicked' : ''}`}
             style={{ marginLeft: '40px' }}
-            onClick={() => handleSexClick('남자')}
+            onClick={() => handleSexClick('M')}
           >
             남자
           </span>
           <span
-            className={`sexBtn ${selectedSex === '여자' ? 'clicked' : ''}`}
+            className={`sexBtn ${selectedSex === 'F' ? 'clicked' : ''}`}
             style={{ marginLeft: '12px' }}
-            onClick={() => handleSexClick('여자')}
+            onClick={() => handleSexClick('F')}
           >
             여자
           </span>
         </div>
-        <div className="signup2doneBtn">완료</div>
+        {/* <NavLink to="/login" style={{ textDecoration: "none" }}> */}
+            <div
+              className={`signup2doneBtn ${isSignupButtonEnabled ? "enabled" : "disabled"}`}
+              onClick={handleSignup}
+              // onClick={handleScrollToTop}
+              // onClick={(e) => {
+              //   if (isSignupButtonEnabled) {
+              //     e.preventDefault(); // 클릭 이벤트를 막음
+              //     return;
+              //   }
+              //   // 클릭 가능한 상태일 때의 동작 수행
+              //   handleSignup();
+              // }}
+              disabled={isSignupButtonEnabled}
+            >
+              완료
+            </div>
+        {/* </NavLink> */}
       </form>
     </div>
   );
