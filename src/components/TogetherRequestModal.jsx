@@ -1,31 +1,83 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ToastMessage from "./ToastMessage";
+import axios from "axios";
 
-export default function TogetherRequestModal({ isOpen, closeModal }) {
-    const [nickname, setNickname] = useState('덕구');
-    const [name, setName] = useState('부산푸드필름페스타');
-    const [location, setLocation] = useState('부산광역시 해운대구');
-    const [date, setDate] = useState('2023.6.30');
-    const [time, setTime] = useState('17:00');
+export default function TogetherRequestModal({ isOpen, closeModal, togetherData, userToken }) {
+    const [nickname, setNickname] = useState(null);
+    const [name, setName] = useState(null);
+    const [location, setLocation] = useState(null);
+    const [date, setDate] = useState(null);
+    const [time, setTime] = useState(null);
+    const [message, setMessage] = useState('');
     const [showToast, setShowToast] = useState(false);
 
     const onClickCloseModal = () => {
         closeModal();
     };
 
-    const onClickSendRequest = () => {
-        setShowToast(true);
+    const handleInputChange = (event) => {
+        setMessage(event.target.value);
+    };
 
-        setTimeout(() => {
-            setShowToast(false);
+    const postBestie = async (togetherId, message) => {
+        try {
+            const reqeust = { 
+                header: {
+                    headers: {
+                        "X-AUTH-TOKEN": userToken
+                    }
+                },
+                body: {
+                    togetherId: togetherId, 
+                    introduction: message 
+                }
+            };
+             
+            console.log(reqeust.body, reqeust.header);
+            await axios.post(`/api/together/bestie/application`, reqeust.body, reqeust.header);
+
+            setShowToast(true);
+
+            setTimeout(() => {
+                setShowToast(false);
+                closeModal();
+            }, 3000);
+        } catch (error) {
+            console.log(`[ERROR]: ${error}`);
+            
+            const ERROR_CODE = error.response.data.errorCode;
+            console.log(ERROR_CODE);
+
+            if(ERROR_CODE === 7002) {
+                alert('이미 Bestie를 신청한 내역이 존재합니다.');
+            } 
+            if(ERROR_CODE === 7003) {
+                alert('매칭이 종료된 게시글입니다.');
+            } 
+            if(ERROR_CODE === 7004) {
+                alert('Bestie 자신이 작성한 게시글에는 Bestie 신청이 불가합니다.');
+            } 
+
             closeModal();
-        }, 3000)
+        }
+    }
+
+    const onClickSendRequest = () => {
+        postBestie(7, message);
     };
 
     useEffect(() => {
-        console.log(showToast);
-    }, [showToast])
+        if (!togetherData) {
+          return;
+        }
+ 
+        setNickname(togetherData.writerNickname);
+        setName(togetherData.festivalInfo.title);
+        setLocation(togetherData.festivalInfo.region);
+        setDate(togetherData.togetherDate);
+        setTime(togetherData.togetherTime);
+    }, [togetherData]);
 
     return (
         <>
@@ -47,18 +99,24 @@ export default function TogetherRequestModal({ isOpen, closeModal }) {
                     <FestivalName>{name}</FestivalName>
                 </FestivalNameWrap>
                 <FestivalInfoWarp>
-                    <FestivalLocationWrap>
-                        <InfoTitle>장소</InfoTitle>
-                        <FestivalInfo>{location}</FestivalInfo>
-                    </FestivalLocationWrap>
-                    <FestivalDateWrap>
-                        <InfoTitle>날짜</InfoTitle>
-                        <FestivalInfo>{date}</FestivalInfo>
-                    </FestivalDateWrap>
-                    <FestivalTimeWrap>
-                        <InfoTitle>시간</InfoTitle>
-                        <FestivalInfo>{time}</FestivalInfo>
-                    </FestivalTimeWrap>
+                    { location && 
+                        <div>
+                            <InfoTitle>장소</InfoTitle>
+                            <FestivalInfo>{location}</FestivalInfo>
+                        </div>
+                    }
+                    { date &&
+                        <div>
+                            <InfoTitle>날짜</InfoTitle>
+                            <FestivalInfo>{date}</FestivalInfo>
+                        </div>
+                    }
+                    { time &&
+                        <div>
+                            <InfoTitle>시간</InfoTitle>
+                            <FestivalInfo>{time}</FestivalInfo>
+                        </div>
+                    }
                 </FestivalInfoWarp>
                 <SeparationWrap>
                     <svg xmlns="http://www.w3.org/2000/svg" width="490" height="2" viewBox="0 0 490 2" fill="none">
@@ -67,7 +125,11 @@ export default function TogetherRequestModal({ isOpen, closeModal }) {
                 </SeparationWrap>
                 <ContentWrap>
                     <ContentTitle>Bestie 메세지</ContentTitle>
-                    <ContentInput placeholder='Bestie에게 전달될 메세지를 작성해주세요.'></ContentInput>
+                    <ContentInput 
+                        placeholder='Bestie에게 전달될 메세지를 작성해주세요.'
+                        value={message}
+                        onChange={handleInputChange}
+                    />
                 </ContentWrap>
                 <RequestButtonWrap>
                     <RequestButton onClick={onClickSendRequest}>같이가요 신청 보내기</RequestButton>
@@ -143,6 +205,7 @@ const CloseButton = styled.button`
 
 const FestivalInfoWarp = styled.div`
     display: flex;
+    gap: 32px;
 `;
 
 const FestivalNameWrap = styled.div`
@@ -167,18 +230,6 @@ const InfoTitle = styled.span`
     font-weight: 700;
     line-height: 140%; 
     margin-right: 8px;
-`;
-
-const FestivalLocationWrap = styled.div`
-    margin-right: 32px;
-`;
-
-const FestivalDateWrap = styled.div`
-    margin-right: 32px;
-`;
-
-const FestivalTimeWrap = styled.div`
-
 `;
 
 const FestivalInfo = styled.span`
