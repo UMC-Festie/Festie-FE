@@ -204,8 +204,10 @@ function ConcertMain() {
   const [festivalDates, setFestivalDates] = useState([]); // 축제 날짜 데이터를 담을 상태 변수
   const [nicknames, setNicknames] = useState([]); // 닉네임 데이터를 담을 상태 변수
   const [thumbnailUrls, setThumbnailUrls] = useState([]);
+  const [togetherIds, setTogetherIds] = useState([]);
+
   useEffect(() => {
-    const backendApiUrl = '/api/together?page=1';
+    const backendApiUrl = '/api/together?page=0';
 
     axios
       .get(backendApiUrl)
@@ -217,12 +219,15 @@ function ConcertMain() {
         const festivalDates = data.map((item) => item.festivalDate);
         const nicknames = data.map((item) => item.nickname);
         const titles = data.map((item) => item.title);
+        const togetherIds = data.map((item) => item.togetherId);
+
         //const status = data.map((item) => item.status);
 
         // 추출한 데이터를 상태로 설정
         setFestivalDates(festivalDates);
         setNicknames(nicknames);
         setTitles(titles);
+        setTogetherIds(togetherIds);
         //setStatus(status);
       })
       .catch((error) => {
@@ -468,10 +473,10 @@ function ConcertMain() {
         )}
         <div className="poster2">
           {thumbnailUrls.map((url, index) => (
-            <div key={index} className="poster-item">
+            <div key={index} className="poster-item" onClick={()=> navigate('/together/detail',{ state: togetherIds[index]})}>
               <img src={url} alt={`Thumbnail ${index}`} className='poster-img'/>
               {/*<p className='postertxt'>{status[index]}</p>*/}
-              <div className="poster-info">
+              <div className="poster-info" >
                 {/* 여기에 이미지와 관련된 정보 표시 (예: festivalDate, nickname 등) */}
                 <p className='concertName'>{titles[index]}</p>
                 <p className='place'>{nicknames[index]}</p>
@@ -484,5 +489,4 @@ function ConcertMain() {
     </div>
   );
 }
-
 export default ConcertMain;
