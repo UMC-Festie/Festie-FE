@@ -5,6 +5,7 @@ import SubmitButton from "../components/SubmitButton";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import image1 from "../assets/festie_logo.png";
+
 export default function TogetherWrite() {
   const userToken =
     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amd1czk5NjZAbmF2ZXIuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2OTI1MjIyODEsImV4cCI6MTY5MzEyNzA4MX0.xBa3QwerTHfhUKpQT1ixA5l-W5Hzsb44O4ocXbDQOcw";
@@ -25,30 +26,37 @@ export default function TogetherWrite() {
   };
 
   // 이미지 파일
-  const imageFile = image1; // 여기에 이미지 파일 변수를 할당
+  const imageFile = image1;
 
   const formData = new FormData();
   formData.append("thumbnail", imageFile);
   formData.append("data", JSON.stringify(dataToSend));
 
-  axios
-    .post("/api/together", formData, {
-      headers: {
-        "X-AUTH-TOKEN": userToken,
-        "Content-Type": "multipart/form-data", // 이미지와 JSON 데이터를 함께 보내므로 Content-Type을 multipart/form-data로 설정
-      },
-    })
-    .then((response) => {
-      console.log("글 작성 완료:", response.data);
-    })
-    .catch((error) => {
-      console.error("에러 발생:", error);
-    });
+  const handleImageChange = (imageFile) => {
+    console.log("Selected image:", imageFile);
+  };
 
+  const handleSubmit = () => {
+    axios
+      .post("/api/together", formData, {
+        headers: {
+          "X-AUTH-TOKEN": userToken,
+          "Content-Type": "multipart/form-data", // 이미지와 JSON 데이터를 함께 보내므로 Content-Type을 multipart/form-data로 설정
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        alert("글 등록을 완료했습니다.");
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("글 등록을 완료했습니다.");
+      });
+  };
   return (
     <WriteWrap>
       <WriteWrapBox>
-        <WriteInfo></WriteInfo>
+        <WriteInfo onImageChange={handleImageChange}></WriteInfo>
         <WriteBox>
           <Title>제목</Title>
           <InputBox
@@ -84,7 +92,7 @@ Bestie와 원활하게 연락할 수 있게 연락처, 카카오톡 오픈채팅
           </TextAreaWrap>
         </WriteBox>
         <ButtonWrap>
-          <SubmitButton></SubmitButton>
+          <SubmitButton onClick={handleSubmit}></SubmitButton>
         </ButtonWrap>
       </WriteWrapBox>
     </WriteWrap>
