@@ -1,0 +1,39 @@
+/* @font-face { 
+    font-family: 'SUIT Variable';
+    src: url('./SUIT-Variable.ttf') format('truetype');
+  } */
+
+  .poster_wrap{
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .togetherTitle{
+    margin-top: 16px;
+    color: #3a3a3a;
+    font-family: SUIT Variable;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .togetherNickname{
+    margin-top: 6px;
+    color: #949494;
+    font-family: SUIT Variable;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .togetherDate{
+    margin-top: 4px;
+    color: #949494;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }

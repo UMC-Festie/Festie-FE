@@ -1,0 +1,57 @@
+/* @font-face { 
+  font-family: 'SUIT Variable';
+  src: url('./SUIT-Variable.ttf') format('truetype');
+} */
+
+.resetpwfinishForm {
+    width: 1280px;
+    border: 0;
+    background-color: #ffffff;
+    margin: 0 auto;
+    align-items: center;
+  }
+  
+  .resetpwfinishForm h2 {
+    color: #3A3A3A;
+    margin-top: 70px;
+    text-align: center;
+    font-family: Sandoll Cameo;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 140%;
+    letter-spacing: 0.3px;
+  }
+  
+  .resetpwfinishForm p {
+    color: #3a3a3a;
+    margin-top: 64px;
+    margin-bottom: 44px;
+    text-align: center;
+    font-family: SUIT Variable;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  .togomyBtn {
+    display: flex;
+    width: 295px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 89px;
+    margin-left: 469px;
+    background-color: #FF7A00;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
+  

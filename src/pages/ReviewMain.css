@@ -1,0 +1,191 @@
+/* @font-face {
+	font-family: 'SUIT';
+	font-weight: 100;
+	src: local('SUIT Thin'), url('../components/SUIT.ttf') format('woff2');
+}
+@font-face {
+	font-family: 'SUIT';
+	font-weight: 200;
+	src: local('SUIT ExtraLight'), url('../components/SUIT.ttf') format('woff2');
+}
+@font-face {
+	font-family: 'SUIT';
+	font-weight: 300;
+	src: local('SUIT Light'), url('../components/SUIT.ttf') format('woff2');
+}
+@font-face {
+	font-family: 'SUIT';
+	font-weight: 400;
+	src: local('SUIT Regular'), url('../components/SUIT.ttf') format('woff2');
+}
+@font-face {
+	font-family: 'SUIT';
+	font-weight: 500;
+	src: local('SUIT Medium'), url('../components/SUIT.ttf') format('woff2');
+}
+@font-face {
+	font-family: 'SUIT';
+	font-weight: 600;
+	src: local('SUIT SemiBold'), url('../components/SUIT.ttf') format('woff2');
+}
+@font-face {
+	font-family: 'SUIT';
+	font-weight: 700;
+	src: local('SUIT Bold'), url('../components/SUIT.ttf') format('woff2');
+}
+@font-face {
+	font-family: 'SUIT';
+	font-weight: 800;
+	src: local('SUIT ExtraBold'), url('../components/SUIT.ttf') format('woff2');
+}
+@font-face {
+	font-family: 'SUIT';
+	font-weight: 900;
+	src: local('SUIT Heavy'), url('../components/SUIT.ttf') format('woff2');
+}.breadcrumb span {
+    margin: 0 15px;
+} */
+
+.breadcrumb {
+    margin-left: 90px;
+    margin-top: 122px;
+    font-size: 13px;
+    color: #B7B7B7;
+	font-family: 'SUIT';
+}
+
+.banner2 {
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.banner2 img {
+    width: 1337px;
+    height: 220px;
+    border-radius: 40px;
+    margin-bottom: 33px;
+}
+
+.banner2 button {
+    border-radius: 26px;
+    background: var(--festie-primary-orange, #FF7A00);
+    display: inline-flex;
+    padding: 12px 20px;
+    align-items: center;
+    gap: 4px;
+    border: none;
+    color: var(--festie-white, #FFF);
+	font-family: 'SUIT';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    top: 30%;
+    left: 11%;
+    cursor: pointer;
+    position: absolute;
+  }
+
+.banner2 span {
+    margin-left: 10px;
+}
+.banner2 h1 {
+    color: var(--festie-white, #FFF);
+    /* heading */
+    font-family: Sandoll Cameo;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 140%;
+    /* 42px */
+    letter-spacing: 0.3px;
+    top: 15%;
+    left: 11% ;
+    position: absolute;
+}
+
+.banner2 h2 {
+    color: var(--festie-white, #FFF);
+    /* body */
+	font-family: 'SUIT';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    position: absolute;
+    top: 35% ;
+    left: 11% ;
+}
+ .selectbtn select{
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* 배경 이미지로 PNG 파일을 사용하여 화살표를 대체합니다 */
+    background-image: url('/src/assets/chevron-down.png');
+    /* PNG 파일의 경로로 대체해주세요 */
+    background-repeat: no-repeat;
+    background-position: right center;
+    outline: none;
+    background-position: 100% center;
+    /* 셀렉트 박스의 크기를 설정합니다 */
+    width: 108px;
+    /* 적절한 크기로 조정해주세요 */
+    padding-right: 0px;
+    /* 배경 이미지를 오른쪽에 위치시킬 공간을 확보합니다 */
+    margin-top: 48px;
+    margin-bottom: 18px;
+    margin-left: 1230px;
+    font-family: 'SUIT';
+  }
+ .selectbtn {
+  border-bottom: 1px solid var(--festie-gray-200, #E8E8E8);
+  margin-left: 91px;
+  margin-right: 91px;
+  font-family: 'SUIT';
+ }
+.addBtn2 {
+    position: fixed;
+    top: 280px;
+    right: 30px;
+    background-color: white !important;
+    border: 2px solid rgb(255, 132, 0)!important; 
+    padding: 10px 15px !important;
+    border-radius: 30px !important;
+    font-size: 18px !important;
+    color: #555555 !important;
+    cursor: pointer;
+    z-index: 2;
+    font-family: 'SUIT';
+}
+.topBtn {
+    position: fixed;
+    opacity: 0;
+    bottom: 300px;
+    right: 30px;
+    z-index: -10;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    border: 0 none;
+    background: #FFE500 !important;
+    color: white !important;
+    font-size: 18px !important;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in;
+}
+.topBtn.active {
+    z-index: 10;
+    opacity: 1;
+}
+
+.topBtn:hover,
+.topBtn:focus,
+.topBtn:active {
+    outline: 0 none;
+}

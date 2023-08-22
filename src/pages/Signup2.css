@@ -1,0 +1,192 @@
+/* @font-face { 
+  font-family: 'SUIT Variable';
+  src: url('./SUIT-Variable.ttf') format('truetype');
+} */
+
+li {
+    list-style: none;
+  }
+  
+  .signup2Form {
+    width: 1280px;
+    border: 0;
+    background-color: #ffffff;
+    margin: 0 auto;
+    align-items: center;
+  }
+  
+  .signup2Form > h2 {
+    color: #3a3a3a;
+    margin-top: 70px;
+    text-align: center;
+    font-family: 'Sandoll Cameo', sans-serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 140%;
+    letter-spacing: 0.3px;
+  }
+  
+  .page2 {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    padding: 4px 12px;
+    margin-top: 24px;
+    margin-left: 618px;
+    margin-bottom: 20px;
+    background-color: #ff7a00;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: 'SUIT Variable', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    border-radius: 14px;
+  }
+  
+  .signup2Form > p {
+    color: #555555;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 44px;
+    font-family: 'SUIT Variable', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  .text {
+    color: #3a3a3a;
+    margin-left: 470px;
+    font-family: 'SUIT Variable', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  .textSex {
+    color: #3a3a3a;
+    margin-left: 141px;
+    font-family: 'SUIT Variable', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  .nicknameText {
+    /* display: flex; */
+    width: 294px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 4px;
+    margin-left: 470px;
+    margin-bottom: 4px;
+    /* margin-left: 429px; */
+    background-color: white;
+    color: black;
+    font-family: 'SUIT Variable', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 26px;
+    border: 1px solid var(--festie-gray-600, #949494);
+  }
+
+  .nicknamealert {
+    display: inline-block;
+    color: #E90000;
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-bottom: 12px;
+    font-family: SUIT Variable;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+  
+  .inputBirthsex {
+    margin-top: 4px;
+  }
+  
+  .birthText {
+    /* display: flex; */
+    width: 104px;
+    height: 26px;
+    padding: 12px 23px;
+    /* margin-top: 4px; */
+    margin-left: 470px;
+    background-color: white;
+    color: black;
+    font-family: 'SUIT Variable', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 26px;
+    border: 1px solid var(--festie-gray-600, #949494);
+  }
+  
+  /* 클릭 시 테두리 색 변경 */
+  .nicknameText:focus {
+    border: 1px solid #ff7a00;
+    outline: none;
+  }
+  
+  .birthText:focus {
+    border: 1px solid #ff7a00;
+    outline: none;
+  }
+  
+  .sexBtn {
+    display: inline-block;
+    width: 25px;
+    height: 26px;
+    padding: 16px 22px 8px 22px ;
+    background-color: #949494;
+    color: #3a3a3a;
+    align-items: center;
+    vertical-align: top;
+    justify-content: space-between;
+    font-family: 'SUIT Variable', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
+  
+  .clicked {
+    background-color: #ff7a00;
+  }
+  
+  .signup2doneBtn {
+    display: flex;
+    width: 294px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 58px;
+    margin-left: 470px;
+    background-color: #c8c8c8;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: 'SUIT Variable', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
+  
