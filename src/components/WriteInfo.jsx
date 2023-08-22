@@ -5,7 +5,7 @@ import selectArrow from "../assets/SelectArrow.svg";
 import plusIcon from "../assets/plus.svg";
 import CustomCalendar from "./Calander";
 
-export default function WriteInfo() {
+export default function WriteInfo(props) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
   const [selectedAmPm, setSelectedAmPm] = useState("");
@@ -74,11 +74,16 @@ export default function WriteInfo() {
   };
 
   const [selectedDate, setSelectedDate] = useState(new Date());
-
+  const [selectedImage, setSelectedImage] = useState(null); // 이미지 URL을 저장할 상태
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
+  const handleImageChange = (event) => {
+    const imageFile = event.target.files[0];
+    props.onImageChange(imageFile);
+    const imageUrl = URL.createObjectURL(imageFile); // 이미지 파일을 URL로 변환
+    setSelectedImage(imageUrl); // 이미지 URL을 상태에 저장
+  };
   return (
     <InfoBox>
       <SearchBox>
@@ -86,11 +91,20 @@ export default function WriteInfo() {
         <IconImage src={searchIcon} alt="Search Icon" />
       </SearchBox>
       <InputBox>
-        <AddImage for="file">
-          <AddImageInput type="file" name="file" id="file"></AddImageInput>
-          <PlusIcon src={plusIcon} alt="Plus Icon" />
-          사진 추가하기
-        </AddImage>
+        {selectedImage ? (
+          <IsAddImage src={selectedImage} alt="Selected Image" />
+        ) : (
+          <AddImage for="file">
+            <AddImageInput
+              type="file"
+              name="file"
+              id="file"
+              onChange={handleImageChange}
+            ></AddImageInput>
+            <PlusIcon src={plusIcon} alt="Plus Icon" />
+            사진 추가하기
+          </AddImage>
+        )}
         <WriteTitle placeholder="공연 제목을 입력해주세요"></WriteTitle>
         <CustomDropdown>
           <DropdownToggle
@@ -413,6 +427,19 @@ export const AddImage = styled.label`
   line-height: 140%;
   cursor: pointer;
   z-index: 10;
+`;
+
+const IsAddImage = styled.img`
+  width: 197px;
+  height: 280px;
+  border: 0.8px solid var(--festie-gray-600, #949494);
+  border-radius: 13px;
+
+  margin-top: 4px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const AddImageInput = styled.input`

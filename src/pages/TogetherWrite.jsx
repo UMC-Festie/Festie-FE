@@ -2,48 +2,48 @@ import WriteInfo from "../components/WriteInfo";
 import { Title, InputBox } from "../components/WriteTitleBody";
 import styled from "styled-components";
 import SubmitButton from "../components/SubmitButton";
-import { commonAxios } from "../common/commonAxios";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import image1 from "../assets/festie_logo.png";
 export default function TogetherWrite() {
-  const [formData, setFormData] = useState({
-    festivalId: null,
-    boardType: null,
-    festivalTitle: "",
+  const userToken =
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amd1czk5NjZAbmF2ZXIuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2OTI1MjIyODEsImV4cCI6MTY5MzEyNzA4MX0.xBa3QwerTHfhUKpQT1ixA5l-W5Hzsb44O4ocXbDQOcw";
+
+  const dataToSend = {
+    festivalId: "1",
+    boardType: "정보공유",
+    festivalTitle: "워터밤 서울",
     festivalType: 1,
-    togetherDate: "",
-    togetherTime: "",
+    togetherDate: "2023-07-09",
+    togetherTime: "17:30",
     category: 1,
-    region: "",
-    title: "",
-    content: "",
-    target: "",
-    message: "",
-  });
-
-  const handleSubmit = () => {
-    const postData = {
-      data: formData,
-    };
-
-    axios
-      .post("/api/together", postData)
-      .then((response) => {
-        console.log("글 작성 완료:", response.data);
-      })
-      .catch((error) => {
-        console.error("에러 발생:", error);
-      });
+    region: "서울",
+    title: "워터밤 같이 갈 사람!!!",
+    content: "가서 맘껏 즐기다 올 사람 구해요",
+    target: "20대 중반 여성",
+    message: "카카오톡 오픈 채팅방 xxx으로 들어와주세요",
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  // 이미지 파일
+  const imageFile = image1; // 여기에 이미지 파일 변수를 할당
+
+  const formData = new FormData();
+  formData.append("thumbnail", imageFile);
+  formData.append("data", JSON.stringify(dataToSend));
+
+  axios
+    .post("/api/together", formData, {
+      headers: {
+        "X-AUTH-TOKEN": userToken,
+        "Content-Type": "multipart/form-data", // 이미지와 JSON 데이터를 함께 보내므로 Content-Type을 multipart/form-data로 설정
+      },
+    })
+    .then((response) => {
+      console.log("글 작성 완료:", response.data);
+    })
+    .catch((error) => {
+      console.error("에러 발생:", error);
+    });
 
   return (
     <WriteWrap>
@@ -55,7 +55,6 @@ export default function TogetherWrite() {
             placeholder="글제목을 입력해주세요."
             name="title"
             value={formData.title}
-            onChange={handleInputChange}
           ></InputBox>
           <Title>설명</Title>
           <TextAreaWrap>
@@ -64,7 +63,6 @@ export default function TogetherWrite() {
               height="400px"
               name="content"
               value={formData.content}
-              onChange={handleInputChange}
             ></TextAreaBox>
           </TextAreaWrap>
           <Title>선호대상</Title>
@@ -73,7 +71,6 @@ export default function TogetherWrite() {
               placeholder="선호하는 Bestie의 특징을 입력해주세요."
               name="target"
               value={formData.target}
-              onChange={handleInputChange}
             ></TextAreaBox>
           </TextAreaWrap>
           <Title>매칭 메세지</Title>
@@ -83,12 +80,11 @@ export default function TogetherWrite() {
 Bestie와 원활하게 연락할 수 있게 연락처, 카카오톡 오픈채팅방 링크 등을 남겨주세요!"
               name="message"
               value={formData.message}
-              onChange={handleInputChange}
             ></TextAreaBox>
           </TextAreaWrap>
         </WriteBox>
         <ButtonWrap>
-          <SubmitButton onClick={handleSubmit}></SubmitButton>
+          <SubmitButton></SubmitButton>
         </ButtonWrap>
       </WriteWrapBox>
     </WriteWrap>
