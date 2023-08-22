@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-export default function TogetherMessage() {
-    const [message, setMessage] = useState(`이상, 못할 밥을 끓는 찾아다녀도, 뿐이다. 든 놀이 그들은 때문이다. 못하다 더운지라 우리 하여도 그들은 그들에게 구하기 뿐이다. 인생을 곳으로 과실이 위하여 것은 석가는 열매를 뿐이다. 뼈 못하다 생의 않는 청춘 철환하였는가?`);
+export default function TogetherMessage({ togetherData }) {
+    const [message, setMessage] = useState(null);
+
+    useEffect(() => {
+        if (!togetherData) {
+            return;
+        }
+    
+        setMessage(togetherData.message);
+      }, [togetherData]);
 
     return (
         <>

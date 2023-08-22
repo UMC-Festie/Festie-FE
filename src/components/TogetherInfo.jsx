@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import thumbnailImg from "../assets/festival_thumbnail.png";
 
-export default function TogetherInfo() {
-  const [image, setImage] = useState('img_url');
-  const [name, setName] = useState('공연 이름');
-  const [location, setLocation] = useState('공연 위치');
-  const [date, setDate] = useState('2023.6.30');
-  const [time, setTime] = useState('17:00');
+export default function TogetherInfo({ togetherData }) {
+  const [imageUrl, setImageUrl] = useState(null);
+  const [name, setName] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [date, setDate] = useState(null);
+  const [time, setTime] = useState(null);
 
   const onClickFestivalInfoButton = () => {
     alert('공연 정보 상세 페이지');
@@ -18,13 +19,31 @@ export default function TogetherInfo() {
     }); 
     */
   };
- 
+
+  useEffect(() => {
+    if (!togetherData) {
+        return;
+    }
+
+    if(togetherData.festivalInfo.thumbnailUrl) {
+      setImageUrl(togetherData.festivalInfo.thumbnailUrl);
+    } else {
+      // 썸네일 이미지 없을 때 이미지 
+      setImageUrl(thumbnailImg);
+    }
+   
+    setName(togetherData.festivalInfo.title);
+    setLocation(togetherData.festivalInfo.region);
+    setDate(togetherData.togetherDate);
+    setTime(togetherData.togetherTime);
+  }, [togetherData]);
+
     return (
       <>
         <InfoBox>
           <div>
             <FestivalImageWrap>
-              <FestivalImage alt='공연 포스터' /*src={require(`${image}`)}*/ ></FestivalImage>
+              <FestivalImage alt='공연 포스터' src={imageUrl} ></FestivalImage>
             </FestivalImageWrap>
             <FestivalNameWrap>
               <FestivalName>{name}</FestivalName>
@@ -68,13 +87,15 @@ const FestivalImageWrap = styled.div`
   width: 197px;
   height: 280px;
   flex-shrink: 0;
-  background: url(<path-to-image>), lightgray 50% / cover no-repeat;
   margin-bottom: 17px;
+  border-radius: 20px;
+  border: 1px solid var(--festie-gray-200, #E8E8E8);
+  overflow: hidden;
 `;
 
 const FestivalImage = styled.img`
-  width: 197px;
-  height: 280px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 `;
 
