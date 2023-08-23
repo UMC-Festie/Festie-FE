@@ -4,11 +4,10 @@ import alertredIcon from '../assets/alert_circle_red.svg';
 import alertgrayIcon from '../assets/alert_circle_gray.svg';
 import axios from "axios";
 import Signup2Form from './Signup2';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const SignupForm = () => {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
@@ -69,8 +68,8 @@ const SignupForm = () => {
       password,
       checkPassword,
     };
-    console.log('Props passed to Signup2:', props);
-    navigate('/signUp/next', props);
+    console.log('Props passed to Signup2:', props); 
+    navigate('/signup/next', { state: props })
   };
 
   // axios.get('/api/hello')

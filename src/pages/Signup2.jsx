@@ -2,25 +2,25 @@ import React, { useState } from 'react';
 import './Signup2.css';
 import alertredIcon from '../assets/alert_circle_red.svg';
 import { commonAxios } from "../common/commonAxios";
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
-const Signup2Form = (props) => {
+const Signup2Form = () => {
   const navigate = useNavigate();
-
-  const [selectedSex, setSelectedSex] = useState(null);
+  const { state } = useLocation();
+  const [gender, setSelectedSex] = useState(null);
   const [isNicknameTaken, setIsNicknameTaken] = useState(false);
-  const [birthDate, setBirthDate] = useState(""); // 생년월일 입력값
+  const [birthday, setBirthday] = useState(""); // 생년월일 입력값
   const [isSignupButtonEnabled, setIsSignupButtonEnabled] = useState(false);
 
   const [nickname, setNickname] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [gender, setGender] = useState('');
+  const email = state.email;
+  const password = state.password;
+  const checkPassword = state.checkPassword;
 
-  const [email, setEmail] = useState(props.email || '');
-  const [password, setPassword] = useState(props.password || '');
-  const [checkPassword, setCheckPassword] = useState(props.checkPassword || '');
-
+  const handleNicknameChange = (event) => {
+    setNickname(event.target.value);
+  };
 
   const handleSexClick = (sex) => {
     console.log(`Clicked gender button with value: ${sex}`);
@@ -45,17 +45,17 @@ const Signup2Form = (props) => {
     
 
     if (birthDatePattern.test(inputBirthDate)) {
-      setBirthDate(inputBirthDate);
+      setBirthday(inputBirthDate);
       checkAllFields();
     } else {
-      setBirthDate(""); // 입력이 올바르지 않으면 생년월일 초기화
+      setBirthday(""); // 입력이 올바르지 않으면 생년월일 초기화
       setIsSignupButtonEnabled(false); // 버튼 비활성화
     }
   };
 
   const checkAllFields = () => {
     // 모든 필드가 입력되었는지 확인
-    setIsSignupButtonEnabled(selectedSex !== null && birthDate !== "" && !isNicknameTaken);
+    setIsSignupButtonEnabled(gender !== null && birthday !== "" && !isNicknameTaken);
   };
 
   // const handleSubmit = () => {
@@ -95,11 +95,12 @@ const Signup2Form = (props) => {
       gender,
     };
 
+    console.log(requestData);
     axios
     .post('/api/user/signup', requestData)
     .then((res) => {
-      if (res.status === 201) {
-        localStorage.setItem('accessToken', res.data.accessToken);
+      if (res.status === 200) {
+        // localStorage.setItem('accessToken', res.data.accessToken);
         alert('회원가입 성공.');
         navigate('/login');
       } else {
@@ -153,6 +154,7 @@ const Signup2Form = (props) => {
             className="nicknameText"
             placeholder="닉네임을 입력해주세요"
             onBlur={handleBlur}
+            onChange={handleNicknameChange}
           />
           {isNicknameTaken && <span><img src={alertredIcon} className="alertredIcon" style={{ marginLeft: '469px', verticalAlign: 'sub' }} /><p className="nicknamealert">이미 가입된 닉네임입니다</p></span>}
           {!isNicknameTaken && <span><p className="emptyalertform" style={{ marginLeft: '469px', verticalAlign: 'sub' }}>에러메시지공간</p></span>}
@@ -164,14 +166,14 @@ const Signup2Form = (props) => {
         <div className="inputBirthsex">
           <input type="text" className="birthText" placeholder="YYYY-MM-DD" onChange={handleBirthChange} maxLength="10"/>
           <span
-            className={`sexBtn ${selectedSex === 'M' ? 'clicked' : ''}`}
+            className={`sexBtn ${gender === 'M' ? 'clicked' : ''}`}
             style={{ marginLeft: '40px' }}
             onClick={() => handleSexClick('M')}
           >
             남자
           </span>
           <span
-            className={`sexBtn ${selectedSex === 'F' ? 'clicked' : ''}`}
+            className={`sexBtn ${gender === 'F' ? 'clicked' : ''}`}
             style={{ marginLeft: '12px' }}
             onClick={() => handleSexClick('F')}
           >
