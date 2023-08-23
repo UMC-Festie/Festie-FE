@@ -78,12 +78,12 @@ li {
   }
   
   /* 클릭 시 테두리 색 변경 */
-  .emailText:focus {
+  .loginemailText:focus {
     border: 1px solid #ff7a00;
     outline: none;
   }
   
-  .passwordText:focus {
+  .loginpasswordText:focus {
     border: 1px solid #ff7a00;
     outline: none;
   }

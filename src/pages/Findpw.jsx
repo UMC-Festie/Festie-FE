@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import './Findpw.css';
 import alertredIcon from '../assets/alert_circle_red.svg';
+import { NavLink, useNavigate } from "react-router-dom";
 
 const FindPasswordForm = () => {
+  const navigate = useNavigate();
   const [isEmailNotFound, setIsEmailNotFound] = useState(false);
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 스크롤을 최상단으로 이동
+  };
 
   // 하드코딩 동작 확인
   const handleBlur = (event) => {
@@ -72,9 +78,13 @@ const FindPasswordForm = () => {
             <input type="text" className="FindpwnicknameText" placeholder="닉네임을 입력해주세요" />
           </li>
           {/* <div className="findpwnextBtn">다음</div> */}
-          <div
-            className={`findpwnextBtn ${isSubmitDisabled ? "disabled" : "enabled"}`}
-            onClick={handleSubmit}
+          <div className={`findpwnextBtn ${isSubmitDisabled ? "disabled" : "enabled"}`}
+            onClick={() => {
+              if (!isSubmitDisabled) {
+                handleSubmit();
+                navigate('/findPw/finish');
+              }
+            }}
             disabled={isSubmitDisabled}
           >
             다음
