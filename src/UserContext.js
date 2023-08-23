@@ -10,12 +10,12 @@ export const useUserContext = () => useContext(UserContext);
 export const UserProvider = ({ children }) => {
   const [userEmail, setUserEmail] = useState(null); // 유저 이메일 상태
 
-  const updateUserEmail = (email) => {
-    setUserEmail(email);
+  const clearUserEmail = () => {
+    setUserEmail('');
   };
-
+  
   return (
-    <UserContext.Provider value={{ userEmail, updateUserEmail }}>
+    <UserContext.Provider value={{ userEmail, setUserEmail, clearUserEmail }}>
       {children}
     </UserContext.Provider>
   );
