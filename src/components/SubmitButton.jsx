@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export default function SubmitButton() {
-  return <StyledSubmitButton>완료</StyledSubmitButton>;
+export default function SubmitButton({ onClick }) {
+  return <StyledSubmitButton onClick={onClick}>완료</StyledSubmitButton>;
 }
 
 const StyledSubmitButton = styled.button`

@@ -14,6 +14,55 @@ function ConcertMain() {
     const [togetherButtons, setTogetherButtons] = useState([]);
     const [activeButton, setActiveButton] = useState('entrie');
     const [showButton, setShowButton] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [reviews, setReviews] = useState([]);
+
+    const processReviewData = (data) => {
+      const processedData = data.map((review) => {
+        const processedReview = { ...review };
+    
+        // date 필드가 없는 경우 null로 처리
+        if (!processedReview.date) {
+          processedReview.date = null;
+        }
+    
+        // viewCount 필드가 없는 경우 null으로 처리
+        if (!processedReview.viewCount) {
+          processedReview.viewCount = null;
+        }
+    
+        // likeCount 필드가 없는 경우 null으로 처리
+        if (!processedReview.likeCount) {
+          processedReview.likeCount = null;
+        }
+    
+        return processedReview;
+      });
+    
+      return processedData;
+    };
+    
+     // useEffect를 사용하여 컴포넌트가 마운트되었을 때 백엔드 API 호출
+  /*   useEffect(() => {
+      // 여기서 실제 백엔드 API 호출 및 데이터를 받아오는 로직을 작성해야 합니다.
+      // API 호출 후 받아온 데이터를 setReviews를 사용하여 업데이트합니다.
+      // 아래는 가상의 데이터를 설정하는 예시입니다.
+      const fetchDataFromBackend = async () => {
+        try {
+            const response = await fetch("URL_TO_YOUR_BACKEND_API");
+            const data = await response.json();
+            const processedData = processReviewData(data); // Process the data
+            setReviews(processedData); // Update the reviews state
+        } catch (error) {
+            console.error("Error fetching data from API:", error);
+        }
+    };
+    
+
+      fetchDataFromBackend();
+  }, []); // 마운트 시 한 번만 실행되도록 빈 배열 전달
+*/
+
     // 검색 결과 개수를 담는 상태
     const [searchResultCount, setSearchResultCount] = useState(0);
     // 리뷰 타입별 결과 개수를 계산하는 함수
@@ -26,10 +75,10 @@ function ConcertMain() {
   };
     const filteredReviews = () => {
         switch (activeButton) {
-          case 'festival':
-            return dummyReviews.filter((review) => review.type === '축제');
-          case 'concert':
-            return dummyReviews.filter((review) => review.type === '공연');
+          case 'view':
+            return dummyReviews.filter((review) => review.type === '정보보기');
+          case 'share':
+            return dummyReviews.filter((review) => review.type === '정보공유');
           case 'review':
             return dummyReviews.filter((review) => review.type === '후기');
           case 'ticket':
@@ -60,7 +109,7 @@ function ConcertMain() {
     setReviewButtons([]);
     setTicketButtons([]);
     setTogetherButtons([]);
-    setActiveButton('festival');
+    setActiveButton('view');
   };
   
   const handleConcertClick = () => {
@@ -71,7 +120,7 @@ function ConcertMain() {
     setConcertButtons([]);
     setTicketButtons([]);
     setTogetherButtons([]);
-    setActiveButton('concert');
+    setActiveButton('share');
   };
   const handleReviewClick = () => {
     setShowCategoriesBtn(true);
@@ -163,13 +212,13 @@ function ConcertMain() {
             onClick={handleEntireClick}
         />
         <CategoryButton
-          button="축제"
-          isSelected={activeButton === 'festival'}
+          button="정보보기"
+          isSelected={activeButton === 'view'}
           onClick={handleFestivalClick}
         />
         <CategoryButton
-          button="공연"
-          isSelected={activeButton === 'concert'}
+          button="정보공유"
+          isSelected={activeButton === 'share'}
           onClick={handleConcertClick}
         />
         <CategoryButton
@@ -197,10 +246,10 @@ function ConcertMain() {
           <p>전체 {countTotalReviews()}건</p>
         )}
         {activeButton === "festival" && (
-          <p>축제 {countReviewsByType("축제")}건</p>
+          <p>정보보기 {countReviewsByType("정보보기")}건</p>
         )}
         {activeButton === "concert" && (
-          <p>공연 {countReviewsByType("공연")}건</p>
+          <p>정보공유 {countReviewsByType("정보공유")}건</p>
         )}
         {activeButton === "review" && (
           <p>후기 {countReviewsByType("후기")}건</p>
@@ -212,11 +261,16 @@ function ConcertMain() {
           <p>같이가요 {countReviewsByType("같이가요")}건</p>
         )}
       </div>
-      <div className="main-pagetxt">
-      {filteredReviews().map((review, index) => (
+        <div className="main-pagetxt">
+          {/* 임의로 작성한 dummyReview에서 받아오게함 API연동 후 밑에코드 삭제 */}
+          {filteredReviews().map((review, index) => (
             <ReviewCard key={index} review={review} />
           ))}
-      </div>
+
+          {/* {reviews.map((review) => (
+          <ReviewCard key={review.id} review={review} />
+          ))} 백엔드에서 받아오는 데이터*/}
+        </div>
     </div>
     </div>
   );

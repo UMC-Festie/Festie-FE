@@ -17,6 +17,15 @@
     background-color: #ffffff;
     margin: 0 auto;
     align-items: center;
+    /* display: flex; */
+    /* justify-content: flex-end; */
+    /* width: 1190px;
+    border: 541px;
+    background-color: #ffffff;
+    /* object-fit: cover; */
+    /* margin: 0 auto; */
+    /* /* align-items: center; */
+    /* border: 1px solid black; */
   }
 
   .mainText{
@@ -189,5 +198,25 @@
   }
 
   .main_posterwrap{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-bottom: 32px;
+  }
+
+  .concertName {
+    max-width: 245px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .poster_img {
+    max-width: 245px; /* 최대 너비를 설정하면서 비율 유지 */
+    border-radius: 18px;
+  }
+
+  .PosterSize {
+    width: 245px;
+    height: 347px;
   }

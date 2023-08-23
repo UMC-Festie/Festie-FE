@@ -1,42 +1,98 @@
 import WriteInfo from "../components/WriteInfo";
-import plusIcon from "../assets/plus.svg";
 import { Title, InputBox } from "../components/WriteTitleBody";
 import styled from "styled-components";
 import SubmitButton from "../components/SubmitButton";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import image1 from "../assets/festie_logo.png";
 
 export default function TogetherWrite() {
+  const userToken =
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amd1czk5NjZAbmF2ZXIuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2OTI1MjIyODEsImV4cCI6MTY5MzEyNzA4MX0.xBa3QwerTHfhUKpQT1ixA5l-W5Hzsb44O4ocXbDQOcw";
+
+  const dataToSend = {
+    festivalId: "1",
+    boardType: "정보공유",
+    festivalTitle: "워터밤 서울",
+    festivalType: 1,
+    togetherDate: "2023-07-09",
+    togetherTime: "17:30",
+    category: 1,
+    region: "서울",
+    title: "워터밤 같이 갈 사람!!!",
+    content: "가서 맘껏 즐기다 올 사람 구해요",
+    target: "20대 중반 여성",
+    message: "카카오톡 오픈 채팅방 xxx으로 들어와주세요",
+  };
+
+  // 이미지 파일
+  const imageFile = image1;
+
+  const formData = new FormData();
+  formData.append("thumbnail", imageFile);
+  formData.append("data", JSON.stringify(dataToSend));
+
+  const handleImageChange = (imageFile) => {
+    console.log("Selected image:", imageFile);
+  };
+
+  const handleSubmit = () => {
+    axios
+      .post("/api/together", formData, {
+        headers: {
+          "X-AUTH-TOKEN": userToken,
+          "Content-Type": "multipart/form-data", // 이미지와 JSON 데이터를 함께 보내므로 Content-Type을 multipart/form-data로 설정
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        alert("글 등록을 완료했습니다.");
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("글 등록을 완료했습니다.");
+      });
+  };
   return (
     <WriteWrap>
       <WriteWrapBox>
-        <WriteInfo></WriteInfo>
+        <WriteInfo onImageChange={handleImageChange}></WriteInfo>
         <WriteBox>
           <Title>제목</Title>
-          <InputBox placeholder="글제목을 입력해주세요."></InputBox>
+          <InputBox
+            placeholder="글제목을 입력해주세요."
+            name="title"
+            value={formData.title}
+          ></InputBox>
           <Title>설명</Title>
           <TextAreaWrap>
             <TextAreaBox
               placeholder="같이 갈 공연 및 축제에 대한 정보를 예비 Bestie가 볼 수 있게 설명을 입력해주세요."
-              height="202px"
+              height="400px"
+              name="content"
+              value={formData.content}
             ></TextAreaBox>
-            <AddImage>
-              <IconImage src={plusIcon} alt="Plus Icon" />
-              사진 추가하기
-            </AddImage>
           </TextAreaWrap>
           <Title>선호대상</Title>
           <TextAreaWrap>
-            <TextAreaBox placeholder="선호하는 Bestie의 특징을 입력해주세요."></TextAreaBox>
+            <TextAreaBox
+              placeholder="선호하는 Bestie의 특징을 입력해주세요."
+              name="target"
+              value={formData.target}
+            ></TextAreaBox>
           </TextAreaWrap>
           <Title>매칭 메세지</Title>
           <TextAreaWrap>
             <TextAreaBox
               placeholder="매칭된 Bestie에게만 보여질 메세지에요.
 Bestie와 원활하게 연락할 수 있게 연락처, 카카오톡 오픈채팅방 링크 등을 남겨주세요!"
+              name="message"
+              value={formData.message}
             ></TextAreaBox>
           </TextAreaWrap>
         </WriteBox>
         <ButtonWrap>
-          <SubmitButton></SubmitButton>
+          <SubmitButton onClick={handleSubmit}></SubmitButton>
         </ButtonWrap>
       </WriteWrapBox>
     </WriteWrap>
@@ -110,4 +166,3 @@ const AddImage = styled.div`
   line-height: 140%;
   cursor: pointer;
 `;
-const IconImage = styled.img``;
