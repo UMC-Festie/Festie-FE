@@ -1,13 +1,13 @@
-const { createProxyMiddleware } = require("http-proxy-middleware");
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
-module.exports = function (app) {
+module.exports = function(app) {
   app.use(
-    createProxyMiddleware("/api", {
-      target: "http://3.37.193.119",
+    createProxyMiddleware('/api', {
+      target: 'http://3.37.193.119',
       pathRewrite: {
-        "^/api": "",
+        '^/api': ''
       },
-      changeOrigin: true,
+      changeOrigin: true
     })
   );
-};
+}
