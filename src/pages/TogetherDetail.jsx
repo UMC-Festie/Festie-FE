@@ -7,6 +7,8 @@ import TogetherMessage from "../components/TogetherMessage";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useUserContext } from '../UserContext';
+import { useCookies } from 'react-cookie';
 
 export default function TogetherDetail() {
     const [showScrollButton, setShowScrollButton] = useState(false);
@@ -18,6 +20,13 @@ export default function TogetherDetail() {
     const [status, setStatus] = useState(0);
     const [userToken, setUserToken] = useState(null);
     const { togetherId } = useParams();
+    const { userEmail } = useUserContext();
+    const [cookies] = useCookies(['accessToken']);
+  
+    useEffect(() => {
+        setUserToken(cookies[userEmail]);
+        console.log('토큰', userEmail, userToken);
+    }, [userEmail]);
 
     const onClickScrollToTop = () => {
         window.scrollTo({
@@ -57,8 +66,6 @@ export default function TogetherDetail() {
     }, []);
 
     useEffect(() => {
-        setUserToken('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amd1czk5NjZAbmF2ZXIuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2OTI3Nzg4MDEsImV4cCI6MTY5MzM4MzYwMX0.C3jemSOXR1BKsOpfnzqtLCViEGFNf-MGqJl3r_JKGZ0');
-
         const fetchData = async (togetherId) => {
             try {
                 const response = await axios.get(`/api/together/${togetherId}`, {
@@ -79,7 +86,7 @@ export default function TogetherDetail() {
     
         console.log(togetherId);
         fetchData(togetherId);
-    }, [userToken]);
+    }, [togetherId, userToken]);
 
     useEffect(() => {
         if(!togetherData) 
