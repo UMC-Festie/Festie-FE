@@ -17,6 +17,12 @@ function ConcertMain() {
   const [BtnStatus, setBtnStatus] = useState(false); // 버튼 상태
   // 검색 결과 개수를 담는 상태
   const [searchResultCount, setSearchResultCount] = useState(0);
+  
+  const [filteredPosters, setFilteredPosters] = useState([]);
+  const [posters, setPosters] = useState([]);
+  const [searchButtonActive, setSearchButtonActive] = useState(false); // "조회하기" 버튼 클릭 상태를 관리
+  const [selectedCategoryButton, setSelectedCategoryButton] = useState('');
+  const [selectedCategoryButtons, setSelectedCategoryButtons] = useState([]);
 
   const handleFollow = () => {
     setScrollY(window.pageYOffset);
@@ -47,7 +53,40 @@ function ConcertMain() {
       window.removeEventListener('scroll', handleFollow)
     }
   })
-
+  const handleSearchButtonClick = async () => {
+    setSearchButtonActive(true);
+    setSearchButtonActive(!searchButtonActive);
+    setSelectedCategoryButtons([]);    // 필터링 조건 객체 생성
+    const filterParams = {
+      page: 0,
+      category: '대중음악',
+      region: '서울',
+      status: '모집중',
+      sortBy: 'LATEST'
+    };
+  
+    // 필터링 조건 객체를 쿼리 파라미터 문자열로 변환
+    const queryString = Object.keys(filterParams)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join('&');
+  
+    // API 엔드포인트
+    const apiEndpoint = '백엔드_API_URL';
+  
+    try {
+      // 필터링된 데이터를 백엔드로 전송하고 응답 받기
+      const response = await fetch(`${apiEndpoint}/filter?${queryString}`);
+      if (response.ok) {
+        const data = await response.json();
+        // 받아온 데이터를 활용하여 필요한 처리를 수행
+        console.log('Filtered data:', data);
+      } else {
+        console.error('Error fetching data from the server');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   const handleCategoryClick = () => {
     setShowCategoriesBtn(false);
     setCategoryButtons(["바다", "여름먹거리", "연꽃", "토마토", "장미", "문화예술", "여름꽃"]);
@@ -124,10 +163,36 @@ function ConcertMain() {
       });
   }, []);
   const [selectedOption, setSelectedOption] = useState(""); // 선택된 옵션을 저장하는 상태
+  const handleOptionChange = async (event) => {
+    const selectedValue = event.target.value;
+    setSelectedOption(selectedValue);
 
-  const handleOptionChange = (event) => {
-    // 셀렉트박스에서 옵션을 선택했을 때 호출되는 함수
-    setSelectedOption(event.target.value);
+    // 필터링 조건 객체 생성
+    const filterParams = {
+      page: 0,
+      type: '공연',
+      // ... (다른 필터링 조건 추가)
+      sortBy: selectedValue  // 선택한 값을 sortBy 필터로 설정
+    };
+
+    // 필터링 조건 객체를 쿼리 파라미터 문자열로 변환
+    const queryString = Object.keys(filterParams)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join('&');
+
+    const apiEndpoint = '백엔드_API_URL';
+
+    try {
+      const response = await fetch(`${apiEndpoint}/filter?${queryString}`);
+      if (response.ok) {
+        const data = await response.json();
+        setFilteredPosters(data); // 필터링된 데이터 설정
+      } else {
+        console.error('Error fetching data from the server');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
   const OPTIONS = [
     { value: "최신순", name: "최신순" },
@@ -189,32 +254,76 @@ function ConcertMain() {
       </div>
       {showCategoriesBtn && activeButton === 'area' && (
         <div className="categories-btn">
+          {/* 지역 버튼에 해당하는 하위 버튼들을 보여줍니다. */}
           {areaButtons.map((button, index) => (
-            <button key={index} className="category-btn" onClick={() => handleCategoryBtnClick(button)}>
-              {button}
-            </button>
+            <button
+            key={index}
+            className={`category-btn1 ${selectedButtons.includes(button) ? 'selected' : ''} ${searchButtonActive && activeButton === 'area' && selectedButtons.includes(button) ? 'active' : ''}`}
+            onClick={() => handleCategoryBtnClick(button)}
+          >
+            {button}
+          </button>
           ))}
         </div>
       )}
+
       {!showCategoriesBtn && activeButton === 'category' && (
         <div className="categories-btn">
+          {/* 카테고리 버튼에 해당하는 하위 버튼들을 보여줍니다. */}
           {categoryButtons.map((button, index) => (
-            <button key={index} className="category-btn" onClick={() => handleCategoryBtnClick(button)}>
-              {button}
-            </button>
+            <button
+            key={index}
+            className={`category-btn1 ${selectedButtons.includes(button) ? 'selected' : ''} ${searchButtonActive && activeButton === 'category' && selectedButtons.includes(button) ? 'active' : ''}`}
+            onClick={() => handleCategoryBtnClick(button)}
+          >
+            {button}
+          </button>          
           ))}
         </div>
       )}
+
       {!showCategoriesBtn && activeButton === 'period' && (
         <div className="categories-btn">
+          {/* 기간 버튼에 해당하는 하위 버튼들을 보여줍니다. */}
           {periodButtons.map((button, index) => (
-            <button key={index} className="category-btn" onClick={() => handleCategoryBtnClick(button)}>
-              {button}
-            </button>
+            <button
+            key={index}
+            className={`category-btn1 ${selectedButtons.includes(button) ? 'selected' : ''} ${searchButtonActive && activeButton === 'period' && selectedButtons.includes(button) ? 'active' : ''}`}
+            onClick={() => handleCategoryBtnClick(button)}
+          >
+            {button}
+          </button>          
           ))}
         </div>
       )}
+
       <div className="reset">
+        {/* "조회하기" 버튼 */}
+        <button
+          className={`search-button1 ${searchButtonActive ? 'active' : ''}`}
+          onClick={handleSearchButtonClick}
+        > {searchButtonActive ? (
+          // 이미지가 변경되었을 때의 SVG 코드
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M7.33333 12.6667C10.2789 12.6667 12.6667 10.2789 12.6667 7.33333C12.6667 4.38781 10.2789 2 7.33333 2C4.38781 2 2 4.38781 2 7.33333C2 10.2789 4.38781 12.6667 7.33333 12.6667Z" stroke="#3A3A3A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M14.0006 14.0001L11.1006 11.1001" stroke="#3A3A3A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M7.33333 12.6667C10.2789 12.6667 12.6667 10.2789 12.6667 7.33333C12.6667 4.38781 10.2789 2 7.33333 2C4.38781 2 2 4.38781 2 7.33333C2 10.2789 4.38781 12.6667 7.33333 12.6667Z" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M14.0006 14.0001L11.1006 11.1001" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>)}
+          조회하기
+        </button>
+        {selectedButtons.map((button, index) => (
+          <button
+            key={index}
+            className={`selected-button1 ${searchButtonActive ? 'active' : ''}`}
+            onClick={() => handleRemoveButtonClick(button)}
+          >
+            {button} X
+          </button>
+        ))}
         <button onClick={handleResetClick} className="reset-button">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
             <path d="M15.333 3.1665V7.1665H11.333" stroke="#3A3A3A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
@@ -222,15 +331,6 @@ function ConcertMain() {
           </svg>
           초기화
         </button>
-        {selectedButtons.map((button, index) => (
-          <button
-            key={index}
-            className="selected-button"
-            onClick={() => handleRemoveButtonClick(button)}
-          >
-            {button} X
-          </button>
-        ))}
       </div>
       <div className="serch">
         <h1>검색결과</h1>

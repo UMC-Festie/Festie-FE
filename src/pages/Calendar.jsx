@@ -7,7 +7,11 @@ import { faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { ReviewCard, dummyReviews } from "../components/ReviewCard";
 import Modal from "../components/Modal"; 
+import { useNavigate } from 'react-router-dom';
+
 const Calendar = () => {
+  const navigate = useNavigate();
+  const [scheduledEvents, setScheduledEvents] = useState([]);
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today);
   const [ScrollY, setScrollY] = useState(0);
@@ -18,6 +22,11 @@ const Calendar = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeButton, setActiveButton] = useState(1);
   const [selectedOption, setSelectedOption] = useState("최신순"); // 기본값을 첫 번째 옵션으로 설정
+  const [selectedTitle, setSelectedTitle] = useState(""); 
+  const addEvent = (event) => {
+    setScheduledEvents([...scheduledEvents, event]);
+  };
+  const [selectedEvents, setSelectedEvents] = useState([]); // useState를 통해 selectedEvents를 정의
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
@@ -25,9 +34,19 @@ const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
 
-  const handleAddSchedule = () => {
-    setShowModal(true);
-  };
+  const handleAddSchedule = (event) => {
+  setSelectedDate(event.date);
+  setSelectedTime(event.time);
+  setSelectedTitle(event.title);
+  setShowModal(true);
+};
+
+useEffect(() => {
+  console.log("Selected Date:", selectedDate);
+  console.log("Selected Time:", selectedTime);
+  console.log("Selected Title:", selectedTitle);
+}, [selectedDate, selectedTime, selectedTitle]);
+
 
   const handleModalClose = () => {
     setShowModal(false);
@@ -158,13 +177,14 @@ const Calendar = () => {
           ${isToday ? "today" : ""} 
           ${day.getDay() === 0 || day.getDay() === 6 ? "weekend" : ""} 
           ${day === startDate || day === endDate ? "start-end" : ""}`}
-          key={day}
+          key={day.toString()}
           style={{ position: "relative" }}
         >
           {format(day, dateFormat)}
           {isToday && <div className="orange-circle"></div>}
         </div>
       );
+      
       day = addDays(day, 1);
     }
     return days;
@@ -184,7 +204,7 @@ const Calendar = () => {
       <div className="banner">
         <h1 className="banner-txt">나만 아는 티켓팅 꿀팁이 있나요? </h1>
         <h2 className="banner-txt">Bestie들과 함께 정보를 공유해요!</h2>
-        <button className="breadcrumb-button">
+        <button className="breadcrumb-button" onClick={()=>navigate('/share/ticketing/write')}>
           티켓팅 정보 공유하기
           <span className="arrow">
             <FontAwesomeIcon icon={faArrowRight} />
@@ -211,16 +231,49 @@ const Calendar = () => {
       </button>
       {showModal && (
         <Modal
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          selectedTime={selectedTime}
-          setSelectedTime={setSelectedTime}
-          onClose={handleModalClose}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        selectedTime={selectedTime}
+        setSelectedTime={setSelectedTime}
+        selectedTitle={selectedTitle}  // 이 부분 추가
+        setSelectedTitle={setSelectedTitle}  // 이 부분 추가
+        onClose={handleModalClose}
+        onAddSchedule={(event) => {
+          handleAddSchedule(event);
+          handleModalClose(); // 일정 등록 후 모달 닫기
+        }}
         />
       )}
+      
         </div>
         <div className="days-of-week">{getDaysOfWeek()}</div>
-        <div className="days">{getDays()}</div>
+        <div className="days">
+  {getDays().map((day) => (
+    <div key={day.toString()} className="day-cell">
+      <div className="day-number">{day}</div>
+      <div className="event-content">
+      {scheduledEvents.map((event, index) => {
+          if (isSameDay(event.date, new Date(day))) {
+            const uniqueKey = `${event.date}-${index}`;
+
+            return (
+              <div key={uniqueKey} className="event">
+                {event.title} - {event.time}
+              </div>
+            );
+          }
+          return null;
+        })}
+        {selectedEvents.map((event, index) => (
+            <div key={`${event.date}-${event.time}-${index}`}>
+            {event.title} - {event.time}
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
+
       </div>
       <button
         className={BtnStatus ? "topBtn active" : "topBtn"}
@@ -231,7 +284,7 @@ const Calendar = () => {
         <FontAwesomeIcon icon={faArrowUp} className="fa-icon" />
       </button>
       {showButton && (
-        <button className="addBtn">
+        <button className="addBtn" onClick={()=>navigate('/share/ticketing/write')}>
           <FontAwesomeIcon icon={faPlus} />
           {' '}
           정보 공유하기

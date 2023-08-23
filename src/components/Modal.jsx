@@ -1,24 +1,33 @@
 //티켓팅 일정 추가하기 버튼을 눌렀을때 뜨는 박스
 import React, { useState } from "react";
 import "./Modal.css";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const Modal = ({ selectedDate, setSelectedDate, selectedTime, setSelectedTime, onClose }) => {
-  const [currentDate, setCurrentDate] = useState(new Date()); // 현재 날짜로 초기화
+const Modal = ({ selectedDate, setSelectedDate, selectedTime, setSelectedTime, selectedTitle, setSelectedTitle, onAddSchedule, onClose }) => {
   const [showDateModal, setShowDateModal] = useState(false); // 날짜 모달 상태 관리
   const [showTimeModal, setShowTimeModal] = useState(false); // 시간 모달 상태 관리
-  const [selectedTitle, setSelectedTitle] = useState(""); // 선택된 공연 제목 상태 관리
   const [searchQuery, setSearchQuery] = useState(""); // 검색 쿼리 상태 관리
+  const [currentDate, setCurrentDate] = useState(new Date()); // 현재 날짜로 초기화
+  const handleAddButtonClick = () => {
+    const newEvent = {
+      title: selectedTitle,
+      date: selectedDate,
+      time: selectedTime,
+    };
+    onAddSchedule(newEvent);
+  };
 
   const handleModalClose = () => {
-    onClose(); // 모달 닫기 이벤트를 부모 컴포넌트로 전달합니다.
+    onClose();
   };
 
   const handleDateClick = () => {
-    setShowDateModal((prev) => !prev); // "날짜 선택" 클릭 시 날짜 모달 열고 닫기
+    setShowDateModal(true);
   };
 
   const handleTimeClick = () => {
-    setShowTimeModal((prev) => !prev); // "시간 선택" 클릭 시 시간 모달 열고 닫기
+    setShowTimeModal((prev) => !prev);
   };
 
   const handleSearchChange = (e) => {
@@ -28,8 +37,10 @@ const Modal = ({ selectedDate, setSelectedDate, selectedTime, setSelectedTime, o
   const handleTitleChange = (e) => {
     setSelectedTitle(e.target.value);
   };
+  console.log("selectedTime inside Modal:", selectedTime);
 
   return (
+    <div className="modal_background">
     <div className="modal">
       <h1>티켓팅 일정 추가</h1>
       <div className="serch1">
@@ -78,74 +89,49 @@ const Modal = ({ selectedDate, setSelectedDate, selectedTime, setSelectedTime, o
           </svg>
         </div>
         <div className="dateBtn">
-          <button className="date-select-btn" onClick={handleDateClick}>
-            날짜 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M5 7.5L10 12.5L15 7.5" stroke="#3A3A3A" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-          {showDateModal && (
-            <div className="date-select">
-              {/* 날짜 선택 옵션 */}
-              <select
-                value={selectedDate ? selectedDate.getFullYear() : currentDate.getFullYear()}
-                onChange={(e) =>
-                  setSelectedDate(
-                    new Date(
-                      e.target.value,
-                      selectedDate ? selectedDate.getMonth() : currentDate.getMonth(),
-                      selectedDate ? selectedDate.getDate() : currentDate.getDate()
-                    )
-                  )
-                }
-              >
-                {/* 년도 옵션 */}
-                {Array.from({ length: 21 }, (_, i) => (
-                  <option key={i} value={currentDate.getFullYear() - 5 + i}>
-                    {currentDate.getFullYear() - 5 + i}
-                  </option>
-                ))}
-              </select>
-              {/* 월 옵션 */}
-              <select
-                value={selectedDate ? selectedDate.getMonth() : currentDate.getMonth()}
-                onChange={(e) =>
-                  setSelectedDate(
-                    new Date(
-                      selectedDate ? selectedDate.getFullYear() : currentDate.getFullYear(),
-                      e.target.value,
-                      selectedDate ? selectedDate.getDate() : currentDate.getDate()
-                    )
-                  )
-                }
-              >
-                {Array.from({ length: 12 }, (_, i) => (
-                  <option key={i} value={i}>
-                    {i + 1}월
-                  </option>
-                ))}
-              </select>
-              {/* 일 옵션 */}
-              <select
-                value={selectedDate ? selectedDate.getDate() : currentDate.getDate()}
-                onChange={(e) =>
-                  setSelectedDate(
-                    new Date(
-                      selectedDate ? selectedDate.getFullYear() : currentDate.getFullYear(),
-                      selectedDate ? selectedDate.getMonth() : currentDate.getMonth(),
-                      e.target.value
-                    )
-                  )
-                }
-              >
-                {Array.from({ length: 31 }, (_, i) => (
-                  <option key={i} value={i + 1}>
-                    {i + 1}일
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+      <button className="date-select-btn" onClick={handleDateClick}>
+        날짜 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M5 7.5L10 12.5L15 7.5" stroke="#3A3A3A" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      {showDateModal && (
+        <div className="date-select">
+          <DatePicker
+  selected={selectedDate}
+  onChange={date => {
+    setSelectedDate(date);
+    setShowDateModal(false); // 달력에서 날짜를 선택하면 달력을 닫음
+  }}
+  dateFormat="yyyy년 MM월 dd일"
+  renderCustomHeader={({ date, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (
+    <div className="custom-datepicker-header">
+      <button
+        onClick={decreaseMonth}
+        disabled={prevMonthButtonDisabled}
+        className="prev-month-button"
+      >
+        &lt;
+      </button>
+      <div className="date-display">
+        <div>{date.toLocaleString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+      </div>
+      <button
+        onClick={increaseMonth}
+        disabled={nextMonthButtonDisabled}
+        className="next-month-button"
+      >
+        &gt;
+      </button>
+    </div>
+  )}
+  formatWeekdayShort={(locale, dayOfWeek) =>
+    ['일', '월', '화', '수', '목', '금', '토'][dayOfWeek]
+  }
+  locale="ko"
+/>
         </div>
+      )}
+    </div>
         <div className="timeBtn">
           <button className="time-select-btn" onClick={handleTimeClick}>
             시간 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -153,51 +139,52 @@ const Modal = ({ selectedDate, setSelectedDate, selectedTime, setSelectedTime, o
             </svg>
           </button>
           {showTimeModal && (
-            <div className="time-select">
-              {/* 시간 선택 옵션 */}
-              <select
-                value={selectedTime ? selectedTime.split(":")[0] : currentDate.getHours()}
-                onChange={(e) =>
-                  setSelectedTime(
-                    selectedTime
-                      ? e.target.value + `:${selectedTime.split(":")[1]}`
-                      : `${e.target.value.toString().padStart(2, "0")}:${currentDate.getMinutes().toString().padStart(2, "0")}`
-                  )
-                }
-              >
-                {/* 시간 옵션 */}
-                {Array.from({ length: 24 }, (_, i) => (
-                  <option key={i} value={i}>
-                    {`${i.toString().padStart(2, "0")}시`}
-                  </option>
-                ))}
-              </select>
-              {/* 분 옵션 */}
-              <select
-                value={selectedTime ? selectedTime.split(":")[1] : currentDate.getMinutes()}
-                onChange={(e) =>
-                  setSelectedTime(
-                    selectedTime
-                      ? selectedTime.split(":")[0] + `:${e.target.value.toString().padStart(2, "0")}`
-                      : `${currentDate.getHours().toString().padStart(2, "0")}:${e.target.value.toString().padStart(2, "0")}`
-                  )
-                }
-              >
-                {/* 분 옵션 */}
-                {Array.from({ length: 60 }, (_, i) => (
-                  <option key={i} value={i}>
-                    {`${i.toString().padStart(2, "0")}분`}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+  <div className="time-select">
+    {/* 시간 선택 옵션 */}
+    <select
+      value={selectedTime ? selectedTime.split(":")[0] : currentDate.getHours()}
+      onChange={(e) =>
+        setSelectedTime(
+          selectedTime
+            ? e.target.value + `:${selectedTime.split(":")[1]}`
+            : `${e.target.value.toString().padStart(2, "0")}:${currentDate.getMinutes().toString().padStart(2, "0")}`
+        )
+      }
+    >
+      {/* 시간 옵션 */}
+      {Array.from({ length: 24 }, (_, i) => (
+        <option key={`hour-${i}`} value={i}>
+          {`${i.toString().padStart(2, "0")}시`}
+        </option>
+      ))}
+    </select>
+    {/* 분 옵션 */}
+    <select
+      value={selectedTime ? selectedTime.split(":")[1] : currentDate.getMinutes()}
+      onChange={(e) =>
+        setSelectedTime(
+          selectedTime
+            ? selectedTime.split(":")[0] + `:${e.target.value.toString().padStart(2, "0")}`
+            : `${currentDate.getHours().toString().padStart(2, "0")}:${e.target.value.toString().padStart(2, "0")}`
+        )
+      }
+    >
+      {/* 분 옵션 */}
+      {Array.from({ length: 60 }, (_, i) => (
+        <option key={`minute-${i}`} value={i}>
+          {`${i.toString().padStart(2, "0")}분`}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
+
         </div>
         <div className="modal-buttons">
-          <button onClick={onClose}>일정 등록하기</button>
-        </div>
+        <button onClick={handleAddButtonClick}>일정 등록하기</button>        </div>
       </div>
       {(showDateModal || showTimeModal) && <div className="modal-backdrop" onClick={handleModalClose} />}
+    </div>
     </div>
   );
 };

@@ -7,7 +7,9 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import image5 from '../assets/image5.png';
 import './ReviewMain.css';
+import { useNavigate } from 'react-router-dom';
 const MainPage = () => {
+  const navigate = useNavigate();
   // 메인 페이지에서 보여줄 후기 데이터를 저장하는 상태 변수입니다.
   const [reviews, setReviews] = useState([]);
   const [allReviews, setAllReviews] = useState([]); // 모든 후기 데이터를 관리하는 상태 변수
@@ -111,7 +113,7 @@ const MainPage = () => {
         <img src={image5} alt="이미지 5" />
         <h1 className="banner-txt">Festie 후기 공유</h1>
         <h2 className="banner-txt">좋았던, 혹은 Bestie들에게 공유하고 싶은 공연 및 축제 후기가 있나요? 그렇다면 Bestie들에게 소개해주세요!</h2>
-        <button className="breadcrumb-button">
+        <button className="breadcrumb-button" onClick={()=>navigate('/share/review/write')}>
           내 후기 작성하기
           <span className="arrow">
             <FontAwesomeIcon icon={faArrowRight} />
@@ -135,7 +137,7 @@ const MainPage = () => {
         <FontAwesomeIcon icon={faArrowUp} className="fa-icon" />
       </button>
       {showButton && (
-        <button className="addBtn2">
+        <button className="addBtn2" onClick={()=>navigate('/share/review/write')}>
           <FontAwesomeIcon icon={faPlus} />
           {' '}
           후기 작성하기
