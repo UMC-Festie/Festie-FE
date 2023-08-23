@@ -5,14 +5,19 @@ import TogetherRequestList from '../components/TogetherRequestList';
 import TogetherRequestModal from "../components/TogetherRequestModal";
 import TogetherMessage from "../components/TogetherMessage";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export default function TogetherDetail() {
     const [showScrollButton, setShowScrollButton] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [togetherData, setTogetherData] = useState(null); 
     const [isWriter, setIsWriter] = useState(false);
     const [isApplicant, setIsApplicant] = useState(false);
-    const [isApplicantSuccess, setIsApplicantSuccess] = useState(true);
-    const [status, setStatus] = useState(1);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isApplicantSuccess, setIsApplicantSuccess] = useState(false);
+    const [status, setStatus] = useState(0);
+    const [userToken, setUserToken] = useState(null);
+    const { togetherId } = useParams();
 
     const onClickScrollToTop = () => {
         window.scrollTo({
@@ -22,6 +27,13 @@ export default function TogetherDetail() {
     };
 
     const handleOpenModal = () => {
+        console.log(userToken);
+
+        if(!userToken) {
+            alert('로그인이 필요한 서비스입니다.');
+            return;
+        }
+
         setIsModalOpen(true);
     };
     
@@ -30,6 +42,9 @@ export default function TogetherDetail() {
     };
 
     useEffect(() => {
+        window.scrollTo({top: 0,});
+        
+        // scroll
         const handleScroll = () => {
             setShowScrollButton(window.scrollY > 100 ? true : false);
         }
@@ -41,16 +56,49 @@ export default function TogetherDetail() {
         }
     }, []);
 
+    useEffect(() => {
+        setUserToken('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amd1czk5NjZAbmF2ZXIuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2OTI3Nzg4MDEsImV4cCI6MTY5MzM4MzYwMX0.C3jemSOXR1BKsOpfnzqtLCViEGFNf-MGqJl3r_JKGZ0');
+
+        const fetchData = async (togetherId) => {
+            try {
+                const response = await axios.get(`/api/together/${togetherId}`, {
+                    headers: {
+                        "X-AUTH-TOKEN": userToken
+                    }
+                });
+    
+                setTogetherData(response.data);
+                setIsWriter(response.data.isWriter);
+                setIsApplicant(response.data.isApplicant);
+                setIsApplicantSuccess(response.data.isApplicationSuccess);
+                setStatus(response.data.status);
+            } catch (error) {
+                console.log(`[ERROR]: ${error}`)
+            }
+        }
+    
+        console.log(togetherId);
+        fetchData(togetherId);
+    }, [userToken]);
+
+    useEffect(() => {
+        if(!togetherData) 
+            return;
+
+        console.log(togetherData); 
+    }, [togetherData]);
+
+
 
     return (
         <DetailPageContainer>
             <DetailPage>
                 <CategoryInfo>
-                    <Category>홈</Category>
+                    <Category href="/">홈</Category>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M6 12L10 8L6 4" stroke="#B7B7B7" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    <Category>같이가요</Category>
+                    <Category href="/together">같이가요</Category>
                 </CategoryInfo>
                 <ContentContainer>
                     <TogetherWrap>
@@ -63,22 +111,30 @@ export default function TogetherDetail() {
                                         ) : isApplicantSuccess ? (
                                             <>
                                                 <MatchingState $isSuccess={isApplicantSuccess}>매칭에 성공했어요</MatchingState>
-                                                <TogetherMessage></TogetherMessage>
+                                                <TogetherMessage togetherData={togetherData}></TogetherMessage>
                                             </>
                                         ) : (
-                                            <MatchingState $isSuccess={isApplicantSuccess}s>매칭에 실패했어요</MatchingState>
+                                            <MatchingState $isSuccess={isApplicantSuccess}>매칭에 실패했어요</MatchingState>
                                     )}
                                 </>
                             ) : <></>
                         }
-                        <TogetherPost isWriter={isWriter} />
+                        <TogetherPost 
+                            isWriter={isWriter} 
+                            togetherData={togetherData}
+                        />
                         {
                             isModalOpen && 
-                                <TogetherRequestModal isOpen={isModalOpen} closeModal={handleCloseModal} />
+                                <TogetherRequestModal 
+                                    isOpen={isModalOpen} 
+                                    closeModal={handleCloseModal} 
+                                    userToken={userToken} 
+                                    togetherData={togetherData} 
+                                />
                         }
                         {
                             isWriter ? (
-                                <TogetherRequestList />
+                                <TogetherRequestList userToken={userToken} togetherData={togetherData} />
                             ) : !isApplicant ? (
                                 <RequestBestieButton onClick={handleOpenModal}>
                                 Bestie가 되고 싶어요
@@ -89,7 +145,7 @@ export default function TogetherDetail() {
                     </TogetherWrap>
                     <FestivalWrap>
                         <div>
-                            <TogetherInfo />
+                            <TogetherInfo togetherData={togetherData}/>
                         </div>
                     </FestivalWrap>
                 </ContentContainer>    
@@ -125,13 +181,18 @@ const CategoryInfo = styled.div`
     gap: 16px;
 `;
 
-const Category = styled.span`
+const Category = styled.a`
     color: var(--festie-gray-500, #B7B7B7);
     font-family: SUIT Variable;
     font-size: 13px;
     font-style: normal;
     font-weight: 500;
     line-height: 140%; 
+    text-decoration: none;
+
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 const ContentContainer = styled.div`

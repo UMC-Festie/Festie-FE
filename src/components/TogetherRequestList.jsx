@@ -1,37 +1,28 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import TogetherRequest from "./TogetherRequest";
+import ToastMessage from "./ToastMessage";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-export default function TogetherRequestList() {
-    /* Dummy Data */
-    //
-    const [requests, setRequests] = useState([
-        {
-          userId: 1,
-          isChecked: false,
-          nickname: '포디',
-          age: 25,
-          gender: '여성',
-          message: '안녕하세용 \n 축제 같이 가고 싶어용',
-        },
-        {
-            userId: 2,
-            isChecked: false,
-            nickname: '김철수',
-            age: 5,
-            gender: '남성',
-            message: '떡잎마을 방범대는 곤란한 사람들을 도와줘야 하고 말이야! 떡잎마을 방범대는 곤란한 사람을 구하고 떡잎마을의 평화를 지킨다! 떡잎마을 방범대 수첩에서 그렇게 쓰여있잖아!',
-        },
-    ]);
-    //
-    
+export default function TogetherRequestList({ togetherData, userToken }) {
+    const [requests, setRequests] = useState([]);
     const [isClicked, setIsClicked] = useState(false);
     const [isAnyRequestChecked, setIsAnyRequestChecked] = useState(false);
     const [checkedRequestIndex, setCheckedRequestIndex] = useState(null);
+    const [showToast, setShowToast] = useState(false);
+    const { togetherId } = useParams();
 
     useEffect(() => {
         setIsAnyRequestChecked(requests.some((request) => request.isChecked));
     }, [requests]);
+
+    useEffect(() => {
+        if(!togetherData) 
+            return;
+
+        setRequests(togetherData.applicantList);
+    }, [togetherData]);
 
     const onClickCheckButton = (index) => {
         setRequests((prevRequests) =>
@@ -42,29 +33,55 @@ export default function TogetherRequestList() {
             )
         );
         setCheckedRequestIndex(index);
-        console.log(`${index}번 Box 체크 버튼 누름`);
     };
 
     const onClickMatchingButton = () => {
         setIsClicked(!isClicked);
     }
 
-    const onClickConfirmButton = () => {
-        // 임시 코드
-        const checkedRequest = requests.find((request, index) => index === checkedRequestIndex);
-       
-        if (checkedRequest) {
-            const { userId } = checkedRequest;
-            alert(`**${userId}** user에게 매칭 메세지를 보냈습니다.`);
-        } 
+    const postChoice = async (togetherId, bestieList) => {
+        try {
+            const reqeust = { 
+                header: {
+                    headers: {
+                        "X-AUTH-TOKEN": userToken
+                    }
+                },
+                body: {
+                    togetherId: togetherId, 
+                    bestieList: bestieList
+                }
+            };
+             
+            console.log(reqeust.body, reqeust.header);
+            await axios.post(`/api/together/bestie/choice`, reqeust.body, reqeust.header);
 
-        // *** TO DO : 신청 수락 버큰 클릭 후 프로세스 구현 ***
-        // toast message: 매칭 메세지를 보냈습니다!
-        // api [POST] 신청 대기 상태: 매칭 중 -> 매칭 성공
-        // 신청 내역 최신화: 매칭 성공된 메세지 안 보이도록
-        // 신청 수락 완료 페이지로 돌아가기
+
+            setShowToast(true);
+
+            setTimeout(() => {
+                setShowToast(false);
+            }, 3000)
+        } catch (error) {
+            console.log(`[ERROR]: ${error}`)
+        }
     }
 
+    const onClickConfirmButton = () => {
+        const checkedRequest = requests.find((request, index) => index === checkedRequestIndex);
+        
+        if (checkedRequest) {
+            const updatedRequests = requests.map((request, index) =>
+                index === checkedRequestIndex ? { ...request, isChecked: true } : request
+            );
+            
+            setRequests(updatedRequests);
+
+            postChoice(togetherId, [checkedRequest.userId]);
+        }
+    }
+
+    
     return (
       <>
         <RequestListBox>
@@ -72,9 +89,14 @@ export default function TogetherRequestList() {
                 <RequestTitleWrap>
                     <RequestTitle>같이가요 신청내역</RequestTitle>
                 </RequestTitleWrap>
-                <MatchingButtonWrap onClick={onClickMatchingButton} $isVisible={!isClicked}>
-                    <MatchingButton>Bestie 매칭하기</MatchingButton>
-                </MatchingButtonWrap>
+                {
+                    requests.length === 0 ? 
+                    <></>
+                    :
+                    <MatchingButtonWrap onClick={onClickMatchingButton} $isVisible={!isClicked}>
+                        <MatchingButton>Bestie 매칭하기</MatchingButton>
+                    </MatchingButtonWrap>
+                }
                 <ConfirmButtonWrap $isVisible={isClicked}>
                     {   
                         isAnyRequestChecked === true 
@@ -83,6 +105,10 @@ export default function TogetherRequestList() {
                     }
                 </ConfirmButtonWrap>
             </RequestHeader>
+            {
+                !requests.length &&     
+                <NoRequest>아직 신청한 Bestie가 없어요!</NoRequest>
+            }
             <RequestList>
                 {requests.map((request, index) => (
                     <TogetherRequest
@@ -90,15 +116,20 @@ export default function TogetherRequestList() {
                         userId={request.userId}
                         isChecked={request.isChecked}
                         isClicked={isClicked} 
+                        isSelected={request.isSelected}
                         nickname={request.nickname}
                         age={request.age}
-                        gender={request.gender}
-                        message={request.message}
+                        gender={request.gender === 'M' ? '남성' : '여성'}
+                        message={request.introduction}
                         onClickCheckButton={() => onClickCheckButton(index)}
                     />
                 ))}
             </RequestList>
         </RequestListBox>
+        {
+            showToast && 
+                <ToastMessage title='매칭 메세지 전달 성공' content='매칭 메세지가 성공적으로 전달됐어요!'/>
+        }
       </>
     )
 }
@@ -198,6 +229,16 @@ const ConfirmButton = styled.button`
     &:hover {
         cursor: pointer;
     }
+`;
+
+const NoRequest = styled.div`
+    color: var(--festie-gray-650, #6F6F6F);
+    font-family: SUIT Variable;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%; 
+    margin-bottom: 16px;
 `;
 
 const RequestList = styled.div`

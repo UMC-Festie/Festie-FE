@@ -1,19 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import DeleteModal from "../components/DeleteModal";
 
-export default function TogetherPost({ isWriter }) {
-  const [title, setTitle] = useState('제목');
-  const [requests, setRequests] = useState(12);
-  const [views, setViews] = useState(320);
-  const [writter, setWritter] = useState('작성자');
-  const [date, setDate] = useState('2023.7.29');
-  const [contents, setContents] = useState(`이상, 못할 밥을 끓는 찾아다녀도, 뿐이다. 든 놀이 그들은 때문이다. 못하다 더운지라 우리 하여도 그들은 그들에게 구하기 뿐이다. 인생을 곳으로 과실이 위하여 것은 석가는 열매를 뿐이다. 뼈 못하다 생의 않는 청춘 철환하였는가? 열매를 불어 수 곳이 같이, 대한 이것이다. 위하여서 불어 공자는 것이다.보라, 같이, 긴지라 이것이다. 인생에 산야에 일월과 때에, 만물은 얼마나 운다. 천자만홍이 풍부하게 우리의 광야에서 아니한 가는 기관과 창공에 얼음이 봄바람이다. 과실이 쓸쓸한 인생에 것은 부패뿐이다. 오아이스도 이상은 가슴이 것은 사막이다.\n
+export default function TogetherPost({ isWriter, togetherData }) {
+  const [title, setTitle] = useState(null);
+  const [requests, setRequests] = useState(null);
+  const [views, setViews] = useState(null);
+  const [writer, setWriter] = useState(null);
+  const [date, setDate] = useState(null);
+  const [contents, setContents] = useState(null);
+  const [preferenceContents, setPreferenceContents] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  그들을 우리 천하를 그들은 있는가? 우는 청춘의 되려니와, 같으며, 이상 반짝이는 속에 있는 황금시대다. 그들의 만물은 눈에 보이는 그들은 청춘은 피고, 우리 것이다. 이성은 광야에서 불어 끝까지 것은 불어 꽃이 얼음과 그러므로 이것이다. 피부가 날카로우나 구할 두손을 굳세게 사라지지 아니더면, 아름다우냐? 그들의 인생을 이 사막이다. 방황하였으며, 피어나기 가는 황금시대다. 그림자는 아름답고 인간의 평화스러운 가치를 크고 소담스러운 현저하게 피다. 인간이 피어나는 청춘에서만 생생하며, 힘있다. 창공에 속에서 영원히 가진 방지하는 철환하였는가?\n
-  
-  평화스러운 곧 만물은 있으랴? 그들의 인간에 인생을 지혜는 우리 앞이 풀이 안고, 있는가? 그것은 곧 발휘하기 힘있다. 그들은 군영과 인생에 가진 얼음이 이 끓는 눈이 구하기 것이다. 천하를 황금시대의 뛰노는 듣기만 칼이다. 만천하의 갑 대고, 사막이다. 물방아 불어 가지에 실로 바이며, 무엇을 힘있다. 피어나기 그와 창공에 하였으며, 심장은 인생의 할지라도 있는가? 인생에 피부가 든 풀이 돋고, 어디 청춘의 우리는 못하다 것이다.
-  `);
-  const [preferenceContents, setPreferenceContents] = useState(`이상, 못할 밥을 끓는 찾아다녀도, 뿐이다. 든 놀이 그들은 때문이다. 못하다 더운지라 우리 하여도 그들은 그들에게 구하기 뿐이다. 인생을 곳으로 과실이 위하여 것은 석가는 열매를 뿐이다. 뼈 못하다 생의 않는 청춘 철환하였는가?`);
+  const handleOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   const onClickEditButton = () => {
     alert('글 수정 페이지');
@@ -27,9 +32,22 @@ export default function TogetherPost({ isWriter }) {
   };
 
   const onClickDeleteButton = () => {
-    alert('글 삭제');
-    
+    handleOpenDeleteModal();
   };
+
+  useEffect(() => {
+    if (!togetherData) {
+      return;
+    }
+
+    setTitle(togetherData.title);
+    setRequests(togetherData.applicantCount);
+    setViews(togetherData.view);
+    setWriter(togetherData.writerNickname);
+    setDate(togetherData.updatedDate);
+    setContents(togetherData.content);
+    setPreferenceContents(togetherData.target);
+  }, [togetherData]);
 
   return (
     <>
@@ -40,9 +58,9 @@ export default function TogetherPost({ isWriter }) {
               <Title>{title}</Title>
             </TitleWrap>
             <WriteInfoWrap>
-              <WritterWrap>
-                <Writter>{writter}</Writter>
-              </WritterWrap>
+              <WriterWrap>
+                <Writer>{writer}</Writer>
+              </WriterWrap>
               <DateWrap>
                 <Date>{date}</Date>
               </DateWrap>
@@ -77,6 +95,10 @@ export default function TogetherPost({ isWriter }) {
                 </EditButtonWrap>
                 <DeleteButtonWrap>
                   <DeleteButton onClick={onClickDeleteButton}>삭제</DeleteButton>
+                  {
+                    isDeleteModalOpen && 
+                    <DeleteModal isOpen={isDeleteModalOpen} closeModal={handleCloseDeleteModal} />
+                  }
                 </DeleteButtonWrap>
               </ButtonWrap>
             </RightWrap>
@@ -96,7 +118,7 @@ export default function TogetherPost({ isWriter }) {
           </SeparationWrap>
           <PreferenceBox>
           <PreferenceTitleWrap>
-            <PreferenceTitle>{writter}의 Bestie 선호 대상</PreferenceTitle>
+            <PreferenceTitle>{writer}의 Bestie 선호 대상</PreferenceTitle>
           </PreferenceTitleWrap>
           <PreferenceContentWrp>
             <PreferenceContent>{preferenceContents}</PreferenceContent>
@@ -150,14 +172,14 @@ const WriteInfoWrap = styled.div`
   margin-top: 16px;
 `;
 
-const WritterWrap = styled.div`
+const WriterWrap = styled.div`
   /* border: 1px solid green; */
   width: auto;
   height: 20px;
   margin-right: 24px;
 `;
 
-const Writter = styled.span`
+const Writer = styled.span`
   color: var(--festie-gray-700, #555);
   font-family: SUIT Variable;
   font-size: 14px;

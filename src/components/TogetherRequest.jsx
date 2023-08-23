@@ -1,22 +1,22 @@
 import styled from "styled-components";
 
-export default function TogetherRequest({ userid, isChecked, onClickCheckButton, isClicked, nickname, age, gender, message }) {
+export default function TogetherRequest({ userid, isChecked, onClickCheckButton, isClicked, nickname, age, gender, message, isSelected }) {
     return (
       <>
         <RequestBox userId={userid}>
             <RequestHeader>
                 <InfoWrap>
                     <NicknameWrap>
-                        <Nickname>{nickname}</Nickname>
+                        <Nickname $isSelected={isSelected} >{nickname}</Nickname>
                     </NicknameWrap>
                     <AgeWrap>
-                        <Age>{age}세</Age>
+                        <Age $isSelected={isSelected} >{age}세</Age>
                     </AgeWrap>
                     <GenderWrap>
-                        <Gender>{gender}</Gender>
+                        <Gender $isSelected={isSelected} >{gender}</Gender>
                     </GenderWrap>
                 </InfoWrap>
-                <CheckButtonWrap $isVisible={isClicked}>
+                <CheckButtonWrap $isVisible={isClicked && !isSelected}>
                     {
                         isChecked === true ?
                             <CheckedButton onClick={onClickCheckButton}>
@@ -31,9 +31,15 @@ export default function TogetherRequest({ userid, isChecked, onClickCheckButton,
                             </UncheckedButton>
                     }
                 </CheckButtonWrap>
+                <SelectedCheckButtonWrap $isSelected={isSelected} >
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="18" height="18" rx="9" fill="#FF7A00"/>
+                    <path d="M13 6L7.5 11.5L5 9" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                </SelectedCheckButtonWrap>
             </RequestHeader>
             <MessageWrap>
-                <Message>{message}</Message>
+                <Message $isSelected={isSelected} >{message}</Message>
             </MessageWrap>
        </RequestBox>
       </>
@@ -68,7 +74,7 @@ const NicknameWrap = styled.div`
 `;
 
 const Nickname = styled.span`
-    color: var(--festie-gray-800, #3A3A3A);
+    color: ${props => (props.$isSelected ? "#B7B7B7" : "#555")};
     font-family: SUIT Variable;
     font-size: 16px;
     font-style: normal;
@@ -81,7 +87,7 @@ const AgeWrap = styled.div`
 `;
 
 const Age = styled.span`
-    color: var(--festie-gray-650, #6F6F6F);
+    color: ${props => (props.$isSelected ? "#B7B7B7" : "#555")};
     font-family: SUIT Variable;
     font-size: 16px;
     font-style: normal;
@@ -94,7 +100,7 @@ const GenderWrap = styled.div`
 `;
 
 const Gender = styled.div`
-    color: var(--festie-gray-650, #6F6F6F);
+    color: ${props => (props.$isSelected ? "#B7B7B7" : "#555")};
     font-family: SUIT Variable;
     font-size: 16px;
     font-style: normal;
@@ -104,6 +110,10 @@ const Gender = styled.div`
 
 const CheckButtonWrap = styled.div`
     display: ${props => (props.$isVisible ? "flex" : "none")};
+`;
+
+const SelectedCheckButtonWrap = styled.div`
+    display: ${props => (props.$isSelected ? "flex" : "none")};
 `;
 
 const UncheckedButton = styled.button`
@@ -142,7 +152,7 @@ const MessageWrap = styled.div`
 `;
 
 const Message = styled.span`
-    color: var(--festie-gray-700, #555);
+    color: ${props => (props.$isSelected ? "#B7B7B7" : "#555")};
     font-family: SUIT Variable;
     font-size: 16px;
     font-style: normal;
