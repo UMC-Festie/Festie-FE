@@ -6,6 +6,7 @@ import TogetherRequestModal from "../components/TogetherRequestModal";
 import TogetherMessage from "../components/TogetherMessage";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export default function TogetherDetail() {
     const [showScrollButton, setShowScrollButton] = useState(false);
@@ -16,6 +17,7 @@ export default function TogetherDetail() {
     const [isApplicantSuccess, setIsApplicantSuccess] = useState(false);
     const [status, setStatus] = useState(0);
     const [userToken, setUserToken] = useState(null);
+    const { togetherId } = useParams();
 
     const onClickScrollToTop = () => {
         window.scrollTo({
@@ -40,6 +42,8 @@ export default function TogetherDetail() {
     };
 
     useEffect(() => {
+        window.scrollTo({top: 0,});
+        
         // scroll
         const handleScroll = () => {
             setShowScrollButton(window.scrollY > 100 ? true : false);
@@ -53,7 +57,7 @@ export default function TogetherDetail() {
     }, []);
 
     useEffect(() => {
-        setUserToken('');
+        setUserToken('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amd1czk5NjZAbmF2ZXIuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2OTI3Nzg4MDEsImV4cCI6MTY5MzM4MzYwMX0.C3jemSOXR1BKsOpfnzqtLCViEGFNf-MGqJl3r_JKGZ0');
 
         const fetchData = async (togetherId) => {
             try {
@@ -73,10 +77,8 @@ export default function TogetherDetail() {
             }
         }
     
-        // [GET] 
-        // 임시 data
-        // TODO: useNavigation
-        fetchData(7);
+        console.log(togetherId);
+        fetchData(togetherId);
     }, [userToken]);
 
     useEffect(() => {

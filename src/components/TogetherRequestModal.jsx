@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ToastMessage from "./ToastMessage";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export default function TogetherRequestModal({ isOpen, closeModal, togetherData, userToken }) {
     const [nickname, setNickname] = useState(null);
@@ -11,6 +12,7 @@ export default function TogetherRequestModal({ isOpen, closeModal, togetherData,
     const [time, setTime] = useState(null);
     const [message, setMessage] = useState('');
     const [showToast, setShowToast] = useState(false);
+    const { togetherId } = useParams();
 
     const onClickCloseModal = () => {
         closeModal();
@@ -64,7 +66,7 @@ export default function TogetherRequestModal({ isOpen, closeModal, togetherData,
     }
 
     const onClickSendRequest = () => {
-        postBestie(7, message);
+        postBestie(togetherId, message);
     };
 
     useEffect(() => {

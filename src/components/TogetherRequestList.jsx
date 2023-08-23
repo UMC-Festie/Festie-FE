@@ -3,6 +3,7 @@ import styled from "styled-components";
 import TogetherRequest from "./TogetherRequest";
 import ToastMessage from "./ToastMessage";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export default function TogetherRequestList({ togetherData, userToken }) {
     const [requests, setRequests] = useState([]);
@@ -10,8 +11,7 @@ export default function TogetherRequestList({ togetherData, userToken }) {
     const [isAnyRequestChecked, setIsAnyRequestChecked] = useState(false);
     const [checkedRequestIndex, setCheckedRequestIndex] = useState(null);
     const [showToast, setShowToast] = useState(false);
-    // const [nickname, setNickname] = useState(null);
-    // const [bestieList, setBestieList] = useState([]); // 신청 수락한 목록
+    const { togetherId } = useParams();
 
     useEffect(() => {
         setIsAnyRequestChecked(requests.some((request) => request.isChecked));
@@ -67,21 +67,17 @@ export default function TogetherRequestList({ togetherData, userToken }) {
         }
     }
 
-    // TogetherRequestList 컴포넌트
-
     const onClickConfirmButton = () => {
         const checkedRequest = requests.find((request, index) => index === checkedRequestIndex);
         
         if (checkedRequest) {
-            // Update isChecked property of the checked request
             const updatedRequests = requests.map((request, index) =>
                 index === checkedRequestIndex ? { ...request, isChecked: true } : request
             );
             
             setRequests(updatedRequests);
 
-            // Call the postChoice function
-            postChoice(7, [checkedRequest.userId]);
+            postChoice(togetherId, [checkedRequest.userId]);
         }
     }
 

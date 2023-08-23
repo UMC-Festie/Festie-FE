@@ -473,7 +473,7 @@ function ConcertMain() {
         )}
         <div className="poster2">
           {thumbnailUrls.map((url, index) => (
-            <div key={index} className="poster-item" onClick={()=> navigate('/together/detail',{ state: togetherIds[index]})}>
+            <div key={index} className="poster-item" onClick={()=> navigate(`/together/detail/${togetherIds[index]}`)}>
               <img src={url} alt={`Thumbnail ${index}`} className='poster-img'/>
               {/*<p className='postertxt'>{status[index]}</p>*/}
               <div className="poster-info" >
