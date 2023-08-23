@@ -111,6 +111,20 @@ li {
     font-weight: 500;
     line-height: 140%;
   }
+
+  .emptyalertform {
+    opacity: 0;
+    display: inline-block;
+    color: #949494;
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-bottom: 12px;
+    font-family: SUIT Variable;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
   
   .inputBirthsex {
     margin-top: 4px;
@@ -171,6 +185,46 @@ li {
   }
   
   .signup2doneBtn {
+    display: flex;
+    width: 294px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 58px;
+    margin-left: 470px;
+    background-color: #c8c8c8;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: 'SUIT Variable', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
+
+  .signup2doneBtn.enabled {
+    display: flex;
+    width: 294px;
+    height: 26px;
+    padding: 12px 23px;
+    margin-top: 58px;
+    margin-left: 470px;
+    background-color: #FF7A00;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: 'SUIT Variable', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    border-radius: 26px;
+  }
+
+  .signupnextBtn.disabled {
     display: flex;
     width: 294px;
     height: 26px;

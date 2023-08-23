@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import './Resetpw.css';
 import alertredIcon from '../assets/alert_circle_red.svg';
 import alertgrayIcon from '../assets/alert_circle_gray.svg';
+import { NavLink } from "react-router-dom";
 
 const ResetPasswordForm = () => {
   const [password, setPassword] = useState("");
   const [isPwNotFound, setIsPwNotFound] = useState(false);
   const [isSpecialCharIncluded, setIsSpecialCharIncluded] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 스크롤을 최상단으로 이동
+  };
 
   const handleChangePassword = (e) => {
     const { value } = e.target;
@@ -57,9 +62,11 @@ const ResetPasswordForm = () => {
                     className="alertredIcon"
                     style={{ marginLeft: '469px', verticalAlign: 'sub' }}
                   />
-                  <p className="resetpworialert">등록되지 않은 이메일이에요</p>
+                  <p className="resetpworialert">비밀번호가 일치하지 않아요</p>
                 </div>
               )}
+            {!isPwNotFound !== false && <span><p className="emptyalertform" style={{ marginLeft: '469px', verticalAlign: 'sub' }}>에러메시지공간</p></span>}
+
             </div>
             <li><strong>바꿀 비밀번호</strong></li>
             {/* <li><input type="password" className="newpwText" placeholder="바꾸려는 비밀번호를 입력해주세요" /></li> */}
@@ -74,14 +81,18 @@ const ResetPasswordForm = () => {
             {isValidPassword && isSpecialCharIncluded && <span><img src={alertgrayIcon} className="alertgrayIcon" style={{ marginLeft: '469px', verticalAlign: 'sub' }} /><p className="pwform">영어 대/소문자, 특수문자 포함 11자 이상</p></span>}
             {/* <img src={alertgrayIcon} className="alertIcon" style={{ marginLeft: '469px', verticalAlign: 'sub' }} />
             <span className="resetpwnewalert">영어 대/소문자, 특수문자 포함 11자 이상</span> */}
-            <div className="doneBtn">완료</div>
+            <NavLink to="/resetPw/finish" style={{ textDecoration: "none" }}>
+              <div className="doneBtn" onClick={handleScrollToTop}>완료</div>
+            </NavLink>
           </ul>
         </form>
       </div>
 
       <div className="togoFind">
         <span className="togofindText">비밀번호가 기억나지 않나요?</span>
-        <span className="resetfindBtn">비밀번호 찾기</span>
+        <NavLink to="/findPw" style={{ textDecoration: "none" }}>
+          <span className="resetfindBtn" onClick={handleScrollToTop}>비밀번호 찾기</span>
+        </NavLink>
         <input type="button" className="togoBtn" />
       </div>
     </>
