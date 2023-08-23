@@ -2,16 +2,26 @@ import styled, { css } from "styled-components";
 import Logo from "../assets/festie_logo.png";
 import SearchIcon from "../assets/search.svg";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUserContext } from '../UserContext';
+import { useCookies } from 'react-cookie';
 
 export default function Header() {
   const [isViewHovering, setIsViewHovering] = useState(0);
   const [isShareHovering, setIsShareHovering] = useState(0);
   const [isTogetherHovering, setIsTogetherHovering] = useState(0);
   const [inputValue, setInputValue] = useState("");
+  const { userEmail } = useUserContext();
+  const [cookies] = useCookies(['accessToken']);
+  const userToken = cookies[userEmail];
 
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const buttonLabel = isLoggedIn !== null ? "My Page" : "로그인/회원가입";
+  useEffect(() => {
+    console.log('header', userEmail, userToken);
+  }, [userEmail, userToken]);
+  
+
+  const isLoggedIn = userToken;
+  const buttonLabel = isLoggedIn !== undefined ? "My Page" : "로그인/회원가입";
   const activeStyle = {
     borderBottom: "3px solid #FF7A00",
   };

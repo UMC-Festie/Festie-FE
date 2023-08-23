@@ -3,15 +3,30 @@ import './Mypage.css';
 import Poster from '../components/Mainposter';
 import posterImage from '../assets/poster_5.png';
 import posterImageBlur from '../assets/poster_9.png';
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useUserContext } from '../UserContext'
 import { useCookies } from 'react-cookie';
 import axios from "axios";
 
 function MyPage() {
-    const [cookies, setCookie, removeCookie] = useCookies(['token']);
-    const logout = removeCookie("token"); // 로그아웃 쿠키에서 토큰 삭제
+    const { userEmail, clearUserEmail } = useUserContext();
+    const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
     const [activeTab, setActiveTab] = useState("정보공유"); // 외부 탭 메뉴 상태, 기본값 설정
     const [innerActiveTab, setInnerActiveTab] = useState("정보공유축제"); // 내부 탭 메뉴 상태, 기본값 설정
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      console.log('mypage', cookies[userEmail]);
+  }, [cookies]);
+
+    const logout = () => {
+      clearUserEmail();
+      removeCookie('accessToken', { path: '/' });
+      console.log(cookies.accessToken);
+
+      alert('로그아웃되었습니다!')
+      navigate('/');
+    } // 로그아웃 쿠키에서 토큰 삭제
 
     const handleTabClick = (index) => {
       setActiveTab(index); // 외부 탭 메뉴 상태 업데이트

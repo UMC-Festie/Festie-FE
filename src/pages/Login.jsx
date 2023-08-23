@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import './Login.css';
 import lineIcon from "../assets/vector_7079.svg";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import { useUserContext } from '../UserContext';
 
 function LoginForm() {
   const [email, setEmail] = useState(''); // 이메일을 위한 상태 변수
   const [password, setPassword] = useState(''); // 비밀번호를 위한 상태 변수
-  const { updateUserEmail } = useUserContext();
-  const [cookies, setCookie] = useCookies(['accessToken']);
+  const { setUserEmail } = useUserContext();
+  const [cookies, setCookie] = useCookies([]);;
     // const [cookies, setCookie] = useCookies(['userId', 'userNickname', 'accessToken']);
+  const navigate = useNavigate();
 
   const onClickLogin = async () => {
     try {
@@ -20,11 +21,15 @@ function LoginForm() {
         password,
       });
 
-      // API 응답에서 받은 토큰 쿠키에 저장
-      setCookie('accessToken', response.data.access_token);
+      // 현재 로그인 한 유저 이메일 컨텍스트 업데이트
+      setUserEmail(email);
 
-      // API 응답에서 받은 토큰 사용하여 유저 이메일 컨텍스트 업데이트
-      updateUserEmail(email);
+      // API 응답에서 받은 토큰 쿠키에 저장
+      setCookie(email, response.data);
+
+      alert('로그인 성공');
+      navigate('/');
+
     } catch (error) {
       console.error('로그인 실패:', error);
     }
