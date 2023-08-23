@@ -1,10 +1,48 @@
 {
   "files": {
-    "main.js": "/static/js/main.4f8142d8.js",
+    "main.css": "/static/css/main.1fa0a189.css",
+    "main.js": "/static/js/main.726adf62.js",
+    "static/media/SUIT-Variable.ttf": "/static/media/SUIT-Variable.ff8793aef8e04790bf8f.ttf",
+    "static/media/image 43.png": "/static/media/image 43.13d22f760acb190a9639.png",
+    "static/media/FestivalImage3.png": "/static/media/FestivalImage3.592ce5345bbfaaf218b8.png",
+    "static/media/main_background.png": "/static/media/main_background.ace9bf2147624f670b91.png",
+    "static/media/FestivalImage1.png": "/static/media/FestivalImage1.384af7b9f096d3791b32.png",
+    "static/media/FestivalImage2.png": "/static/media/FestivalImage2.b487631cf3d70125af8d.png",
+    "static/media/image1.png": "/static/media/image1.1028d7b363fbe83f3a0e.png",
+    "static/media/image2.png": "/static/media/image2.aa17b0fa6de0f18bccc1.png",
+    "static/media/image3.png": "/static/media/image3.f308e3973a64b154a9da.png",
+    "static/media/image5.png": "/static/media/image5.f308e3973a64b154a9da.png",
+    "static/media/festival_thumbnail.png": "/static/media/festival_thumbnail.f01947c8e128bc3ffe6c.png",
+    "static/media/image7.png": "/static/media/image7.95b8eb1e45682f82b68f.png",
+    "static/media/image6.png": "/static/media/image6.ebf098a3a62542f4518f.png",
+    "static/media/FestivalMainImage.png": "/static/media/FestivalMainImage.4e3bc31fe8251bf863eb.png",
+    "static/media/image4.png": "/static/media/image4.1b639afaf244dd718901.png",
+    "static/media/image.jpg": "/static/media/image.4c6feea2e606d003d8c9.jpg",
+    "static/media/poster_5.png": "/static/media/poster_5.fde7dd2e9acbae44f66d.png",
+    "static/media/poster_6.png": "/static/media/poster_6.e98c66812bd8e6644bc1.png",
+    "static/media/poster_1.png": "/static/media/poster_1.287a0532853539a43b5e.png",
+    "static/media/poster_9.png": "/static/media/poster_9.3c3aa6734e5dd72ffdb6.png",
+    "static/media/main_hand.png": "/static/media/main_hand.97aaa7702db436e8b6f0.png",
+    "static/media/BreeSerif-Regular.ttf": "/static/media/BreeSerif-Regular.751eb941c0e1335ad247.ttf",
+    "static/media/Vector_7071.png": "/static/media/Vector_7071.e4be5600c62d2f1ce508.png",
+    "static/media/main_comingsoon.svg": "/static/media/main_comingsoon.77471c0f20766595de409ee0826fab90.svg",
+    "static/media/alert_circle_gray.svg": "/static/media/alert_circle_gray.b9d8e82b98482c1ea1b058291390ca9e.svg",
+    "static/media/alert_circle_red.svg": "/static/media/alert_circle_red.3e87f1d755d74a2afbdb741d0d7dd911.svg",
+    "static/media/search.svg": "/static/media/search.ad6019b5fcc81030d7080ec093d33f62.svg",
     "index.html": "/index.html",
-    "main.4f8142d8.js.map": "/static/js/main.4f8142d8.js.map"
+    "static/media/main_together.svg": "/static/media/main_together.cb0912947b33f50bc8f76ec9ec33e927.svg",
+    "static/media/arrow_right.svg": "/static/media/arrow_right.af9bdff789553af9fc020701484c0f2c.svg",
+    "static/media/plus.svg": "/static/media/plus.fd9d51215490bbb6768a0801a810d295.svg",
+    "static/media/chevron_down.svg": "/static/media/chevron_down.f3c2bde252c9ac9f0e53.svg",
+    "static/media/check_gray.svg": "/static/media/check_gray.47ebadcdbc7301fc22f9.svg",
+    "static/media/check_white.svg": "/static/media/check_white.41f1d80f9e7102724cd9.svg",
+    "static/media/SelectArrow.svg": "/static/media/SelectArrow.c91f2a3fb0fb3b25f82ae70d88cfef2d.svg",
+    "static/media/vector_7079.svg": "/static/media/vector_7079.699a4fb0bb0925b12aef11c5765a5dde.svg",
+    "main.1fa0a189.css.map": "/static/css/main.1fa0a189.css.map",
+    "main.726adf62.js.map": "/static/js/main.726adf62.js.map"
   },
   "entrypoints": [
-    "static/js/main.4f8142d8.js"
+    "static/css/main.1fa0a189.css",
+    "static/js/main.726adf62.js"
   ]
 }
