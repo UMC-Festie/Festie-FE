@@ -49,41 +49,39 @@ export default function Main() {
         left: "722px",
       };
 
-      const curveimgStyles = {
-        position: "absolute",
-        top: "0px",
-        left: "-90px",
-      };
+  const handimgStyles = {
+    position: "absolute",
+    top: "69px",
+    left: "722px",
+  };
 
-      const curvetopimgStyles = {
-        position: "absolute",
-        top: "247px",
-        left: "757.1px",
-      };
+  const curveimgStyles = {
+    position: "absolute",
+    top: "0px",
+    left: "-90px",
+  };
 
-      const textmainStyles = {
-        position: "absolute",
-        top: "70px",
-        left: "70px",
-        color: "white",
-        fontSize: "48px",
-      };     
+  const curvetopimgStyles = {
+    position: "absolute",
+    top: "247px",
+    left: "757.1px",
+  };
 
-      const textStyles = {
-        position: "absolute",
-        top: "221px",
-        left: "70px",
-        color: "white",
-        fontSize: "16px",
-      };      
+  const textmainStyles = {
+    position: "absolute",
+    top: "70px",
+    left: "70px",
+    color: "white",
+    fontSize: "48px",
+  };
 
-      const btnStyles = {
-        position: "absolute",
-        top: "327px",
-        left: "70px",
-        color: "white",
-        fontSize: "20px",
-      };   
+  const textStyles = {
+    position: "absolute",
+    top: "221px",
+    left: "70px",
+    color: "white",
+    fontSize: "16px",
+  };
 
       const [posterInfo, setPosterInfo] = useState(null);
       const [posterInfo1, setPosterInfo1] = useState(null);
@@ -364,5 +362,7 @@ export default function Main() {
                 </NavLink>
             </div>
         </div>
-    )
+      </div>
+    </div>
+  );
 }
