@@ -1,28 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './Mypage.css';
 import Poster from '../components/Mainposter';
 import posterImage from '../assets/poster_5.png';
 import posterImageBlur from '../assets/poster_9.png';
 import { NavLink, useNavigate } from "react-router-dom";
-import { useUserContext } from '../UserContext'
-import { useCookies } from 'react-cookie';
-import axios from "axios";
+import { AuthContext } from '../AuthContext';
+import { removeCookie } from '../Cookies';
 
 function MyPage() {
-    const { userEmail, clearUserEmail } = useUserContext();
-    const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
     const [activeTab, setActiveTab] = useState("정보공유"); // 외부 탭 메뉴 상태, 기본값 설정
     const [innerActiveTab, setInnerActiveTab] = useState("정보공유축제"); // 내부 탭 메뉴 상태, 기본값 설정
     const navigate = useNavigate();
-
-    useEffect(() => {
-      console.log('mypage', cookies[userEmail]);
-  }, [cookies]);
+    const { setIsLoggedIn } = useContext(AuthContext);
 
     const logout = () => {
-      clearUserEmail();
-      removeCookie('accessToken', { path: '/' });
-      console.log(cookies.accessToken);
+      removeCookie('accessToken', { path : '/'});
+      setIsLoggedIn(false);
+      localStorage.setItem('isLoggedIn', false);
 
       alert('로그아웃되었습니다!')
       navigate('/');

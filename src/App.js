@@ -27,15 +27,12 @@ import ReviewWrite from "./pages/ReviewWrite";
 import TogetherDetail from "./pages/TogetherDetail";
 import PerformanceDetail from "./pages/PerformanceDetail"
 import FestivalDetail from "./pages/FestivalDetail"
-import { UserProvider } from './UserContext';
-
 
 function App() {
   return (
     <>
       <GlobalStyle />
       <Reset />
-      <UserProvider>
         <Header />
         <Routes>
           <Route path="/" element={<Main />} />  {/* 메인 */}
@@ -72,7 +69,6 @@ function App() {
           <Route path="/together/detail/:togetherId" element={<TogetherDetail />} />  {/* 같이가요 상세 */}
         </Routes>
         <Footer />
-      </UserProvider>
     </>
   );
 }

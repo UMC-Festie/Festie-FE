@@ -7,8 +7,7 @@ import TogetherMessage from "../components/TogetherMessage";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useUserContext } from '../UserContext';
-import { useCookies } from 'react-cookie';
+import { getCookie } from '../Cookies'
 
 export default function TogetherDetail() {
     const [showScrollButton, setShowScrollButton] = useState(false);
@@ -18,15 +17,8 @@ export default function TogetherDetail() {
     const [isApplicant, setIsApplicant] = useState(false);
     const [isApplicantSuccess, setIsApplicantSuccess] = useState(false);
     const [status, setStatus] = useState(0);
-    const [userToken, setUserToken] = useState(null);
     const { togetherId } = useParams();
-    const { userEmail } = useUserContext();
-    const [cookies] = useCookies(['accessToken']);
-  
-    useEffect(() => {
-        setUserToken(cookies[userEmail]);
-        console.log('토큰', userEmail, userToken);
-    }, [userEmail]);
+    const accessToken = getCookie('accessToken');
 
     const onClickScrollToTop = () => {
         window.scrollTo({
@@ -36,9 +28,9 @@ export default function TogetherDetail() {
     };
 
     const handleOpenModal = () => {
-        console.log(userToken);
+        console.log(accessToken);
 
-        if(!userToken) {
+        if(!accessToken) {
             alert('로그인이 필요한 서비스입니다.');
             return;
         }
@@ -70,7 +62,7 @@ export default function TogetherDetail() {
             try {
                 const response = await axios.get(`/api/together/${togetherId}`, {
                     headers: {
-                        "X-AUTH-TOKEN": userToken
+                        "X-AUTH-TOKEN": accessToken
                     }
                 });
     
@@ -86,7 +78,7 @@ export default function TogetherDetail() {
     
         console.log(togetherId);
         fetchData(togetherId);
-    }, [togetherId, userToken]);
+    }, [togetherId, accessToken]);
 
     useEffect(() => {
         if(!togetherData) 
@@ -135,13 +127,13 @@ export default function TogetherDetail() {
                                 <TogetherRequestModal 
                                     isOpen={isModalOpen} 
                                     closeModal={handleCloseModal} 
-                                    userToken={userToken} 
+                                    userToken={accessToken} 
                                     togetherData={togetherData} 
                                 />
                         }
                         {
                             isWriter ? (
-                                <TogetherRequestList userToken={userToken} togetherData={togetherData} />
+                                <TogetherRequestList userToken={accessToken} togetherData={togetherData} />
                             ) : !isApplicant ? (
                                 <RequestBestieButton onClick={handleOpenModal}>
                                 Bestie가 되고 싶어요
