@@ -1,30 +1,60 @@
-import { useState } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { getCookie } from '../Cookies'
 import styled from "styled-components";
 
 export default function DeleteModal({ isOpen, closeModal }) {
-    const [title, setTitle] = useState('글 삭제');
-    const [content, setContent] = useState('글을 삭제하시겠어요? 삭제된 글은 복구가 불가능해요.');
-    
+    const TITLE = '글 삭제';
+    const CONTENT = '글을 삭제하시겠어요? 삭제된 글은 복구가 불가능해요.';
+    const { togetherId } = useParams();
+    const accessToken = getCookie('accessToken');
+    const navigate = useNavigate();
+
+    const DeletePost = async (togetherId) => {
+        try {
+            const response = await axios.delete(`/api/together/${togetherId}`, {
+                headers: {
+                    "X-AUTH-TOKEN": accessToken
+                }
+            });
+
+            return response;
+        } catch (error) {
+            console.log(`[ERROR]: ${error}`)
+        }
+    }
+
     const onClickCancelButton = () => {
         closeModal();
     };
 
-    const onClickDeleteButton = () => {
-        alert('삭제되었습니다!');
+    const onClickDeleteButton = async () => {
+        const response = await DeletePost(togetherId);
+        // console.log(response);
 
-        // TODO: API 
-
-        closeModal();
+        if (response && response.status === 200) {
+            alert('삭제되었습니다!');
+            closeModal();
+            navigate('/together');
+        } 
+        if (response && response.status === 2006) {
+            console.log('같이가요 게시글 삭제 권한이 없습니다.');
+            return;
+        } 
+        if (response && response.status === 7001) {
+            console.log('해당하는 같이가요 게시글이 없습니다.');
+            return;
+        } 
     };
-    
+
     return (
         <ModalWrap $isOpen={isOpen}>
             <Modal>
                 <TitleWrap>
-                    <Title>{title}</Title>
+                    <Title>{TITLE}</Title>
                 </TitleWrap>
                 <ContentWrap>
-                    <Content>{content}</Content>
+                    <Content>{CONTENT}</Content>
                 </ContentWrap>
                 <ButtonWrap>
                     <CancelButton onClick={onClickCancelButton}>취소</CancelButton>
