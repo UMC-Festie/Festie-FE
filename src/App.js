@@ -25,50 +25,91 @@ import TicketingWrite from "./pages/TicketingWrite";
 import TogetherWrite from "./pages/TogetherWrite";
 import ReviewWrite from "./pages/ReviewWrite";
 import TogetherDetail from "./pages/TogetherDetail";
-import PerformanceDetail from "./pages/PerformanceDetail"
-import FestivalDetail from "./pages/FestivalDetail"
+import PerformanceDetail from "./pages/PerformanceDetail";
+import FestivalDetail from "./pages/FestivalDetail";
+import NewPerformanceDetail from "./pages/NewPerformanceDetail";
+import NewFestivalDetail from "./pages/NewFestivalDetail";
 
 function App() {
   return (
     <>
       <GlobalStyle />
       <Reset />
-        <Header />
-        <Routes>
-          <Route path="/" element={<Main />} />  {/* 메인 */}
-          <Route path="/signUp" element={<SignupForm />} />  {/* 회원가입 */}
-          <Route path="/signUp/next" element={<Signup2Form />} />  {/* 회원가입2 */}
-          <Route path="/login" element={<Login />} />  {/* 로그인 */}
-          <Route path="/findPw" element={<FindPasswordForm />} />  {/* 비밀번호 찾기 */}
-          <Route path="/findPw/finish" element={<FindPwFinishForm />} />  {/* 비밀번호 찾기 완료 */}
-          <Route path="/resetPw" element={<ResetPasswordForm />} />  {/* 비밀번호 수정 */}
-          <Route path="/resetPw/finish" element={<ResetPasswordFinishForm />} />  {/* 비밀번호 수정 완료 */}
-
-
-          <Route path="/search" element={<Search />} /> {/* 검색 결과 */}
-          <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
-
-
-          <Route path="/view/performance" element={<Contents />} />  {/* 정보 보기 > 등록된 공연 메인 */}
-          <Route path="/view/festival" element={<Festival />} />  {/* 정보 보기 > 등록된 축제 메인 */}
-          <Route path="/view/performance/detail" element={<PerformanceDetail />} />  {/* 정보 보기 > 등록된 공연 상세 */} 
-          <Route path="/view/festival/detail" element={<FestivalDetail />} />  {/* 정보 보기 > 등록된 축제 상세 */}
-
-
-          <Route path="/share/performance" element={<SharingConcert />} />  {/* 정보 공유 > 새로운 공연 메인 */}
-          <Route path="/share/performance/write" element={<PerformanceWrite />}/> {/* 정보 공유 > 새로운 공연 작성 */}
-          <Route path="/share/festival" element={<SharingFestival />} />  {/* 정보 공유 > 새로운 축제 메인 */}
-          <Route path="/share/review" element={<ReviewMain />} />  {/* 정보 공유 > 후기 메인 */}
-          <Route path="/share/review/write" element={<ReviewWrite />} />  {/* 정보 공유 > 후기 작성 */}
-          <Route path="/share/ticketing" element={<Calendar />} />  {/* 정보 공유 > 티켓팅 메인 */}
-          <Route path="/share/ticketing/write" element={<TicketingWrite />} />  {/* 정보 공유 > 티켓팅 작성 */}
-
-
-          <Route path="/together" element={<TogetherMain />} />  {/* 같이가요 메인 */}
-          <Route path="/together/write" element={<TogetherWrite />} />{" "}  {/* 같이가요  작성 */}
-          <Route path="/together/detail/:togetherId" element={<TogetherDetail />} />  {/* 같이가요 상세 */}
-        </Routes>
-        <Footer />
+      <Header />
+      <Routes>
+        <Route path="/" element={<Main />} /> {/* 메인 */}
+        <Route path="/signUp" element={<SignupForm />} /> {/* 회원가입 */}
+        <Route path="/signUp/next" element={<Signup2Form />} />{" "}
+        {/* 회원가입2 */}
+        <Route path="/login" element={<Login />} /> {/* 로그인 */}
+        <Route path="/findPw" element={<FindPasswordForm />} />{" "}
+        {/* 비밀번호 찾기 */}
+        <Route path="/findPw/finish" element={<FindPwFinishForm />} />{" "}
+        {/* 비밀번호 찾기 완료 */}
+        <Route path="/resetPw" element={<ResetPasswordForm />} />{" "}
+        {/* 비밀번호 수정 */}
+        <Route
+          path="/resetPw/finish"
+          element={<ResetPasswordFinishForm />}
+        />{" "}
+        {/* 비밀번호 수정 완료 */}
+        <Route path="/search" element={<Search />} /> {/* 검색 결과 */}
+        <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
+        <Route path="/view/performance" element={<Contents />} />{" "}
+        {/* 정보 보기 > 등록된 공연 메인 */}
+        <Route path="/view/festival" element={<Festival />} />{" "}
+        {/* 정보 보기 > 등록된 축제 메인 */}
+        <Route
+          path="/view/performance/detail/:performanceId"
+          element={<PerformanceDetail />}
+        />{" "}
+        {/* 정보 보기 > 등록된 공연 상세 */}
+        <Route
+          path="/view/festival/detail/:festivalId"
+          element={<FestivalDetail />}
+        />{" "}
+        {/* 정보 보기 > 등록된 축제 상세 */}
+        <Route path="/share/performance" element={<SharingConcert />} />{" "}
+        {/* 정보 공유 > 새로운 공연 메인 */}
+        <Route
+          path="/share/performance/detail/:performancdId"
+          element={<NewPerformanceDetail />}
+        />{" "}
+        {/* 정보 공유 > 새로운 공연 상세 */}
+        <Route
+          path="/share/performance/write"
+          element={<PerformanceWrite />}
+        />{" "}
+        {/* 정보 공유 > 새로운 공연 작성 */}
+        <Route path="/share/festival" element={<SharingFestival />} />{" "}
+        {/* 정보 공유 > 새로운 축제 메인 */}
+        <Route
+          path="/share/festival/detail/:festivalId"
+          element={<NewFestivalDetail />}
+        />{" "}
+        {/* 정보 공유 > 새로운 축제 상세 */}
+        <Route path="/share/review" element={<ReviewMain />} />{" "}
+        {/* 정보 공유 > 후기 메인 */}
+        <Route path="/share/review/write" element={<ReviewWrite />} />{" "}
+        {/* 정보 공유 > 후기 작성 */}
+        <Route path="/share/ticketing" element={<Calendar />} />{" "}
+        {/* 정보 공유 > 티켓팅 메인 */}
+        <Route
+          path="/share/ticketing/write"
+          element={<TicketingWrite />}
+        />{" "}
+        {/* 정보 공유 > 티켓팅 작성 */}
+        <Route path="/together" element={<TogetherMain />} />{" "}
+        {/* 같이가요 메인 */}
+        <Route path="/together/write" element={<TogetherWrite />} />{" "}
+        {/* 같이가요  작성 */}
+        <Route
+          path="/together/detail/:togetherId"
+          element={<TogetherDetail />}
+        />{" "}
+        {/* 같이가요 상세 */}
+      </Routes>
+      <Footer />
     </>
   );
 }
