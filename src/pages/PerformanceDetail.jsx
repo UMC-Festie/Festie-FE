@@ -27,28 +27,27 @@ export default function PerformanceDetail() {
   const onClickImageMoreViewButton = () => {
     setIsMoreView(!isMoreView);
   }; // 클릭시 상태 반전
-  const { performanceId } = useParams();
-  console.log(performanceId);
-  useEffect(() => {
-    const accessToken = getCookie("accessToken");
+  const { performancdId } = useParams();
+  console.log(performancdId);
+  const accessToken = getCookie("accessToken");
+  const [festivalData, setFestivalData] = useState(null); // 데이터를 저장할 상태를 정의합니다.
 
+  useEffect(() => {
     axios
-      .get(`/api/performance/${performanceId}`, {
+      .get(`/api/performance/${performancdId}`, {
         headers: {
           "X-AUTH-TOKEN": accessToken,
         },
       })
       .then((response) => {
-        // 여기서 response.data에 API 응답 데이터가 들어 있을 것입니다.
         console.log(response.data);
 
-        // API 응답에서 공연 이름을 가져와 상태에 설정합니다.
-        setPerformanceName(response.data.name);
+        setFestivalData(response.data);
       })
       .catch((error) => {
-        console.error(error);
+        console.error("에러 발생:", error);
       });
-  }, []); // 빈 배열을 전달하여 한 번만 실행되도록 설정
+  }, [performancdId, accessToken]);
 
   const DetailsContent = () => {
     return (

@@ -13,52 +13,6 @@ export default function Main() {
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
   const [activeTab, setActiveTab] = useState("상세정보");
-  const eventDetails = `
-    부산국제매직페스티벌은 2006년부터 시작되어 문화콘텐츠 산업의 떠오르는 블루오션인 ‘매직’을 테마로 한 국내 100만 매직 매니아의 꿈의 축제인 국내 유일 세계 최대 규모의 마술 페스티벌이다. \n
-    올해 10월까지 진행되는 제18회 부산국제매직페스티벌에는 매직서커스[봄], 매직컨벤션, 제5회 버스킹챔피언십, 매직서커스[가을], 한가위 매직 판타지아 등 다양한 행사들이 준비되어있다.\n
-
-    [행사내용]\n
-    \n
-    행사별 일정\n
-    1. 매직서커스[봄]\n
-    기간 : 2023년 4월 15일 ~ 6월 11일 (매주 토, 일) * 6월 6일(화) 추가운영\n
-    장소 : 스포원파크 꿈나래어린이극장\n
-    프로그램 : 매직서커스(공연), 마술놀이(체험), 세계마법체험전(전시)\n
-    주최/주관 : (사)부산국제매직페스티벌조직위원회\n
-    후원/협찬 : 부산광역시, 해운대구, 부산예술대학교, 부산지방공단스포원\n
-    예매처 : YES24, 네이버, 놀이의발견 등\n
-
-    2. 매직컨벤션\n
-    기간 : 2023년 6월 30일(금) ~ 7월 2일(일)\n
-    장소 : 영화의전당\n
-    프로그램 : FISM QC BIMF 국제마술대회(대회), 매직갈라쇼(공연), 렉쳐(강연), 매직토크쇼, 매직라운지(체험) 등\n
-    주최/주관 : (사)부산국제매직페스티벌조직위원회, (재)영화의전당\n
-    후원/협찬 : 부산광역시, 해운대구, 부산예술대학교\n
-    예매처 : YES24, 네이버, 영화의전당 등\n
-    \n
-    3. 제5회 버스킹챔피언십\n
-    기간 : 2023년 7월 1일(토) ~ 2일(일)\n
-    장소 : 해운대 구남로 일대\n
-    프로그램 : 국제매직버스킹챔피언십(대회) 등\n
-    주최/주관 : (사)부산국제매직페스티벌조직위원회\n
-    후원/협찬 : 부산광역시, 해운대구, 부산예술대학교\n
-    \n
-    4. 매직서커스[가을]\n
-    기간 : 2023년 9월 ~ 10월 (매주 토, 일) * 10월 3일(화), 10월 9일(월) 추가운영\n
-    장소 : 스포원파크 꿈나래어린이극장\n
-    프로그램 : 매직서커스(공연), 마술놀이(체험), 세계마법체험전(전시)\n
-    주최/주관 : (사)부산국제매직페스티벌조직위원회\n
-    후원/협찬 : 부산광역시, 해운대구, 부산예술대학교, 부산지방공단스포원\n
-    예매처 : YES24, 네이버, 놀이의발견 등\n
-    \n
-    5. 한가위 매직 판타지아\n
-    기간 : 2023년 9월 29일(금) ~ 10월 1일(일)\n
-    장소 : 부산시민회관 소극장\n
-    프로그램 : 기획공연, 체험 프로그램 등\n
-    주최/주관 : (사)부산국제매직페스티벌조직위원회\n
-    후원/협찬 : 부산광역시, 해운대구, 부산예술대학교\n
-    예매처 : YES24, 네이버, 놀이의발견 등\n
-`;
   const Manager = "덕구";
   const Inquiry = "010-1234-5678 / https://www.hibimf.org/";
 
@@ -75,7 +29,15 @@ export default function Main() {
   };
   const DetailsContent = () => {
     return (
-      <ContentsWrap style={{ width: "910px" }}>{eventDetails}</ContentsWrap>
+      <>
+        {festivalData !== null ? (
+          <ContentsWrap style={{ width: "910px" }}>
+            {festivalData.content}
+          </ContentsWrap>
+        ) : (
+          <ContentsWrap></ContentsWrap>
+        )}
+      </>
     );
   };
 
@@ -90,7 +52,6 @@ export default function Main() {
       source: FestivalImage3,
     },
   ];
-
   const ImageContent = () => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -98,13 +59,19 @@ export default function Main() {
       setSelectedImageIndex(index);
     };
     const onNextImage = () => {
-      setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      if (festivalData !== null) {
+        setSelectedImageIndex(
+          (prevIndex) => (prevIndex + 1) % festivalData.imagesUrl.length
+        );
+      }
     };
 
     const onPrevImage = () => {
-      setSelectedImageIndex((prevIndex) =>
-        prevIndex === 0 ? images.length - 1 : prevIndex - 1
-      );
+      if (festivalData !== null) {
+        setSelectedImageIndex((prevIndex) =>
+          prevIndex === 0 ? festivalData.imagesUrl.length - 1 : prevIndex - 1
+        );
+      }
     };
 
     return (
@@ -127,7 +94,7 @@ export default function Main() {
             />
           </ButtonIcon>
           <FestivalMainImage
-            src={images[selectedImageIndex].source}
+            src={festivalData.imagesUrl[selectedImageIndex]}
             alt="Festival Image"
           ></FestivalMainImage>
           <ButtonIcon
@@ -147,10 +114,10 @@ export default function Main() {
             />
           </ButtonIcon>
         </FestivalMainImageWrap>
-        {images.map((image, index) => (
+        {festivalData.imagesUrl.map((image, index) => (
           <PreviewImage
             key={index}
-            src={image.source}
+            src={image}
             alt={`Image ${index}`}
             onClick={() => onClickImage(index)}
           />
@@ -306,56 +273,92 @@ export default function Main() {
               )}
             </TextWrapper>
             <TextWrapper>
-              <Text>위치</Text>
-              <ContentText>토 18:00 (100분)</ContentText>
+              <Text>시간</Text>
+              {festivalData !== null ? (
+                <ContentText>{festivalData.startTime}</ContentText>
+              ) : (
+                <ContentText></ContentText>
+              )}
             </TextWrapper>
             <TextWrapper>
-              <Text>가격</Text>
-              <ContentText>프로그램별 상이(유/무료)</ContentText>
+              <Text>장소</Text>
+              {festivalData !== null ? (
+                <ContentText>{festivalData.location}</ContentText>
+              ) : (
+                <ContentText></ContentText>
+              )}
             </TextWrapper>
-            <TextWrapper>
-              <Text>주최</Text>
-              <ContentText>(사)부산국제매직페스티벌 조직위원회</ContentText>
-            </TextWrapper>
-            <TextWrapper>
-              <Text>전화번호</Text>
-              <Content3Text>051-626-7002</Content3Text>
-            </TextWrapper>
+
             <TextWrapper>
               <Info>관련정보</Info>
               <Content3Text>
-                <CustomSvgBook
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                >
-                  <path
-                    d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M20 4H28V12"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M13.332 18.6667L27.9987 4"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </CustomSvgBook>
-                <InfoText>공식홈페이지</InfoText>
-                <InstaLogo src={InstagramLogo} alt="Instagram Logo"></InstaLogo>
-                <InfoText>@busanmagicfestival</InfoText>
+                {festivalData !== null ? (
+                  <InfoText href={festivalData.reservationLink}>
+                    <CustomSvgBook
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                    >
+                      <path
+                        d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M20 4H28V12"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M13.332 18.6667L27.9987 4"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </CustomSvgBook>
+                    예매하기
+                  </InfoText>
+                ) : (
+                  <InfoText>
+                    <CustomSvgBook
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                    >
+                      <path
+                        d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M20 4H28V12"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M13.332 18.6667L27.9987 4"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </CustomSvgBook>
+                    예매하기
+                  </InfoText>
+                )}
               </Content3Text>
             </TextWrapper>
             <RelatedInfoWrapper>
@@ -394,9 +397,20 @@ export default function Main() {
       </SelectWrapper>
       <ManagerInquiryWrap>
         <ManagerInquiry>관리자</ManagerInquiry>
-        <ManagerInquiryText>{Manager}</ManagerInquiryText>
+        {festivalData !== null ? (
+          <ManagerInquiryText>{festivalData.adminsName}</ManagerInquiryText>
+        ) : (
+          <ManagerInquiryText></ManagerInquiryText>
+        )}
         <ManagerInquiry>문의처</ManagerInquiry>
-        <ManagerInquiryText>{Inquiry}</ManagerInquiryText>
+        {festivalData !== null ? (
+          <ManagerInquiryText>
+            <Text3>{festivalData.adminsPhone}</Text3>
+            <div>{festivalData.adminsSiteAddress}</div>
+          </ManagerInquiryText>
+        ) : (
+          <ManagerInquiryText></ManagerInquiryText>
+        )}
       </ManagerInquiryWrap>
     </Container>
   );
@@ -468,6 +482,8 @@ const CustomSvgBook = styled.svg`
   width: 32px;
   height: 32px;
   cursor: pointer;
+  display: flex;
+  margin-right: 10px;
 `;
 
 const SvgPath = styled.path`
@@ -528,7 +544,7 @@ const ContentInfo = styled.div`
   flex-direction: column;
 `;
 
-const InfoText = styled.div`
+const InfoText = styled.a`
   color: var(--festie-gray-700, #555);
   font-family: SUIT Variable;
   font-size: 20px;
@@ -536,6 +552,9 @@ const InfoText = styled.div`
   font-weight: 500;
   line-height: 140%;
   letter-spacing: 0.2px;
+  text-decoration: none;
+  display: flex;
+  text-align: center;
 `;
 
 const InstaLogo = styled.img`
@@ -554,7 +573,7 @@ const ContentTitle = styled.div`
   margin-top: 10px;
   flex-shrink: 0;
   width: 625px;
-  margin-bottom: 30px;
+  margin-bottom: 116px;
   white-space: pre-line;
 `;
 
@@ -716,6 +735,11 @@ const ManagerInquiryText = styled.div`
   font-weight: 400;
   line-height: 140%; /* 19.6px */
   letter-spacing: 0.14px;
+  display: flex;
+`;
+
+const Text3 = styled.div`
+  margin-right: 15px;
 `;
 
 const ImageContentWrap = styled.div`

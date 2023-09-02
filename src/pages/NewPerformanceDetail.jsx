@@ -59,6 +59,11 @@ export default function PerformanceDetail() {
             height="200" // 이미지의 높이를 조절하세요.
           />
         ))}
+        {festivalData !== null ? (
+          <ContentDetailText>{festivalData.content}</ContentDetailText>
+        ) : (
+          <ContentDetailText></ContentDetailText>
+        )}
       </ImageWrap>
     );
   };
@@ -384,10 +389,24 @@ const Image = styled.img`
 
 const Image43 = styled.img`
   width: 100%;
+  height: 100%;
 `;
 
 const ImageWrap = styled.div`
   width: 910px;
+`;
+
+const ContentDetailText = styled.div`
+  color: var(--festie-gray-800, #3a3a3a);
+  font-family: SUIT Variable;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 25.2px */
+  letter-spacing: 0.18px;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
 `;
 const Rectangle = styled.div`
   display: inline-flex;
@@ -641,7 +660,6 @@ const ImageMoreWrap = styled.div`
   max-height: ${(props) => (props.isMoreView ? "" : "195px")};
   overflow: hidden;
   justify-content: center;
-  width: 100%;
 `;
 
 const WhiteGradientOverlay = styled.div`
