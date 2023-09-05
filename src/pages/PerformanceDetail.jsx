@@ -9,7 +9,6 @@ import { getCookie } from "../Cookies";
 export default function PerformanceDetail() {
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
-  const [performanceName, setPerformanceName] = useState(""); // 공연 이름 상태
 
   const handleRectangle1Click = () => {
     setCount1((prevCount) => prevCount + 1);
@@ -19,46 +18,88 @@ export default function PerformanceDetail() {
     setCount2((prevCount) => prevCount + 1);
   };
 
-  const Manager = "(사)부산국제매직페스티벌 조직위원회";
-  const Inquiry = "051-626-7002 / https://www.hibimf.org/";
-
   const [isMoreView, setIsMoreView] = useState(false); // 더보기&접기 상태 저장
 
   const onClickImageMoreViewButton = () => {
     setIsMoreView(!isMoreView);
   }; // 클릭시 상태 반전
-  const { performancdId } = useParams();
-  console.log(performancdId);
+  const { performanceid } = useParams();
   const accessToken = getCookie("accessToken");
-  const [festivalData, setFestivalData] = useState(null); // 데이터를 저장할 상태를 정의합니다.
+  const [festivalData, setFestivalData] = useState(null);
 
   useEffect(() => {
     axios
-      .get(`/api/performance/${performancdId}`, {
+      .get(`/api/performance/${performanceid}`, {
         headers: {
           "X-AUTH-TOKEN": accessToken,
         },
       })
       .then((response) => {
         console.log(response.data);
-
         setFestivalData(response.data);
       })
       .catch((error) => {
-        console.error("에러 발생:", error);
+        console.error(error);
       });
-  }, [performancdId, accessToken]);
+  }, [performanceid, accessToken]);
+  console.log(performanceid);
+
+  //dday계산
+  function calculateDday(currentDate, startDate, endDate) {
+    if (currentDate < startDate) {
+      const timeDiff = startDate - currentDate;
+      const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+      return `D-${daysDiff}`;
+    } else if (currentDate >= startDate && currentDate <= endDate) {
+      return "행사중";
+    } else {
+      return "행사종료";
+    }
+  }
+  const currentDate = new Date();
+  let dday = "D-Day";
+  if (festivalData != null) {
+    dday = calculateDday(
+      currentDate,
+      festivalData.startDate,
+      festivalData.endDate
+    );
+  }
+
+  //image 데이터 처리
+  let imageUrl = "";
+  if (festivalData != null) {
+    imageUrl = festivalData.images;
+  }
+
+  const urlPattern = /\[([^)]+)\]/;
+  const matches = imageUrl.match(urlPattern);
+  if (matches) {
+    imageUrl = matches[1];
+  }
 
   const DetailsContent = () => {
     return (
       <ContentsWrap isMoreView={isMoreView}>
-        <ImageMoreWrap isMoreView={isMoreView}>
-          {isMoreView === false && <WhiteGradientOverlay />}
-          <Image43 src={image43} alt="Your Image" />
-        </ImageMoreWrap>
-        {isMoreView === false && (
-          <PlusButton onClick={onClickImageMoreViewButton}>더보기</PlusButton>
-        )}
+        <ContentsDetailWrap>
+          <ImageMoreWrap isMoreView={isMoreView}>
+            {isMoreView === false && <WhiteGradientOverlay />}
+            <Image43
+              src={imageUrl}
+              alt={`Performance Image`}
+              width="200"
+              height="200"
+            ></Image43>
+          </ImageMoreWrap>
+          {festivalData !== null ? (
+            <ContentDetailText>{festivalData.detail}</ContentDetailText>
+          ) : (
+            <ContentDetailText></ContentDetailText>
+          )}
+          {isMoreView === false && (
+            <PlusButton onClick={onClickImageMoreViewButton}>더보기</PlusButton>
+          )}
+        </ContentsDetailWrap>
       </ContentsWrap>
     );
   };
@@ -101,7 +142,11 @@ export default function PerformanceDetail() {
           </svg>
           <Word className="Word">공연</Word>
         </TextContainer>
-        <Image src={icon} alt="Your Image" />
+        {festivalData !== null ? (
+          <Image src={festivalData.profile} alt="Your Image" />
+        ) : (
+          <Image />
+        )}
         <RectangleContainer>
           <Rectangle onClick={handleRectangle1Click}>
             <CustomSvg
@@ -148,25 +193,54 @@ export default function PerformanceDetail() {
       </ContentContainer>
       <ContentInfo>
         <RectangleRight>
-          <TextInsideRectangle>D-24</TextInsideRectangle>
+          <TextInsideRectangle>{dday}</TextInsideRectangle>
         </RectangleRight>
         <ContentWrapper style={{ paddingBottom: "40px" }}>
-          <ContentTitle>{performanceName}</ContentTitle>
+          {festivalData !== null ? (
+            <ContentTitle>{festivalData.name}</ContentTitle>
+          ) : (
+            <ContentTitle></ContentTitle>
+          )}
           <Wrapper>
             <TextWrapper>
-              <DateText>날짜</DateText>
-              <Content2Text>2023.07.22</Content2Text>
+              <DateText>기간</DateText>
+              {festivalData !== null ? (
+                <Content2Text>
+                  {festivalData.startDate}
+                  <span> ~ </span>
+                  {festivalData.endDate}
+                </Content2Text>
+              ) : (
+                <Content2Text></Content2Text>
+              )}
             </TextWrapper>
             <TextWrapper>
               <TimeText>시간</TimeText>
-              <ContentText>토 18:00 (100분)</ContentText>
+              {festivalData !== null ? (
+                <ContentText>{festivalData.dateTime}</ContentText>
+              ) : (
+                <ContentText></ContentText>
+              )}
+            </TextWrapper>
+
+            <TextWrapper>
+              <TimeText>위치</TimeText>
+              {festivalData !== null ? (
+                <ContentText>{festivalData.location}</ContentText>
+              ) : (
+                <ContentText></ContentText>
+              )}
             </TextWrapper>
             <TextWrapper>
-              <LocationText>장소</LocationText>
-              <ContentText>건국대학교 서울캠퍼스 새천년관대공연장</ContentText>
+              <LocationText>가격</LocationText>
+              {festivalData !== null ? (
+                <ContentText>{festivalData.price}</ContentText>
+              ) : (
+                <ContentText></ContentText>
+              )}
             </TextWrapper>
             <TextWrapper>
-              <Info>관련정보</Info>
+              <Info>정보</Info>
               <Content3Text>
                 <CustomSvgBook
                   xmlns="http://www.w3.org/2000/svg"
@@ -235,9 +309,19 @@ export default function PerformanceDetail() {
       </SelectWrapper>
       <ManagerInquiryWrap>
         <ManagerInquiry>관리자</ManagerInquiry>
-        <ManagerInquiryText>{Manager}</ManagerInquiryText>
+        {festivalData !== null ? (
+          <ManagerInquiryText>{festivalData.management}</ManagerInquiryText>
+        ) : (
+          <ManagerInquiryText></ManagerInquiryText>
+        )}
         <ManagerInquiry>문의처</ManagerInquiry>
-        <ManagerInquiryText>{Inquiry}</ManagerInquiryText>
+        {festivalData !== null ? (
+          <ManagerInquiryText>
+            <Text3>{festivalData.management}</Text3>
+          </ManagerInquiryText>
+        ) : (
+          <ManagerInquiryText></ManagerInquiryText>
+        )}
       </ManagerInquiryWrap>
     </Container>
   );
@@ -284,12 +368,27 @@ const Image = styled.img`
   height: 480.354px;
   flex-shrink: 0;
   border-radius: 19px;
+  display: flex;
+  justify-content: center;
 `;
 
 const Image43 = styled.img`
-  width: 910px;
+  width: 90%;
+  height: 100%;
 `;
 
+const ContentDetailText = styled.div`
+  color: var(--festie-gray-800, #3a3a3a);
+  font-family: SUIT Variable;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 25.2px */
+  letter-spacing: 0.18px;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+`;
 const Rectangle = styled.div`
   display: inline-flex;
   padding: 10px 18px;
@@ -312,6 +411,7 @@ const CustomSvg = styled.svg`
 const CustomSvgBook = styled.svg`
   width: 32px;
   height: 32px;
+  margin-left: 38px;
 `;
 
 const SvgPath = styled.path`
@@ -445,6 +545,8 @@ const Content3Text = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
 `;
 
 const TextWrapper = styled.div`
@@ -500,7 +602,6 @@ const WordSelect = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: 140%;
-  margin-left: 32px;
   cursor: pointer;
 `;
 
@@ -520,7 +621,6 @@ const HorizontalLine = styled.div`
   flex-shrink: 0;
   border-bottom: 1px solid var(--festie-gray-200, #e8e8e8);
   margin-top: 11px;
-  margin-left: 32px;
 `;
 
 const SelectWrapper = styled.div`
@@ -533,12 +633,23 @@ const ContentsWrap = styled.div`
   margin-top: 50px;
   flex-wrap: wrap;
   justify-content: center;
+  display: flex;
+  width: 910px;
 `;
 
 const ImageMoreWrap = styled.div`
+  display: flex;
   position: relative;
   max-height: ${(props) => (props.isMoreView ? "" : "195px")};
   overflow: hidden;
+  justify-content: center;
+`;
+
+const ContentsDetailWrap = styled.div`
+  width: 100%;
+  margin-top: 50px;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const WhiteGradientOverlay = styled.div`
@@ -587,6 +698,11 @@ const ManagerInquiryText = styled.div`
   font-weight: 400;
   line-height: 140%; /* 19.6px */
   letter-spacing: 0.14px;
+  display: flex;
+`;
+
+const Text3 = styled.div`
+  margin-right: 15px;
 `;
 
 const PlusButton = styled.div`

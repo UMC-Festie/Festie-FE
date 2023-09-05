@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import InstagramLogo from "../assets/InstagramLogo.png";
-import FestivalMain from "../assets/FestivalMainImage.png";
-import FestivalImage from "../assets/FestivalImage1.png";
-import FestivalImage2 from "../assets/FestivalImage2.png";
-import FestivalImage3 from "../assets/FestivalImage3.png";
 import { getCookie } from "../Cookies";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -13,8 +8,7 @@ export default function Main() {
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
   const [activeTab, setActiveTab] = useState("상세정보");
-  const Manager = "덕구";
-  const Inquiry = "010-1234-5678 / https://www.hibimf.org/";
+  const [status, setStatus] = useState(null);
 
   const handleRectangle1Click = () => {
     setCount1((prevCount) => prevCount + 1);
@@ -41,17 +35,6 @@ export default function Main() {
     );
   };
 
-  const images = [
-    {
-      source: FestivalImage,
-    },
-    {
-      source: FestivalImage2,
-    },
-    {
-      source: FestivalImage3,
-    },
-  ];
   const ImageContent = () => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -129,7 +112,7 @@ export default function Main() {
   const { festivalId } = useParams();
   console.log(festivalId);
   const accessToken = getCookie("accessToken");
-  const [festivalData, setFestivalData] = useState(null); // 데이터를 저장할 상태를 정의합니다.
+  const [festivalData, setFestivalData] = useState(null);
 
   useEffect(() => {
     axios
@@ -139,15 +122,40 @@ export default function Main() {
         },
       })
       .then((response) => {
-        console.log("받아온 데이터:", response.data);
+        console.log(response.data);
 
         setFestivalData(response.data);
       })
       .catch((error) => {
-        console.error("에러 발생:", error);
+        console.error(error);
       });
   }, [festivalId, accessToken]);
 
+  const handleLikeButtonClick = () => {
+    const accessToken = getCookie("accessToken");
+    const newStatus = 1; // 좋아요 버튼을 누르면 상태를 1로 설정
+
+    axios
+      .post(
+        "/api/likes",
+        {
+          festivalId: festivalId,
+          status: newStatus,
+        },
+        {
+          headers: {
+            "X-AUTH-TOKEN": accessToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setStatus(newStatus); // 상태를 업데이트하여 UI 갱신
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   return (
     <Container>
       <ContentContainer>
@@ -190,7 +198,11 @@ export default function Main() {
             <TextInsideRectangle></TextInsideRectangle>
           )}
         </TextContainer>
-        <Image src={FestivalMain} alt="Your Image" />
+        {festivalData !== null ? (
+          <Image src={festivalData.thumbnailUrl} alt="Your Image" />
+        ) : (
+          <Image />
+        )}
         <RectangleContainer>
           <Rectangle onClick={handleRectangle1Click}>
             <CustomSvg

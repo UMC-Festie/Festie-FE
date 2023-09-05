@@ -1,63 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import InstagramLogo from "../assets/InstagramLogo.png"
-import FestivalMain from "../assets/FestivalMainImage.png"
-import FestivalImage from "../assets/FestivalImage1.png"
-import FestivalImage2 from "../assets/FestivalImage2.png"
-import FestivalImage3 from "../assets/FestivalImage3.png"
+import { getCookie } from "../Cookies";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export default function Main() {
+  const [status, setStatus] = useState(null);
+  const { festivalId } = useParams();
+  console.log(festivalId);
+  const accessToken = getCookie("accessToken");
+  const [festivalData, setFestivalData] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`/api/base/${festivalId}`, {
+        headers: {
+          "X-AUTH-TOKEN": accessToken,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+
+        setFestivalData(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [festivalId, accessToken]);
+
+  //좋아요 싫어요 버튼
+  const handleLikeButtonClick = () => {
+    const accessToken = getCookie("accessToken");
+    const newStatus = 1; // 좋아요 버튼을 누르면 상태를 1로 설정
+
+    axios
+      .post(
+        "/api/likes",
+        {
+          festivalId: festivalId,
+          status: newStatus,
+        },
+        {
+          headers: {
+            "X-AUTH-TOKEN": accessToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setStatus(newStatus); // 상태를 업데이트하여 UI 갱신
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
-  const [activeTab, setActiveTab] = useState("상세정보");
-  const eventDetails = `
-    부산국제매직페스티벌은 2006년부터 시작되어 문화콘텐츠 산업의 떠오르는 블루오션인 ‘매직’을 테마로 한 국내 100만 매직 매니아의 꿈의 축제인 국내 유일 세계 최대 규모의 마술 페스티벌이다. \n
-    올해 10월까지 진행되는 제18회 부산국제매직페스티벌에는 매직서커스[봄], 매직컨벤션, 제5회 버스킹챔피언십, 매직서커스[가을], 한가위 매직 판타지아 등 다양한 행사들이 준비되어있다.\n
-
-    [행사내용]\n
-    \n
-    행사별 일정\n
-    1. 매직서커스[봄]\n
-    기간 : 2023년 4월 15일 ~ 6월 11일 (매주 토, 일) * 6월 6일(화) 추가운영\n
-    장소 : 스포원파크 꿈나래어린이극장\n
-    프로그램 : 매직서커스(공연), 마술놀이(체험), 세계마법체험전(전시)\n
-    주최/주관 : (사)부산국제매직페스티벌조직위원회\n
-    후원/협찬 : 부산광역시, 해운대구, 부산예술대학교, 부산지방공단스포원\n
-    예매처 : YES24, 네이버, 놀이의발견 등\n
-
-    2. 매직컨벤션\n
-    기간 : 2023년 6월 30일(금) ~ 7월 2일(일)\n
-    장소 : 영화의전당\n
-    프로그램 : FISM QC BIMF 국제마술대회(대회), 매직갈라쇼(공연), 렉쳐(강연), 매직토크쇼, 매직라운지(체험) 등\n
-    주최/주관 : (사)부산국제매직페스티벌조직위원회, (재)영화의전당\n
-    후원/협찬 : 부산광역시, 해운대구, 부산예술대학교\n
-    예매처 : YES24, 네이버, 영화의전당 등\n
-    \n
-    3. 제5회 버스킹챔피언십\n
-    기간 : 2023년 7월 1일(토) ~ 2일(일)\n
-    장소 : 해운대 구남로 일대\n
-    프로그램 : 국제매직버스킹챔피언십(대회) 등\n
-    주최/주관 : (사)부산국제매직페스티벌조직위원회\n
-    후원/협찬 : 부산광역시, 해운대구, 부산예술대학교\n
-    \n
-    4. 매직서커스[가을]\n
-    기간 : 2023년 9월 ~ 10월 (매주 토, 일) * 10월 3일(화), 10월 9일(월) 추가운영\n
-    장소 : 스포원파크 꿈나래어린이극장\n
-    프로그램 : 매직서커스(공연), 마술놀이(체험), 세계마법체험전(전시)\n
-    주최/주관 : (사)부산국제매직페스티벌조직위원회\n
-    후원/협찬 : 부산광역시, 해운대구, 부산예술대학교, 부산지방공단스포원\n
-    예매처 : YES24, 네이버, 놀이의발견 등\n
-    \n
-    5. 한가위 매직 판타지아\n
-    기간 : 2023년 9월 29일(금) ~ 10월 1일(일)\n
-    장소 : 부산시민회관 소극장\n
-    프로그램 : 기획공연, 체험 프로그램 등\n
-    주최/주관 : (사)부산국제매직페스티벌조직위원회\n
-    후원/협찬 : 부산광역시, 해운대구, 부산예술대학교\n
-    예매처 : YES24, 네이버, 놀이의발견 등\n
-`;
-const Manager = "덕구"
-const Inquiry = "010-1234-5678 / https://www.hibimf.org/"
 
   const handleRectangle1Click = () => {
     setCount1((prevCount) => prevCount + 1);
@@ -67,28 +66,43 @@ const Inquiry = "010-1234-5678 / https://www.hibimf.org/"
     setCount2((prevCount) => prevCount + 1);
   };
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
-  const DetailsContent = () => {
-    return (
-      <ContentsWrap style={{ width: "910px" }}>
-        {eventDetails}
-      </ContentsWrap>
-    );
-  };
+  const [isMoreView, setIsMoreView] = useState(false); // 더보기&접기 상태 저장
 
-  const images = [
-    {
-      source: FestivalImage,
-    },
-    {
-      source: FestivalImage2,
-    },
-    {
-      source: FestivalImage3,
-    },
-  ];
+  const onClickImageMoreViewButton = () => {
+    setIsMoreView(!isMoreView);
+  }; // 클릭시 상태 반전
+
+  //dday계산
+  function calculateDday(currentDate, startDate, endDate) {
+    if (currentDate < startDate) {
+      const timeDiff = startDate - currentDate;
+      const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+      return `D-${daysDiff}`;
+    } else if (currentDate >= startDate && currentDate <= endDate) {
+      return "행사중";
+    } else {
+      return "행사종료";
+    }
+  }
+  const currentDate = new Date();
+  let dday = "D-Day";
+  if (festivalData != null) {
+    dday = calculateDday(
+      currentDate,
+      festivalData.startDate,
+      festivalData.endDate
+    );
+  }
+
+  //image 데이터 처리
+  let imagesUrl = " ";
+  if (festivalData != null) {
+    imagesUrl = festivalData.images;
+  }
+  const imageArray = imagesUrl
+    .replace(/\[|\]/g, "") // "["와 "]"를 제거
+    .split(",") // 쉼표(,)로 분할
+    .map((url) => url.trim()); // 각 URL 주위의 공백 제거;
 
   const ImageContent = () => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -97,32 +111,67 @@ const Inquiry = "010-1234-5678 / https://www.hibimf.org/"
       setSelectedImageIndex(index);
     };
     const onNextImage = () => {
-      setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      if (festivalData !== null) {
+        setSelectedImageIndex(
+          (prevIndex) => (prevIndex + 1) % imageArray.length
+        );
+      }
     };
-  
+
     const onPrevImage = () => {
-      setSelectedImageIndex((prevIndex) =>
-        prevIndex === 0 ? images.length - 1 : prevIndex - 1
-      );
+      if (festivalData !== null) {
+        setSelectedImageIndex((prevIndex) =>
+          prevIndex === 0 ? imageArray.length - 1 : prevIndex - 1
+        );
+      }
     };
-  
+
     return (
       <ImageContentWrap>
         <FestivalMainImageWrap>
-          <ButtonIcon xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" onClick={onPrevImage}>
-            <path d="M25 30L15 20L25 10" stroke="#949494" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <ButtonIcon
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            onClick={onPrevImage}
+          >
+            <path
+              d="M25 30L15 20L25 10"
+              stroke="#949494"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </ButtonIcon>
-        <FestivalMainImage src={images[selectedImageIndex].source} alt="Festival Image"></FestivalMainImage>
-          <ButtonIcon xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" onClick={onNextImage}>
-            <path d="M15 30L25 20L15 10" stroke="#949494" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <FestivalMainImage
+            src={imageArray[selectedImageIndex]}
+            alt="Festival Image"
+          ></FestivalMainImage>
+          <ButtonIcon
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            onClick={onNextImage}
+          >
+            <path
+              d="M15 30L25 20L15 10"
+              stroke="#949494"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </ButtonIcon>
         </FestivalMainImageWrap>
-        {images.map((image, index) => (
+        {imageArray.map((image, index) => (
           <PreviewImage
             key={index}
-            src={image.source}
+            src={image}
             alt={`Image ${index}`}
-            onClick={() =>onClickImage(index)}
+            onClick={() => onClickImage(index)}
           />
         ))}
       </ImageContentWrap>
@@ -134,16 +183,44 @@ const Inquiry = "010-1234-5678 / https://www.hibimf.org/"
       <ContentContainer>
         <TextContainer>
           <Word className="Word">홈</Word>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M6 12L10 8L6 4" stroke="#B7B7B7" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+          >
+            <path
+              d="M6 12L10 8L6 4"
+              stroke="#B7B7B7"
+              stroke-width="1.33333"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
           <Word className="Word">정보보기</Word>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M6 12L10 8L6 4" stroke="#B7B7B7" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+          >
+            <path
+              d="M6 12L10 8L6 4"
+              stroke="#B7B7B7"
+              stroke-width="1.33333"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
           <Word className="Word">축제</Word>
         </TextContainer>
-        <Image src={FestivalMain} alt="Your Image" />
+        {festivalData !== null ? (
+          <Image src={festivalData.profile} alt="Festival Image" />
+        ) : (
+          <Image />
+        )}
         <RectangleContainer>
           <Rectangle onClick={handleRectangle1Click}>
             <CustomSvg
@@ -183,85 +260,120 @@ const Inquiry = "010-1234-5678 / https://www.hibimf.org/"
           </Rectangle>
         </RectangleContainer>
         <TextContainerSelect>
-        <WordSelect
-            active={activeTab === "상세정보"}
-            onClick={() => handleTabClick("상세정보")}
-          >
-            상세정보
-          </WordSelect>
-          <WordSelect
-            active={activeTab === "이미지"}
-            onClick={() => handleTabClick("이미지")}
-          >
-            이미지
-          </WordSelect>
+          <WordSelect>상세정보</WordSelect>
           <HorizontalLine />
         </TextContainerSelect>
       </ContentContainer>
       <ContentInfo>
         <RectangleRight>
-          <TextInsideRectangle>행사중</TextInsideRectangle>
+          <TextInsideRectangle>{dday}</TextInsideRectangle>
         </RectangleRight>
         <ContentWrapper style={{ paddingBottom: "40px" }}>
-          <ContentTitle>
-            부산국제매직페스티벌
-          </ContentTitle>
+          {festivalData !== null ? (
+            <ContentTitle>{festivalData.name}</ContentTitle>
+          ) : (
+            <ContentTitle></ContentTitle>
+          )}
           <Wrapper>
             <TextWrapper>
               <Text>기간</Text>
-              <ContentText>2023.04.15 ~ 2023.10.29</ContentText>
+              {festivalData !== null ? (
+                <ContentText>
+                  {festivalData.startDate}
+                  <span> ~ </span>
+                  {festivalData.endDate}
+                </ContentText>
+              ) : (
+                <ContentText></ContentText>
+              )}
             </TextWrapper>
             <TextWrapper>
-              <Text>위치</Text>
-              <ContentText>토 18:00 (100분)</ContentText>
+              <Text>시간</Text>
+              {festivalData !== null ? (
+                <ContentText>{festivalData.dateTime}</ContentText>
+              ) : (
+                <ContentText></ContentText>
+              )}
             </TextWrapper>
             <TextWrapper>
-              <Text>가격</Text>
-              <ContentText>프로그램별 상이(유/무료)</ContentText>
+              <Text>장소</Text>
+              {festivalData !== null ? (
+                <ContentText>{festivalData.location}</ContentText>
+              ) : (
+                <ContentText></ContentText>
+              )}
             </TextWrapper>
-            <TextWrapper>
-              <Text>주최</Text>
-              <ContentText>(사)부산국제매직페스티벌 조직위원회</ContentText>
-            </TextWrapper>
-            <TextWrapper>
-              <Text>전화번호</Text>
-              <Content3Text>051-626-7002</Content3Text>
-            </TextWrapper>
+
             <TextWrapper>
               <Info>관련정보</Info>
               <Content3Text>
-                <CustomSvgBook
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                >
-                  <path
-                    d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M20 4H28V12"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M13.332 18.6667L27.9987 4"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </CustomSvgBook>
-                <InfoText>공식홈페이지</InfoText>
-                <InstaLogo src={InstagramLogo} alt="Instagram Logo"></InstaLogo>
-                <InfoText>@busanmagicfestival</InfoText>
+                {festivalData !== null ? (
+                  <InfoText href={festivalData.reservationLink}>
+                    <CustomSvgBook
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                    >
+                      <path
+                        d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M20 4H28V12"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M13.332 18.6667L27.9987 4"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </CustomSvgBook>
+                    예매하기
+                  </InfoText>
+                ) : (
+                  <InfoText>
+                    <CustomSvgBook
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                    >
+                      <path
+                        d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M20 4H28V12"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M13.332 18.6667L27.9987 4"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </CustomSvgBook>
+                    예매하기
+                  </InfoText>
+                )}
               </Content3Text>
             </TextWrapper>
             <RelatedInfoWrapper>
@@ -292,18 +404,37 @@ const Inquiry = "010-1234-5678 / https://www.hibimf.org/"
               </TogetherText>
             </RelatedInfoWrapper>
           </Wrapper>
-          
         </ContentWrapper>
       </ContentInfo>
       <SelectWrapper>
-            {activeTab === "상세정보" && <DetailsContent />}
-            {activeTab === "이미지" && <ImageContent />}
-          </SelectWrapper>
-          <ManagerInquiryWrap><ManagerInquiry>관리자</ManagerInquiry><ManagerInquiryText>{Manager}</ManagerInquiryText><ManagerInquiry>문의처</ManagerInquiry><ManagerInquiryText>{Inquiry}</ManagerInquiryText></ManagerInquiryWrap>
+        <ImageContent />
+        {festivalData !== null ? (
+          <ContentDetailText>{festivalData.details}</ContentDetailText>
+        ) : (
+          <ContentDetailText></ContentDetailText>
+        )}
+      </SelectWrapper>
+
+      <ManagerInquiryWrap>
+        <ManagerInquiry>관리자</ManagerInquiry>
+        {festivalData !== null ? (
+          <ManagerInquiryText>{festivalData.adminsName}</ManagerInquiryText>
+        ) : (
+          <ManagerInquiryText></ManagerInquiryText>
+        )}
+        <ManagerInquiry>문의처</ManagerInquiry>
+        {festivalData !== null ? (
+          <ManagerInquiryText>
+            <Text3>{festivalData.adminsPhone}</Text3>
+            <div>{festivalData.adminsSiteAddress}</div>
+          </ManagerInquiryText>
+        ) : (
+          <ManagerInquiryText></ManagerInquiryText>
+        )}
+      </ManagerInquiryWrap>
     </Container>
   );
 }
-
 
 const Container = styled.div`
   display: flex;
@@ -371,6 +502,8 @@ const CustomSvgBook = styled.svg`
   width: 32px;
   height: 32px;
   cursor: pointer;
+  display: flex;
+  margin-right: 10px;
 `;
 
 const SvgPath = styled.path`
@@ -414,7 +547,6 @@ const Text = styled.div`
   margin-top: 20px;
 `;
 
-
 const Info = styled.div`
   color: var(--festie-gray-800, #3a3a3a);
   margin-top: 22px;
@@ -432,7 +564,7 @@ const ContentInfo = styled.div`
   flex-direction: column;
 `;
 
-const InfoText = styled.div`
+const InfoText = styled.a`
   color: var(--festie-gray-700, #555);
   font-family: SUIT Variable;
   font-size: 20px;
@@ -440,12 +572,15 @@ const InfoText = styled.div`
   font-weight: 500;
   line-height: 140%;
   letter-spacing: 0.2px;
-`
+  text-decoration: none;
+  display: flex;
+  text-align: center;
+`;
 
-const InstaLogo = styled.img `
+const InstaLogo = styled.img`
   cursor: pointer;
   margin-left: 30px;
-`
+`;
 
 const ContentTitle = styled.div`
   color: var(--festie-gray-900, #252525);
@@ -458,7 +593,7 @@ const ContentTitle = styled.div`
   margin-top: 10px;
   flex-shrink: 0;
   width: 625px;
-  margin-bottom: 30px;
+  margin-bottom: 116px;
   white-space: pre-line;
 `;
 
@@ -517,7 +652,7 @@ const Wrapper = styled.div`
 `;
 
 const TogetherText = styled.div`
-cursor: pointer;
+  cursor: pointer;
   display: flex;
   align-items: center;
   color: var(--festie-white, #fff);
@@ -536,8 +671,7 @@ cursor: pointer;
 `;
 
 const WordSelect = styled.div`
-  color: ${(props) =>
-    props.active ? "var(--festie-primary-orange, #FF7A00)" : "inherit"};
+  color: var(--festie-primary-orange, #ff7a00);
   font-family: SUIT Variable;
   font-size: 18px;
   font-style: normal;
@@ -570,35 +704,22 @@ const SelectWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 `;
-
-const ContentsWrap = styled.div`
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
-  color: var(--festie-gray-800, #3A3A3A);
-  font-family: SUIT Variable;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%;
-  letter-spacing: 0.18px;
-  white-space: pre-line;
-`
 
 const ManagerInquiryWrap = styled.div`
   margin-top: 64px;
   margin-bottom: 128px;
   display: flex;
   height: 50px;
-  border: 1px solid var(--festie-gray-300, #DFDFDF);
-`
+  border: 1px solid var(--festie-gray-300, #dfdfdf);
+`;
 
 const ManagerInquiry = styled.div`
   width: 106.374px;
-  border-right: 1px solid var(--festie-gray-300, #DFDFDF);
-  background: var(--festie-gray-100, #F5F5F5);
-  color: var(--festie-gray-800, #3A3A3A);
+  border-right: 1px solid var(--festie-gray-300, #dfdfdf);
+  background: var(--festie-gray-100, #f5f5f5);
+  color: var(--festie-gray-800, #3a3a3a);
   font-family: SUIT Variable;
   font-size: 14px;
   font-style: normal;
@@ -607,28 +728,33 @@ const ManagerInquiry = styled.div`
   letter-spacing: 0.14px;
   text-align: center;
   padding: 15px 0px;
-;`
+`;
 
 const ManagerInquiryText = styled.div`
   padding: 15px 100px;
   justify-content: center;
   align-items: center;
-  color: var(--festie-gray-800, #3A3A3A);
+  color: var(--festie-gray-800, #3a3a3a);
   font-family: SUIT Variable;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 19.6px */
   letter-spacing: 0.14px;
-;`
+  display: flex;
+`;
 
-const ImageContentWrap = styled.div `
+const Text3 = styled.div`
+  margin-right: 15px;
+`;
+
+const ImageContentWrap = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-`
+`;
 
-const FestivalMainImage = styled.img `
+const FestivalMainImage = styled.img`
   width: 800px;
   margin-top: 50px;
   border-radius: 30px;
@@ -639,20 +765,64 @@ const FestivalMainImageWrap = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
-`
+`;
 
-const PreviewImage = styled.img `
+const PreviewImage = styled.img`
   width: 80px;
   height: 80px;
   object-fit: cover;
   margin-right: 10px; /*사진 크기에 맞게 잘라짐*/
   cursor: pointer;
+`;
 
-`
-
-const ButtonIcon = styled.svg `
+const ButtonIcon = styled.svg`
   cursor: pointer;
   margin-top: 21%;
   margin-left: 30px;
   margin-right: 30px;
-`
+`;
+const ImageMoreWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  max-height: ${(props) => (props.isMoreView ? "" : "195px")};
+  overflow: hidden;
+  justify-content: center;
+`;
+
+const WhiteGradientOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 910px;
+  height: 100%;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0) 0%,
+    rgb(255, 255, 255) 90%
+  );
+`;
+
+const ContentDetailText = styled.div`
+  color: var(--festie-gray-800, #3a3a3a);
+  font-family: SUIT Variable;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 25.2px */
+  letter-spacing: 0.18px;
+  display: flex;
+  padding: 70px 185px 0px 185px;
+`;
+
+const PlusButton = styled.div`
+  display: flex;
+  height: 22px;
+  width: 910px;
+  padding: 14px 0px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+  border: 1px solid var(--festie-gray-300, #dfdfdf);
+  background: #fff;
+  cursor: pointer;
+`;

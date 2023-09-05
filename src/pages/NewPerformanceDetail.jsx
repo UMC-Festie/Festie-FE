@@ -16,9 +16,6 @@ export default function PerformanceDetail() {
     setCount2((prevCount) => prevCount + 1);
   };
 
-  const Manager = "(사)부산국제매직페스티벌 조직위원회";
-  const Inquiry = "051-626-7002 / https://www.hibimf.org/";
-
   const [isMoreView, setIsMoreView] = useState(false); // 더보기&접기 상태 저장
 
   const onClickImageMoreViewButton = () => {
@@ -55,8 +52,8 @@ export default function PerformanceDetail() {
             key={index}
             src={image}
             alt={`Image ${index}`}
-            width="200" // 이미지의 폭을 조절하세요.
-            height="200" // 이미지의 높이를 조절하세요.
+            width="200"
+            height="200"
           />
         ))}
         {festivalData !== null ? (

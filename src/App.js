@@ -60,7 +60,7 @@ function App() {
         <Route path="/view/festival" element={<Festival />} />{" "}
         {/* 정보 보기 > 등록된 축제 메인 */}
         <Route
-          path="/view/performance/detail/:performanceId"
+          path="/view/performance/detail/:performanceid"
           element={<PerformanceDetail />}
         />{" "}
         {/* 정보 보기 > 등록된 공연 상세 */}
