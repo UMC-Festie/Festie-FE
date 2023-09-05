@@ -210,9 +210,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .togetherTitle {
+    max-width: 245px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   
   .poster_img {
-    max-width: 245px; /* 최대 너비를 설정하면서 비율 유지 */
+    width: 245px; /* 최대 너비를 설정하면서 비율 유지 */
+    height: 347px;
     border-radius: 18px;
   }
 
