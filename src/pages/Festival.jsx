@@ -3,10 +3,23 @@ import React, { useState, useEffect } from 'react';
 import './Contents.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import Poster from '../components/Poster';
 import image3 from '../assets/image3.png';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+axios
+  .get('/api/base/festival?page=0')
+  .then((response) => {
+    const data = response.data.data; // "data" 변수에 데이터 배열을 할당
+    const thumbnailUrls = data.map((item) => item.thumbnailUrl); // 각 데이터 아이템의 thumbnailUrl 추출
+    console.log(response.data);
+  })
+  .catch((Error) => {
+    console.log(Error);
+  });
 
 function ConcertMain() {
+  const navigate = useNavigate();
   const [showCategoriesBtn, setShowCategoriesBtn] = useState(true); 
   const [selectedButtons, setSelectedButtons] = useState([]);
   const [categoryButtons, setCategoryButtons] = useState([]);
@@ -19,7 +32,6 @@ function ConcertMain() {
   const [searchResultCount, setSearchResultCount] = useState(0);
   
   const [filteredPosters, setFilteredPosters] = useState([]);
-  const [posters, setPosters] = useState([]);
   const [searchButtonActive, setSearchButtonActive] = useState(false); // "조회하기" 버튼 클릭 상태를 관리
   const [selectedCategoryButton, setSelectedCategoryButton] = useState('');
   const [selectedCategoryButtons, setSelectedCategoryButtons] = useState([]);
@@ -142,24 +154,41 @@ function ConcertMain() {
     img: '이미지 URL',
   };*/
 
-  const [posterInfo, setPosterInfo] = useState(null);
+  const [names, setNames] = useState([]); // 제목 데이터를 담을 상태 변수
+  const [locations, setLocation] = useState([]); // 장소 데이터를 담을 상태 변수
+  const [startDates, setStartDate] = useState([]); // 시작날짜 데이터를 담을 상태 변수
+  const [endDates, setEndDate] = useState([]); // 끝나는날짜 데이터를 담을 상태 변수
+  const [profiles, setProfile] = useState([]);
+  const [festivalIds, setFestivalIds] = useState([]);
+  const [durations, setDuration] = useState([]);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts/1') // JSONPlaceholder API에서 데이터 가져오기
-      .then((response) => response.json())
-      .then((data) => {
-        // 가져온 데이터를 가공하여 posterInfo 상태 업데이트
-        const { userId } = data;
-        setPosterInfo({
-          postertxt: 'Day',
-          concertName: `Concert by User ${userId}`,
-          place: 'Virtual Concert Hall',
-          date: '2023-07-29',
-          imageUrl: 'http://tkfile.yes24.com/upload2/perfblog/202306/20230607/20230607-46113.jpg/dims/quality/70/', // 이미지 URL 추가
-        });
+    const backendApiUrl = '/api/base/festival?page=0';
+
+    axios
+      .get(backendApiUrl)
+      .then((response) => {
+        const data = response.data.data;
+        const extractedUrls = data.map((item) => item.profile);
+        setProfile(extractedUrls);
+    
+        const names = data.map((item) => item.name);
+        const locations = data.map((item) => item.location);
+        const startDates = data.map((item) => item.startDate);
+        const endDates = data.map((item) => item.endDate);
+        const festivalIds = data.map((item) => item.festivalId);
+        const durations = data.map((item) => item.duration);
+
+        // 추출한 데이터를 상태로 설정
+        setNames(names);
+        setLocation(locations);
+        setStartDate(startDates);
+        setEndDate(endDates);
+        setFestivalIds(festivalIds);
+        setDuration(durations);
       })
       .catch((error) => {
-        console.log('Error fetching data:', error);
+        console.log('데이터 가져오기 오류:', error);
       });
   }, []);
   const [selectedOption, setSelectedOption] = useState(""); // 선택된 옵션을 저장하는 상태
@@ -348,16 +377,19 @@ function ConcertMain() {
         >
           <FontAwesomeIcon icon={faArrowUp} className="fa-icon" />
         </button>
-        <div className="poster-wrap" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-
+        <div className="poster2">
+          {profiles.map((url, index) => (
+            <div key={index} className="poster-item" onClick={()=> navigate(`/view/festival/detail${festivalIds[index]}`)}>
+              <img src={url} alt={`Thumbnail ${index}`} className='poster-img'/>
+              <div className="poster-info" >
+                {/* 여기에 이미지와 관련된 정보 표시*/}
+                <p className='postertxt'>{durations[index]}</p>
+                <p className='concertName'>{names[index]}</p>
+                <p className='place'>{locations[index]}</p>
+                <p className='date'>{startDates[index]} - {endDates[index]}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

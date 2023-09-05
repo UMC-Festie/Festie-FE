@@ -5,9 +5,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import Poster from '../components/Poster';
 import image4 from '../assets/image4.png';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+axios
+  .get('/api/festival?page=0&type=축제')
+  .then((response) => {
+    const data = response.data.data; // "data" 변수에 데이터 배열을 할당
+
+    // type이 "축제"인 데이터만 필터링
+    const festivalData = data.filter((item) => item.type === "축제");
+
+    // 각 데이터 아이템의 thumbnailUrl 추출
+    const thumbnailUrls = festivalData.map((item) => item.thumbnailUrl);
+
+    // 필터링된 데이터 출력
+    console.log(festivalData);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 function ConcertMain() {
   const navigate = useNavigate();
@@ -137,24 +154,40 @@ function ConcertMain() {
     img: '이미지 URL',
   };*/
 
-  const [posterInfo, setPosterInfo] = useState(null);
+
+  const [festivalTitles, setFestivalTitles] = useState([]); // 축제 제목 데이터를 담을 상태 변수
+  const [festivalDates, setFestivalDates] = useState([]); // 축제 날짜 데이터를 담을 상태 변수
+  const [locations, setLocation] = useState([]); // 닉네임 데이터를 담을 상태 변수
+  const [thumbnailUrls, setThumbnailUrls] = useState([]);
+  const [ddays, setDdays] = useState([]);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts/1') // JSONPlaceholder API에서 데이터 가져오기
-      .then((response) => response.json())
-      .then((data) => {
-        // 가져온 데이터를 가공하여 posterInfo 상태 업데이트
-        const { userId } = data;
-        setPosterInfo({
-          postertxt: 'Day',
-          concertName: `Concert by User ${userId}`,
-          place: 'Virtual Concert Hall',
-          date: '2023-07-29',
-          imageUrl: 'http://tkfile.yes24.com/upload2/perfblog/202306/20230607/20230607-46113.jpg/dims/quality/70/', // 이미지 URL 추가
-        });
+    const backendApiUrl = '/api/festival?page=0';
+
+    axios
+      .get(backendApiUrl)
+      .then((response) => {
+        const data = response.data.data;
+        
+        // type이 "축제"인 데이터만 필터링
+        const festivalData = data.filter((item) => item.type === "축제");
+  
+        const extractedUrls = festivalData.map((item) => item.thumbnailUrl);
+        setThumbnailUrls(extractedUrls);
+        const festivalDates = festivalData.map((item) => item.festivalDate);
+        const locations = festivalData.map((item) => item.location);
+        const festivalTitles = festivalData.map((item) => item.festivalTitle);
+        const ddays = festivalData.map((item) => item.dday);
+  
+
+        // 추출한 데이터를 상태로 설정
+        setFestivalDates(festivalDates);
+        setLocation(locations);
+        setFestivalTitles(festivalTitles);
+        setDdays(ddays);
       })
       .catch((error) => {
-        console.log('Error fetching data:', error);
+        console.log('데이터 가져오기 오류:', error);
       });
   }, []);
 
@@ -324,16 +357,19 @@ function ConcertMain() {
             새로운 축제 공유
           </button>
         )}
-        <div className="poster-wrap" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-          {posterInfo && <Poster posterInfo={posterInfo} />}
-
+       <div className="poster2">
+          {thumbnailUrls.map((url, index) => (
+            <div key={index} className="poster-item">
+              <img src={url} alt={`Thumbnail ${index}`} className='poster-img'/>
+              <div className="poster-info" >
+                {/* 여기에 이미지와 관련된 정보 표시 (예: festivalDate, nickname 등) */}
+                <p className='postertxt'>{ddays[index]}</p>
+                <p className='concertName'>{festivalTitles[index]}</p>
+                <p className='place'>{locations[index]}</p>
+                <p className='date'>{festivalDates[index]}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
