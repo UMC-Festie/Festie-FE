@@ -7,8 +7,22 @@ export default function ReviewPost({ isWriter, reviewData }) {
   const [views, setViews] = useState(null);
   const [writer, setWriter] = useState(null);
   const [date, setDate] = useState(null);
+  const [imagesUrl, setImagesUrl] = useState(null);
   const [contents, setContents] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const showImage = (index) => {
+    setCurrentImageIndex(index);
+  };
+
+  const showNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imagesUrl.length);
+  };
+
+  const showPreviousImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imagesUrl.length) % imagesUrl.length);
+  };
 
   const handleOpenDeleteModal = () => {
     setIsDeleteModalOpen(true);
@@ -42,6 +56,7 @@ export default function ReviewPost({ isWriter, reviewData }) {
     setViews(reviewData.view);
     setWriter(reviewData.writer);
     setDate(reviewData.updatedDate);
+    setImagesUrl(reviewData.imagesUrl);
     setContents(reviewData.content);
   }, [reviewData]);
 
@@ -94,6 +109,52 @@ export default function ReviewPost({ isWriter, reviewData }) {
             </svg>
           </SeparationWrap>
           <ContentsWrap>
+            <ImageWrap>
+                {/* <DimLeft/>
+                <DimRight/> */}
+                <ArrowButtonLeft onClick={showPreviousImage}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M25 10L15 20L25 30" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                </ArrowButtonLeft>
+                {
+                    imagesUrl &&
+                    imagesUrl.map((image, index) => (
+                        <Image
+                            key={index}
+                            src={image} 
+                            style={{ display: index === currentImageIndex ? 'block' : 'none', position: 'relative' }}
+                        >
+                        </Image>
+                ))}
+                <ArrowButtonRight onClick={showNextImage}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M15 30L25 20L15 10" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                </ArrowButtonRight>
+            </ImageWrap>
+            <ImageButtonWrap>
+                {
+                    imagesUrl &&
+                    imagesUrl.map((_, index) => (
+                    <ImageButton 
+                        key={index} 
+                        onClick={() => showImage(index)}
+                    >
+                        {
+                            currentImageIndex === index ? 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
+                                    <circle cx="3" cy="3" r="3" fill="#FF7A00"/>
+                                </svg>
+                                :
+                                <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
+                                    <circle cx="3" cy="3" r="3" fill="#C8C8C8"/>
+                                </svg>
+                        }
+                        
+                    </ImageButton>
+                ))}
+            </ImageButtonWrap>
             <Contents>{contents}</Contents>
           </ContentsWrap>
       </PostBox>
@@ -283,6 +344,84 @@ const ContentsWrap = styled.div`
   /* border: 1px solid pink; */
 `;
 
+const ImageWrap = styled.div`
+    border-radius: 20px;
+    background: lightgray -40.448px -137px / 133.141% 154.439% no-repeat;
+    height: 428px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+`;
+
+const Image = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+    position: relative;
+`;
+
+const ImageButtonWrap = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+`;
+
+// const Dim = styled.div`
+//   border: 1px solid pink;
+//   position: absolute;
+//   width: 140px;
+//   height: 100%;
+//   top: 0;
+//   border-radius: 20px;
+//   background: ${(props) =>
+//     props.left
+//       ? 'linear-gradient(90deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.00) 100%);'
+//       : props.right
+//       ? 'linear-gradient(270deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.00) 100%);'
+//       : 'none'};
+// `;
+
+// const DimLeft = styled(Dim)`
+//   left: 0;
+//   opacity: 0;
+// `;
+
+// const DimRight = styled(Dim)`
+//   right: 0;
+//   opacity: 0;
+// `;
+
+const ArrowButton = styled.button`
+    border: none;
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    z-index: 1;
+    background-color: transparent;
+
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+const ArrowButtonLeft = styled(ArrowButton)`
+    left: 12px;
+`;
+
+const ArrowButtonRight = styled(ArrowButton)`
+    right: 12px; 
+`;
+
+const ImageButton = styled.button`
+    border: none;
+    background-color: transparent;
+
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
 const Contents = styled.span`
   color: var(--festie-gray-800, #3A3A3A);
   font-family: SUIT Variable;
@@ -292,4 +431,3 @@ const Contents = styled.span`
   line-height: 140%;
   white-space: pre-line;
 `;
-
