@@ -16,7 +16,7 @@ export default function ReviewDetail() {
     const [isLiked, setIsLiked] = useState(false);
     const [isDisliked, setIsDisliked] = useState(false);
     // const { reviewId } = useParams();
-    const reviewId = 2;
+    const reviewId = 1;
     const accessToken = getCookie('accessToken');
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -34,10 +34,8 @@ export default function ReviewDetail() {
        
         setLikeCount(reviewData.likes === null ? 0 : reviewData.likes);
         setDislikeCount(reviewData.dislikes === null ? 0 : reviewData.dislikes);
-        if(reviewData.isLikedOrDisliked === 1)
-            setIsLiked(true);
-        if(reviewData.isLikedOrDisliked === 0) 
-            setIsDisliked(true);
+        setIsLiked(reviewData.isLikedOrDisliked === 1 ? true : false);
+        setIsDisliked(reviewData.isLikedOrDisliked === 0 ? true : false);
     }, [reviewData]);
 
 
@@ -51,6 +49,27 @@ export default function ReviewDetail() {
 
         // 좋아요 누른 상태일 때 -> 등록 취소
         setIsLiked(isLiked ? false : true);
+
+        try {
+            const response = await axios.post(`/api/likes`, {
+                reviewId: reviewId,
+                status: 1
+            }, {
+                headers: {
+                    "X-AUTH-TOKEN": accessToken
+                }
+            });
+
+            console.log(response)
+            
+            if(response.status === 200) {
+                isLiked ? setLikeCount(likeCount - 1) : setLikeCount(likeCount + 1);
+            }
+
+        } catch (error) {
+            console.log(`[ERROR]: ${error}`);
+        }
+
     }
 
     const onClickUnlikeButton = async () => {
@@ -61,8 +80,27 @@ export default function ReviewDetail() {
             return;
         }
 
-        // 좋아요 누른 상태일 때 -> 등록 취소
+        // 싫어요 누른 상태일 때 -> 등록 취소
         setIsDisliked(isDisliked ? false : true);
+
+        try {
+            const response = await axios.post(`/api/likes`, {
+                reviewId: reviewId,
+                status: 0
+            }, {
+                headers: {
+                    "X-AUTH-TOKEN": accessToken
+                }
+            });
+
+            if(response.status === 200) {
+                isDisliked ? setDislikeCount(dislikeCount - 1) : setDislikeCount(dislikeCount + 1);
+            }
+
+        } catch (error) {
+            console.log(`[ERROR]: ${error}`);
+        }
+
     }
 
     useEffect(() => {
