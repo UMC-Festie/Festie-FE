@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import thumbnailImg from "../assets/festival_thumbnail.png";
+import { useNavigate } from "react-router-dom";
 
 export default function FestivalInfo({ togetherData, reviewData }) {
   const [imageUrl, setImageUrl] = useState(null);
@@ -8,16 +9,47 @@ export default function FestivalInfo({ togetherData, reviewData }) {
   const [location, setLocation] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
+  const navigate = useNavigate();
+
+  const setFestivalData = (data) => {
+    // festivalInfo 
+    // - boardType: 정보 보기 / 정보 공유 / 직접 입력
+    // - festivalId: 정보 보기 / 정보 공유
+    // - festivalType - 축제 / 공연
+    // => 프론트 url 확인
+
+    const board = data.festivalInfo.boardType;
+    const type = data.festivalInfo.festivalType;
+
+    if(board === '정보보기') {
+      if(type === '공연') {
+        navigate(`/view//performance/detail/`);
+      }
+      if(type === '축제') {
+        navigate(`/view//festival/detail/`);
+      }
+    }
+
+    if(board === '정보공유') {
+      if(type === '공연') {
+        navigate(`/share//performance/detail/`);
+      }
+      if(type === '축제') {
+        navigate(`/share//festival/detail/`);
+      }
+    }
+
+  };
+
 
   const onClickFestivalInfoButton = () => {
-    alert('공연 정보 상세 페이지');
-    
-    // navigation
-    /*
-    navigation.navigate(`/${festivalId}`, {
-      state: festivalId
-    }); 
-    */
+    if(togetherData) {
+      setFestivalData(togetherData)
+    }
+
+    if(reviewData) {
+      setFestivalData(reviewData)
+    }
   };
 
   // 같이가요 공연 정보
