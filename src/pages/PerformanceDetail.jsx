@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { getCookie } from "../Cookies";
 
 export default function PerformanceDetail() {
+  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
 
@@ -33,7 +34,7 @@ export default function PerformanceDetail() {
 
   useEffect(() => {
     axios
-      .get(`/api/performance/${performanceId}`, {
+      .get(`${PROXY}/api/performance/${performanceId}`, {
         headers: {
           "X-AUTH-TOKEN": accessToken,
         },
@@ -57,7 +58,7 @@ export default function PerformanceDetail() {
     } else if (currentDate >= startDate && currentDate <= endDate) {
       return "행사중";
     } else {
-      return "행사종료";
+      return "행사예정";
     }
   }
   const currentDate = new Date();
@@ -73,7 +74,8 @@ export default function PerformanceDetail() {
   //image 데이터 처리
   let imageUrl = "";
   if (festivalData != null) {
-    imageUrl = festivalData.images;
+    imageUrl = festivalData.images.split(',')[0].substring(1);
+    console.log(imageUrl)
   }
 
   const urlPattern = /\[([^)]+)\]/;

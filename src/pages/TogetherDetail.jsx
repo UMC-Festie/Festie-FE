@@ -11,6 +11,7 @@ import { getCookie } from '../Cookies'
 import LoginModal from '../components/LoginModal';
 
 export default function TogetherDetail() {
+    const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
     const [showScrollButton, setShowScrollButton] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [togetherData, setTogetherData] = useState(null); 
@@ -62,7 +63,7 @@ export default function TogetherDetail() {
     useEffect(() => {
         const fetchData = async (togetherId) => {
             try {
-                const response = await axios.get(`/api/together/${togetherId}`, {
+                const response = await axios.get(`${PROXY}/api/together/${togetherId}`, {
                     headers: {
                         "X-AUTH-TOKEN": accessToken
                     }

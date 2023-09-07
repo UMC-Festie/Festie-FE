@@ -6,6 +6,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 export default function TogetherRequestList({ togetherData, userToken }) {
+    const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
     const [requests, setRequests] = useState([]);
     const [isClicked, setIsClicked] = useState(false);
     const [isAnyRequestChecked, setIsAnyRequestChecked] = useState(false);
@@ -54,7 +55,7 @@ export default function TogetherRequestList({ togetherData, userToken }) {
             };
              
             console.log(reqeust.body, reqeust.header);
-            await axios.post(`/api/together/bestie/choice`, reqeust.body, reqeust.header);
+            await axios.post(`${PROXY}/api/together/bestie/choice`, reqeust.body, reqeust.header);
 
 
             setShowToast(true);

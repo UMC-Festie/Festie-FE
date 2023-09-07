@@ -8,6 +8,7 @@ import { getCookie } from '../Cookies'
 import LoginModal from '../components/LoginModal';
 
 export default function ReviewDetail() {
+    const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
     const [showScrollButton, setShowScrollButton] = useState(false);
     const [reviewData, setReviewData] = useState(null); 
     const [isWriter, setIsWriter] = useState(false);
@@ -51,7 +52,7 @@ export default function ReviewDetail() {
         setIsLiked(isLiked ? false : true);
 
         try {
-            const response = await axios.post(`/api/likes`, {
+            const response = await axios.post(`${PROXY}/api/likes`, {
                 reviewId: reviewId,
                 status: 1
             }, {
@@ -84,7 +85,7 @@ export default function ReviewDetail() {
         setIsDisliked(isDisliked ? false : true);
 
         try {
-            const response = await axios.post(`/api/likes`, {
+            const response = await axios.post(`${PROXY}/api/likes`, {
                 reviewId: reviewId,
                 status: 0
             }, {
@@ -121,7 +122,7 @@ export default function ReviewDetail() {
     useEffect(() => {
         const fetchData = async (reviewId) => {
             try {
-                const response = await axios.get(`/api/review/${reviewId}`, {
+                const response = await axios.get(`${PROXY}/api/review/${reviewId}`, {
                     headers: {
                         "X-AUTH-TOKEN": accessToken
                     }

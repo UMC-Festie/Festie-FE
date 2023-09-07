@@ -5,6 +5,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 export default function TogetherRequestModal({ isOpen, closeModal, togetherData, userToken }) {
+    const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
     const [nickname, setNickname] = useState(null);
     const [name, setName] = useState(null);
     const [location, setLocation] = useState(null);
@@ -37,7 +38,7 @@ export default function TogetherRequestModal({ isOpen, closeModal, togetherData,
             };
              
             console.log(reqeust.body, reqeust.header);
-            await axios.post(`/api/together/bestie/application`, reqeust.body, reqeust.header);
+            await axios.post(`${PROXY}/api/together/bestie/application`, reqeust.body, reqeust.header);
 
             setShowToast(true);
 

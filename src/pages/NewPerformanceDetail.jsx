@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { getCookie } from "../Cookies";
 
 export default function PerformanceDetail() {
+  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
 
@@ -33,7 +34,7 @@ export default function PerformanceDetail() {
 
   useEffect(() => {
     axios
-      .get(`/api/festival/${performanceId}`, {
+      .get(`${PROXY}/api/festival/${performanceId}`, {
         headers: {
           "X-AUTH-TOKEN": accessToken,
         },

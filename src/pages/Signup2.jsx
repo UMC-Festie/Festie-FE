@@ -6,6 +6,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 const Signup2Form = () => {
+  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const navigate = useNavigate();
   const { state } = useLocation();
   const [gender, setSelectedSex] = useState(null);
@@ -97,7 +98,7 @@ const Signup2Form = () => {
 
     console.log(requestData);
     axios
-    .post('/api/user/signup', requestData)
+    .post(`${PROXY}/api/user/signup`, requestData)
     .then((res) => {
       if (res.status === 200) {
         // localStorage.setItem('accessToken', res.data.accessToken);

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 export default function Main() {
+  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const [status, setStatus] = useState(null);
   const { festivalId } = useParams();
   console.log(festivalId);
@@ -17,7 +18,7 @@ export default function Main() {
   
   useEffect(() => {
     axios
-      .get(`/api/base/${festivalId}`, {
+      .get(`${PROXY}/api/base/${festivalId}`, {
         headers: {
           "X-AUTH-TOKEN": accessToken,
         },
@@ -39,7 +40,7 @@ export default function Main() {
 
     axios
       .post(
-        "/api/likes",
+        `${PROXY}/api/likes`,
         {
           festivalId: festivalId,
           status: newStatus,
@@ -85,7 +86,7 @@ export default function Main() {
     } else if (currentDate >= startDate && currentDate <= endDate) {
       return "행사중";
     } else {
-      return "행사종료";
+      return "행사예정";
     }
   }
   const currentDate = new Date();

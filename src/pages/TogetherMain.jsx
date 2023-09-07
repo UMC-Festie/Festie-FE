@@ -9,8 +9,10 @@ import image6 from '../assets/image6.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+
 axios
-  .get('/api/together?page=0')
+  .get(`${PROXY}/api/together?page=0`)
   .then((response) => {
     const data = response.data.data; // "data" 변수에 데이터 배열을 할당
     const thumbnailUrls = data.map((item) => item.thumbnailUrl); // 각 데이터 아이템의 thumbnailUrl 추출

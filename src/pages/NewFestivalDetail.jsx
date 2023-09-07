@@ -5,6 +5,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 export default function Main() {
+  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
   const [activeTab, setActiveTab] = useState("상세정보");
@@ -120,7 +121,7 @@ export default function Main() {
 
   useEffect(() => {
     axios
-      .get(`/api/festival/${festivalId}`, {
+      .get(`${PROXY}/api/festival/${festivalId}`, {
         headers: {
           "X-AUTH-TOKEN": accessToken,
         },
@@ -141,7 +142,7 @@ export default function Main() {
 
     axios
       .post(
-        "/api/likes",
+        `${PROXY}/api/likes`,
         {
           festivalId: festivalId,
           status: newStatus,

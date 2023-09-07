@@ -18,8 +18,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Main() {
+  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const navigate = useNavigate();
-  axios.get('/api/home?festivalType=1&togetherType=1')
+  axios.get(`${PROXY}/api/home?festivalType=1&togetherType=1`)
   .then((Response) => {
       console.log(Response); 
   })
@@ -98,7 +99,7 @@ export default function Main() {
 
       useEffect(() => {
         // Fetch festival and together data from the API
-        axios.get('/api/home?festivalType=1&togetherType=1')
+        axios.get(`${PROXY}/api/home?festivalType=1&togetherType=1`)
           .then((response) => {
             const festivalList = response.data.festivalList;
             const togetherList = response.data.togetherList;

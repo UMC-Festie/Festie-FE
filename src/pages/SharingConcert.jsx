@@ -8,8 +8,11 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import image2 from '../assets/image2.png';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+
 axios
-  .get('/api/festival?page=0&type=공연')
+  .get(`${PROXY}}/api/festival?page=0&type=공연`)
   .then((response) => {
     const data = response.data.data; // "data" 변수에 데이터 배열을 할당
 
@@ -189,7 +192,7 @@ function ConcertMain() {
   const [ddays, setDdays] = useState([]);
 
   useEffect(() => {
-    const backendApiUrl = '/api/festival?page=0';
+    const backendApiUrl = `${PROXY}/api/festival?page=0`;
   
     axios
       .get(backendApiUrl)

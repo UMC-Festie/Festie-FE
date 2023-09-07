@@ -7,8 +7,10 @@ import image3 from '../assets/image3.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+
 axios
-  .get('/api/base/festival?page=0')
+  .get(`${PROXY}/api/base/festival?page=0`)
   .then((response) => {
     const data = response.data.data; // "data" 변수에 데이터 배열을 할당
     const thumbnailUrls = data.map((item) => item.thumbnailUrl); // 각 데이터 아이템의 thumbnailUrl 추출
@@ -163,7 +165,7 @@ function ConcertMain() {
   const [durations, setDuration] = useState([]);
 
   useEffect(() => {
-    const backendApiUrl = '/api/base/festival?page=0';
+    const backendApiUrl = `${PROXY}/api/base/festival?page=0`;
 
     axios
       .get(backendApiUrl)

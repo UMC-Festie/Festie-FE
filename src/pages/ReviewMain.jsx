@@ -12,6 +12,7 @@ import axios from "axios";
 import { getCookie } from '../Cookies'
 
 const MainPage = () => {
+  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const navigate = useNavigate();
   // 메인 페이지에서 보여줄 후기 데이터를 저장하는 상태 변수입니다.
   const [reviews, setReviews] = useState([]);
@@ -89,7 +90,7 @@ const MainPage = () => {
   })
   useEffect(() => {
     // 페이지가 로드될 때 모든 후기 데이터를 가져옵니다.
-    axios.get('/api/?page=0&sortBy=LATEST', {
+    axios.get(`${PROXY}/api/?page=0&sortBy=LATEST`, {
         headers: {
             "X-AUTH-TOKEN": accessToken
         }

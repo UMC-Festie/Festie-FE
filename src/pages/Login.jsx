@@ -7,6 +7,7 @@ import { AuthContext } from '../AuthContext';
 import { setCookie } from '../Cookies';
 
 function LoginForm() {
+  const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const [email, setEmail] = useState(''); // 이메일을 위한 상태 변수
   const [password, setPassword] = useState(''); // 비밀번호를 위한 상태 변수
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function LoginForm() {
 
   const onClickLogin = async () => {
     try {
-      const response = await axios.post('/api/user/login', {
+      const response = await axios.post(`${PROXY}/api/user/login`, {
         email,
         password,
       });

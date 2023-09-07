@@ -4,6 +4,7 @@ import { getCookie } from '../Cookies'
 import styled from "styled-components";
 
 export default function DeleteModal({ isOpen, closeModal }) {
+    const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
     const TITLE = '글 삭제';
     const CONTENT = '글을 삭제하시겠어요? 삭제된 글은 복구가 불가능해요.';
     const { togetherId } = useParams();
@@ -12,7 +13,7 @@ export default function DeleteModal({ isOpen, closeModal }) {
 
     const DeletePost = async (togetherId) => {
         try {
-            const response = await axios.delete(`/api/together/${togetherId}`, {
+            const response = await axios.delete(`${PROXY}/api/together/${togetherId}`, {
                 headers: {
                     "X-AUTH-TOKEN": accessToken
                 }

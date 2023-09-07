@@ -11,6 +11,7 @@ import { getCookie } from '../Cookies'
 import axios from "axios";
 
 function MyPage() {
+    const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
     const [activeTab, setActiveTab] = useState("정보보기"); // 외부 탭 메뉴 상태, 기본값 설정
     const [innerActiveTab, setInnerActiveTab] = useState("정보보기축제"); // 내부 탭 메뉴 상태, 기본값 설정
     const navigate = useNavigate();
@@ -72,7 +73,7 @@ function MyPage() {
     const accessToken = getCookie('accessToken');
 
     // 첫 번째 API 호출: 유저 정보 가져오기
-    axios.get(`/api/mypage`, {
+    axios.get(`${PROXY}/api/mypage`, {
       headers: {
         "X-AUTH-TOKEN": accessToken
       }
@@ -85,7 +86,7 @@ function MyPage() {
 
       if (innerActiveTab === "정보보기축제") {
         // 두 번째 API 호출: 정보보기 축제 포스터 정보 가져오기
-        axios.get("/api/getRecentOpenFestivals", {
+        axios.get(`${PROXY}/api/getRecentOpenFestivals`, {
           headers: {
             "X-AUTH-TOKEN": accessToken,
           },
@@ -185,7 +186,7 @@ function MyPage() {
 
       if (innerActiveTab === "정보보기공연") {
         // 세 번째 API 호출: 정보보기 공연 포스터 정보 가져오기
-        axios.get("/api/getRecentOpenPerformances", {
+        axios.get(`${PROXY}/api/getRecentOpenPerformances`, {
           headers: {
             "X-AUTH-TOKEN": accessToken,
           },
@@ -285,7 +286,7 @@ function MyPage() {
 
       if (innerActiveTab === "정보공유축제") {
         // 네 번째 API 호출: 정보공유 축제 포스터 정보 가져오기
-        axios.get("/api/getRecentFestivals", {
+        axios.get(`${PROXY}/api/getRecentFestivals`, {
           headers: {
             "X-AUTH-TOKEN": accessToken,
           },
@@ -385,7 +386,7 @@ function MyPage() {
 
       if (innerActiveTab === "정보공유공연") {
         // 다섯 번째 API 호출: 정보공유 공연 포스터 정보 가져오기
-        axios.get("/api/getRecentPerformances", {
+        axios.get(`${PROXY}/api/getRecentPerformances`, {
           headers: {
             "X-AUTH-TOKEN": accessToken,
           },
@@ -485,7 +486,7 @@ function MyPage() {
 
       if (innerActiveTab === "매칭이력") {
         // 여섯 번째 API 호출: 같이가요 매칭이력 포스터 정보 가져오기
-        axios.get("/api/bestie?page=0", {
+        axios.get(`${PROXY}/api/bestie?page=0`, {
           headers: {
             "X-AUTH-TOKEN": accessToken,
           },
