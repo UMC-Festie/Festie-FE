@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { getCookie } from '../Cookies'
+import LoginModal from '../components/LoginModal';
 
 export default function TogetherDetail() {
     const [showScrollButton, setShowScrollButton] = useState(false);
@@ -19,6 +20,7 @@ export default function TogetherDetail() {
     const [status, setStatus] = useState(0);
     const { togetherId } = useParams();
     const accessToken = getCookie('accessToken');
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     const onClickScrollToTop = () => {
         window.scrollTo({
@@ -31,7 +33,7 @@ export default function TogetherDetail() {
         console.log(accessToken);
 
         if(!accessToken) {
-            alert('로그인이 필요한 서비스입니다.');
+            setIsLoginModalOpen(true);
             return;
         }
 
@@ -156,7 +158,14 @@ export default function TogetherDetail() {
                                 <path d="M5.83398 14.0007L14.0007 5.83398L22.1673 14.0007" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                         </ScrollUpButton>  
-                }                 
+                } 
+                {
+                isLoginModalOpen && 
+                    <LoginModal 
+                        isOpen={isLoginModalOpen} 
+                        closeModal={() => setIsLoginModalOpen(false)} 
+                    />
+                }                
             </DetailPage>
         </DetailPageContainer>
     )

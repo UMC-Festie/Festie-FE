@@ -28,6 +28,8 @@ import TogetherDetail from "./pages/TogetherDetail";
 import PerformanceDetail from "./pages/PerformanceDetail"
 import FestivalDetail from "./pages/FestivalDetail"
 import ReviewDetail from "./pages/ReviewDetail";
+import NewPerformanceDetail from "./pages/NewPerformanceDetail";
+import NewFestivalDetail from "./pages/NewFestivalDetail";
 
 function App() {
   return (
@@ -52,13 +54,15 @@ function App() {
 
           <Route path="/view/performance" element={<Contents />} />  {/* 정보 보기 > 등록된 공연 메인 */}
           <Route path="/view/festival" element={<Festival />} />  {/* 정보 보기 > 등록된 축제 메인 */}
-          <Route path="/view/performance/detail" element={<PerformanceDetail />} />  {/* 정보 보기 > 등록된 공연 상세 */} 
-          <Route path="/view/festival/detail" element={<FestivalDetail />} />  {/* 정보 보기 > 등록된 축제 상세 */}
+          <Route path="/view/performance/detail/:performanceId" element={<PerformanceDetail />} />  {/* 정보 보기 > 등록된 공연 상세 */} 
+          <Route path="/view/festival/detail/:festivalId" element={<FestivalDetail />} />  {/* 정보 보기 > 등록된 축제 상세 */}
 
 
           <Route path="/share/performance" element={<SharingConcert />} />  {/* 정보 공유 > 새로운 공연 메인 */}
           <Route path="/share/performance/write" element={<PerformanceWrite />}/> {/* 정보 공유 > 새로운 공연 작성 */}
           <Route path="/share/festival" element={<SharingFestival />} />  {/* 정보 공유 > 새로운 축제 메인 */}
+          <Route path="/share/performance/detail/:performanceId" element={<NewPerformanceDetail />}/>  {/* 정보 공유 > 새로운 공연 상세 */}
+          <Route path="/share/festival/detail/:festivalId" element={<NewFestivalDetail />} />  {/* 정보 공유 > 새로운 축제 상세 */}
           <Route path="/share/review" element={<ReviewMain />} />  {/* 정보 공유 > 후기 메인 */}
           <Route path="/share/review/write" element={<ReviewWrite />} />  {/* 정보 공유 > 후기 작성 */}
           <Route path="/share/review/detail" element={<ReviewDetail />} />  {/* 정보 공유 > 후기 작성 */}
