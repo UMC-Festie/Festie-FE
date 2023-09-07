@@ -1,25 +1,58 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import thumbnailImg from "../assets/festival_thumbnail.png";
+import { useNavigate } from "react-router-dom";
 
-export default function TogetherInfo({ togetherData }) {
+export default function FestivalInfo({ togetherData, reviewData }) {
   const [imageUrl, setImageUrl] = useState(null);
   const [name, setName] = useState(null);
   const [location, setLocation] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
+  const navigate = useNavigate();
 
-  const onClickFestivalInfoButton = () => {
-    alert('공연 정보 상세 페이지');
-    
-    // navigation
-    /*
-    navigation.navigate(`/${festivalId}`, {
-      state: festivalId
-    }); 
-    */
+  const setFestivalData = (data) => {
+    // festivalInfo 
+    // - boardType: 정보 보기 / 정보 공유 / 직접 입력
+    // - festivalId: 정보 보기 / 정보 공유
+    // - festivalType - 축제 / 공연
+    // => 프론트 url 확인
+
+    const board = data.festivalInfo.boardType;
+    const type = data.festivalInfo.festivalType;
+
+    if(board === '정보보기') {
+      if(type === '공연') {
+        navigate(`/view//performance/detail/`);
+      }
+      if(type === '축제') {
+        navigate(`/view//festival/detail/`);
+      }
+    }
+
+    if(board === '정보공유') {
+      if(type === '공연') {
+        navigate(`/share//performance/detail/`);
+      }
+      if(type === '축제') {
+        navigate(`/share//festival/detail/`);
+      }
+    }
+
   };
 
+
+  const onClickFestivalInfoButton = () => {
+    if(togetherData) {
+      setFestivalData(togetherData)
+    }
+
+    if(reviewData) {
+      setFestivalData(reviewData)
+    }
+  };
+
+  // 같이가요 공연 정보
   useEffect(() => {
     if (!togetherData) {
         return;
@@ -37,6 +70,27 @@ export default function TogetherInfo({ togetherData }) {
     setDate(togetherData.togetherDate);
     setTime(togetherData.togetherTime);
   }, [togetherData]);
+
+
+  // 리뷰 공연 정보
+  useEffect(() => {
+    if (!reviewData) {
+        return;
+    }
+
+    if(reviewData.festivalInfo.thumbnailUrl) {
+      setImageUrl(reviewData.festivalInfo.thumbnailUrl);
+    } else {
+      // 썸네일 이미지 없을 때 이미지 
+      setImageUrl(thumbnailImg);
+    }
+   
+    setName(reviewData.festivalInfo.festivalTitle);
+    setLocation(reviewData.festivalInfo.region);
+    setDate(reviewData.festivalInfo.date);
+    setTime(reviewData.festivalInfo.time);
+  }, [reviewData]);
+
 
     return (
       <>

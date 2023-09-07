@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import TogetherPost from '../components/TogetherPost';
-import TogetherInfo from '../components/TogetherInfo';
+import TogetherInfo from '../components/FestivalInfo';
 import TogetherRequestList from '../components/TogetherRequestList';
 import TogetherRequestModal from "../components/TogetherRequestModal";
 import TogetherMessage from "../components/TogetherMessage";
