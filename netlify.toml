@@ -1,0 +1,5 @@
+[[redirects]]
+    from = '/proxy/*'
+    to = 'http://www.festie.site/:splat'
+    status = 200
+    force = true
