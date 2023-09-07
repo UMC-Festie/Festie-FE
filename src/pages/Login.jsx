@@ -25,7 +25,7 @@ function LoginForm() {
         setIsLoggedIn(true);
         localStorage.setItem('isLoggedIn', true);
 
-        alert('로그인 성공');
+        // alert('로그인 성공');
         navigate('/');
       }
     } catch (error) {

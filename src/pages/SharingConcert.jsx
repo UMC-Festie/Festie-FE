@@ -181,6 +181,7 @@ function ConcertMain() {
     img: '이미지 URL',
   };*/
 
+  const [performanceIds, setPerformanceIds] = useState([]);
   const [festivalTitles, setFestivalTitles] = useState([]); // 축제 제목 데이터를 담을 상태 변수
   const [festivalDates, setFestivalDates] = useState([]); // 축제 날짜 데이터를 담을 상태 변수
   const [locations, setLocation] = useState([]); // 닉네임 데이터를 담을 상태 변수
@@ -197,6 +198,7 @@ function ConcertMain() {
   
         // type이 "공연"인 데이터만 필터링
         const festivalData = data.filter((item) => item.type === "공연");
+        console.log(festivalData);
   
         const extractedUrls = festivalData.map((item) => item.thumbnailUrl);
         setThumbnailUrls(extractedUrls);
@@ -204,12 +206,14 @@ function ConcertMain() {
         const locations = festivalData.map((item) => item.location);
         const festivalTitles = festivalData.map((item) => item.festivalTitle);
         const ddays = festivalData.map((item) => item.dday);
+        const performanceIds = festivalData.map((item) => item.festivalId);
   
         // 필터링된 데이터를 상태로 설정
         setFestivalDates(festivalDates);
         setLocation(locations);
         setFestivalTitles(festivalTitles);
         setDdays(ddays);
+        setPerformanceIds(performanceIds)
       })
       .catch((error) => {
         console.log('데이터 가져오기 오류:', error);
@@ -420,7 +424,7 @@ function ConcertMain() {
         <div className="poster3">
           {thumbnailUrls.map((url, index) => (
             <div key={index} className="poster-item3">
-              <img src={url} alt={`Thumbnail ${index}`} className='poster-img3'/>
+              <img src={url} alt={`Thumbnail ${index}`} className='poster-img3' onClick={()=> navigate(`/share/performance/detail/${performanceIds[index]}`)}/>
               <div className="poster-info3" >
                 {/* 여기에 이미지와 관련된 정보 표시 (예: festivalDate, nickname 등) */}
                 <p className='postertxt3'>{ddays[index]}</p>

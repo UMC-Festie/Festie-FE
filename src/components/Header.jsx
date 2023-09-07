@@ -116,8 +116,8 @@ export default function Header() {
           >
             <SubMenuText to="/share/performance">공연</SubMenuText>
             <SubMenuText to="/share/festival">축제</SubMenuText>
-            <SubMenuText to="/share/review">후기</SubMenuText>
-            <SubMenuText to="/share/ticketing">티켓팅</SubMenuText>
+            {/* <SubMenuText to="/share/review">후기</SubMenuText> */}
+            {/* <SubMenuText to="/share/ticketing">티켓팅</SubMenuText> */}
           </SubMenuShare>
         ) : (
           ""

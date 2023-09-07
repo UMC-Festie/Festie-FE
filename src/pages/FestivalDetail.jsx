@@ -12,6 +12,10 @@ export default function Main() {
   const [festivalData, setFestivalData] = useState(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
+  useEffect(() => {
     axios
       .get(`/api/base/${festivalId}`, {
         headers: {

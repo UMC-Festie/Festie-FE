@@ -553,7 +553,7 @@ function MyPage() {
       setIsLoggedIn(false);
       localStorage.setItem('isLoggedIn', false);
 
-      alert('로그아웃되었습니다!')
+      // alert('로그아웃되었습니다!')
       navigate('/');
     } // 로그아웃 쿠키에서 토큰 삭제
 

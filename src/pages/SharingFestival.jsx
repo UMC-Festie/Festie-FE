@@ -160,6 +160,7 @@ function ConcertMain() {
   const [locations, setLocation] = useState([]); // 닉네임 데이터를 담을 상태 변수
   const [thumbnailUrls, setThumbnailUrls] = useState([]);
   const [ddays, setDdays] = useState([]);
+  const [festivalIds, setFestivalIds] = useState([]);
 
   useEffect(() => {
     const backendApiUrl = '/api/festival?page=0';
@@ -178,6 +179,7 @@ function ConcertMain() {
         const locations = festivalData.map((item) => item.location);
         const festivalTitles = festivalData.map((item) => item.festivalTitle);
         const ddays = festivalData.map((item) => item.dday);
+        const festivalIds = festivalData.map((item) => item.festivalId);
   
 
         // 추출한 데이터를 상태로 설정
@@ -185,6 +187,7 @@ function ConcertMain() {
         setLocation(locations);
         setFestivalTitles(festivalTitles);
         setDdays(ddays);
+        setFestivalIds(festivalIds);
       })
       .catch((error) => {
         console.log('데이터 가져오기 오류:', error);
@@ -360,7 +363,7 @@ function ConcertMain() {
        <div className="poster2">
           {thumbnailUrls.map((url, index) => (
             <div key={index} className="poster-item">
-              <img src={url} alt={`Thumbnail ${index}`} className='poster-img'/>
+              <img src={url} alt={`Thumbnail ${index}`} className='poster-img' onClick={()=> navigate(`/share/festival/detail/${festivalIds[index]}`)}/>
               <div className="poster-info" >
                 {/* 여기에 이미지와 관련된 정보 표시 (예: festivalDate, nickname 등) */}
                 <p className='postertxt'>{ddays[index]}</p>

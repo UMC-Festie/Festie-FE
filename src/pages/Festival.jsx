@@ -379,7 +379,7 @@ function ConcertMain() {
         </button>
         <div className="poster2">
           {profiles.map((url, index) => (
-            <div key={index} className="poster-item" onClick={()=> navigate(`/view/festival/detail${festivalIds[index]}`)}>
+            <div key={index} className="poster-item" onClick={()=> navigate(`/view/festival/detail/${festivalIds[index]}`)}>
               <img src={url} alt={`Thumbnail ${index}`} className='poster-img'/>
               <div className="poster-info" >
                 {/* 여기에 이미지와 관련된 정보 표시*/}

@@ -22,14 +22,18 @@ export default function PerformanceDetail() {
     setIsMoreView(!isMoreView);
   }; // 클릭시 상태 반전
 
-  const { performancdId } = useParams();
-  console.log(performancdId);
+  const { performanceId } = useParams();
+  console.log(performanceId);
   const accessToken = getCookie("accessToken");
   const [festivalData, setFestivalData] = useState(null); // 데이터를 저장할 상태를 정의합니다.
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     axios
-      .get(`/api/festival/${performancdId}`, {
+      .get(`/api/festival/${performanceId}`, {
         headers: {
           "X-AUTH-TOKEN": accessToken,
         },
@@ -42,7 +46,7 @@ export default function PerformanceDetail() {
       .catch((error) => {
         console.error("에러 발생:", error);
       });
-  }, [performancdId, accessToken]);
+  }, [performanceId, accessToken]);
 
   const FestivalImages = ({ images }) => {
     return (

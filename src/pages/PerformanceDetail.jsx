@@ -10,6 +10,10 @@ export default function PerformanceDetail() {
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleRectangle1Click = () => {
     setCount1((prevCount) => prevCount + 1);
   };
@@ -23,13 +27,13 @@ export default function PerformanceDetail() {
   const onClickImageMoreViewButton = () => {
     setIsMoreView(!isMoreView);
   }; // 클릭시 상태 반전
-  const { performanceid } = useParams();
+  const { performanceId } = useParams();
   const accessToken = getCookie("accessToken");
   const [festivalData, setFestivalData] = useState(null);
 
   useEffect(() => {
     axios
-      .get(`/api/performance/${performanceid}`, {
+      .get(`/api/performance/${performanceId}`, {
         headers: {
           "X-AUTH-TOKEN": accessToken,
         },
@@ -41,8 +45,8 @@ export default function PerformanceDetail() {
       .catch((error) => {
         console.error(error);
       });
-  }, [performanceid, accessToken]);
-  console.log(performanceid);
+  }, [performanceId, accessToken]);
+  console.log(performanceId);
 
   //dday계산
   function calculateDday(currentDate, startDate, endDate) {

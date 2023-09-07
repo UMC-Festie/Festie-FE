@@ -1,6 +1,6 @@
 //정보 공유_후기 메인페이지
 import React, { useState, useEffect } from "react";
-import { ReviewCard, dummyReviews } from "../components/ReviewCard";
+import { ReviewCard } from "../components/ReviewCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +8,9 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import image5 from '../assets/image5.png';
 import './ReviewMain.css';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { getCookie } from '../Cookies'
+
 const MainPage = () => {
   const navigate = useNavigate();
   // 메인 페이지에서 보여줄 후기 데이터를 저장하는 상태 변수입니다.
@@ -17,7 +20,9 @@ const MainPage = () => {
   const [activeButton, setActiveButton] = useState(1); // 활성화된 버튼의 상태를 관리하는 상태 변수
   const [ScrollY, setScrollY] = useState(0);
   const [BtnStatus, setBtnStatus] = useState(false); // 버튼 상태
-  const [showButton, setShowButton] = useState(false);
+  const [showButton, setShowButton] = useState(false)
+  const accessToken = getCookie('accessToken');
+
   useEffect(() => {
     const handleScroll = () => { // 공연 공유 버튼
       const scrollY = window.scrollY;
@@ -84,8 +89,22 @@ const MainPage = () => {
   })
   useEffect(() => {
     // 페이지가 로드될 때 모든 후기 데이터를 가져옵니다.
-    setAllReviews(dummyReviews);
-  }, []);
+    axios.get('/api/?page=0&sortBy=LATEST', {
+        headers: {
+            "X-AUTH-TOKEN": accessToken
+        }
+    })
+    .then((response) => {
+      const responseData = response.data.reviewPageResponse;
+      setAllReviews(responseData);
+    })
+    .catch((error) => {
+      console.error('Error fetching review data:', error);
+    });
+    // setAllReviews(dummyReviews);
+  }, [reviews, accessToken]);
+
+  // console.log(reviews)
 
   useEffect(() => {
     // 현재 페이지 번호에 해당하는 데이터를 가져옵니다.
@@ -125,7 +144,7 @@ const MainPage = () => {
       </div>
       <div className="main-pagetxt">
         {reviews.map((review) => (
-          <ReviewCard key={review.id} review={review} />
+          <ReviewCard key={review.id} review={review}/>
         ))}
       </div>
       <button

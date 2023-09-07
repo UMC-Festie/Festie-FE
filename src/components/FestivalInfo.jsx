@@ -9,6 +9,7 @@ export default function FestivalInfo({ togetherData, reviewData }) {
   const [location, setLocation] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
+  const [festivalId, setFestivalId] = useState(null);
   const navigate = useNavigate();
 
   const setFestivalData = (data) => {
@@ -19,23 +20,25 @@ export default function FestivalInfo({ togetherData, reviewData }) {
     // => 프론트 url 확인
 
     const board = data.festivalInfo.boardType;
-    const type = data.festivalInfo.festivalType;
+    const type = data.festivalInfo.type;
+
+    console.log(festivalId, board, type);
 
     if(board === '정보보기') {
       if(type === '공연') {
-        navigate(`/view//performance/detail/`);
+        navigate(`/view/performance/detail/${festivalId}`);
       }
       if(type === '축제') {
-        navigate(`/view//festival/detail/`);
+        navigate(`/view/festival/detail/${festivalId}`);
       }
     }
 
     if(board === '정보공유') {
       if(type === '공연') {
-        navigate(`/share//performance/detail/`);
+        navigate(`/share/performance/detail/${festivalId}`);
       }
       if(type === '축제') {
-        navigate(`/share//festival/detail/`);
+        navigate(`/share/festival/detail/${festivalId}`);
       }
     }
 
@@ -44,7 +47,7 @@ export default function FestivalInfo({ togetherData, reviewData }) {
 
   const onClickFestivalInfoButton = () => {
     if(togetherData) {
-      setFestivalData(togetherData)
+      setFestivalData(togetherData);
     }
 
     if(reviewData) {
@@ -69,6 +72,7 @@ export default function FestivalInfo({ togetherData, reviewData }) {
     setLocation(togetherData.festivalInfo.region);
     setDate(togetherData.togetherDate);
     setTime(togetherData.togetherTime);
+    setFestivalId(togetherData.festivalInfo.festivalId);
   }, [togetherData]);
 
 
@@ -111,15 +115,18 @@ export default function FestivalInfo({ togetherData, reviewData }) {
             <FestivalTimeWrap>
               <FestivalTime>{time}</FestivalTime>
             </FestivalTimeWrap>
-            <MoreButtonWrap>
-              <MoreButton onClick={onClickFestivalInfoButton}>공연 정보 보기</MoreButton>
-              <MoreButtonIcon>
-              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-                <path d="M5.5 12H19.5" stroke="#555555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M12.5 5L19.5 12L12.5 19" stroke="#555555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              </MoreButtonIcon>
+            {
+              festivalId &&
+              <MoreButtonWrap>
+                <MoreButton onClick={onClickFestivalInfoButton}>공연 정보 보기</MoreButton>
+                <MoreButtonIcon>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                  <path d="M5.5 12H19.5" stroke="#555555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12.5 5L19.5 12L12.5 19" stroke="#555555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                </MoreButtonIcon>
             </MoreButtonWrap>
+            }
           </div>
         </InfoBox>
       </>

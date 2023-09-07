@@ -381,7 +381,7 @@ function ConcertMain() {
     // 이 부분에서 실제 API 호출을 하고 검색 결과 개수를 받아온다고 가정합니다.
     // API를 호출하는 코드는 해당 프로젝트에서 사용하는 API 형태에 맞게 작성해야 합니다.
     // 여기에서는 임시로 180을 반환하도록 하겠습니다.
-    return 180;
+    return 16;
   };
   useEffect(() => {
     const resultCount = fetchSearchResultCount();

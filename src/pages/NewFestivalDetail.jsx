@@ -10,6 +10,10 @@ export default function Main() {
   const [activeTab, setActiveTab] = useState("상세정보");
   const [status, setStatus] = useState(null);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const handleRectangle1Click = () => {
     setCount1((prevCount) => prevCount + 1);
   };
