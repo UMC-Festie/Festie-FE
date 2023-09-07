@@ -185,44 +185,6 @@ export default function Main() {
           });
       }, []);
 
-      // useEffect(() => {
-      //   fetch('https://jsonplaceholder.typicode.com/posts/1')
-      //     .then((response) => response.json())
-      //     .then((data) => {
-      //       //posterInfo 상태 업데이트
-      //       const { userId } = data;
-      //       setPosterInfo({
-      //         concertName: '뮤지컬 <보이A>',
-      //       //   concertName: `Concert by User ${userId}`,
-      //         place: '예사스테이지 3관',
-      //         date: '2023.5.30 - 2023.8.20',
-      //         imageUrl: soonposterImage,
-      //       });
-      //     })
-      //     .catch((error) => {
-      //       console.log('Error fetching data:', error);
-      //     });
-      // }, []);
-
-      // useEffect(() => {
-      //   fetch('https://jsonplaceholder.typicode.com/posts/1')
-      //     .then((response) => response.json())
-      //     .then((data) => {
-      //       //togetherInfo 상태 업데이트
-      //       const { userId } = data;
-      //       setTogetherInfo({
-      //         togetherTitle: '펍크롤링투어 2일차 함께 가실 분',
-      //       //   concertName: `Concert by User ${userId}`,
-      //         togetherNickname: '덕구',
-      //         togetherDate: '2023.5.30',
-      //         imageUrl: togetherposterImage,
-      //       });
-      //     })
-      //     .catch((error) => {
-      //       console.log('Error fetching data:', error);
-      //     });
-      // }, []);
-
       const handleScrollToTop = () => {
         // window.scrollTo({ top: 0, behavior: 'smooth' }); // 스크롤을 최상단으로 이동
         window.scrollTo(0, 0); // 스크롤을 최상단으로 이동 (애니메이션 없음)
@@ -312,7 +274,6 @@ export default function Main() {
                     {posterInfo3 && <MainPoster posterInfo={posterInfo3} className="PosterSize" />}
                     {posterInfo4 && <MainPoster posterInfo={posterInfo4} className="PosterSize" />}
                   </div>
-                  
                 )}
                 {selectedSoon === '공연' && (
                   <div className="main_posterwrap">

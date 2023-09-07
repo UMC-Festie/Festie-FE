@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import icon from "../assets/image.jpg";
-import image43 from "../assets/image 43.png";
+import { getCookie } from "../Cookies";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { getCookie } from "../Cookies";
 
-export default function PerformanceDetail() {
+export default function Main() {
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
+  const [activeTab, setActiveTab] = useState("상세정보");
+  const [status, setStatus] = useState(null);
 
   const handleRectangle1Click = () => {
     setCount1((prevCount) => prevCount + 1);
@@ -18,92 +18,144 @@ export default function PerformanceDetail() {
     setCount2((prevCount) => prevCount + 1);
   };
 
-  const [isMoreView, setIsMoreView] = useState(false); // 더보기&접기 상태 저장
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
+  const DetailsContent = () => {
+    return (
+      <>
+        {festivalData !== null ? (
+          <ContentsWrap style={{ width: "910px" }}>
+            {festivalData.content}
+          </ContentsWrap>
+        ) : (
+          <ContentsWrap></ContentsWrap>
+        )}
+      </>
+    );
+  };
 
-  const onClickImageMoreViewButton = () => {
-    setIsMoreView(!isMoreView);
-  }; // 클릭시 상태 반전
-  const { performanceid } = useParams();
+  const ImageContent = () => {
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+    const onClickImage = (index) => {
+      setSelectedImageIndex(index);
+    };
+    const onNextImage = () => {
+      if (festivalData !== null) {
+        setSelectedImageIndex(
+          (prevIndex) => (prevIndex + 1) % festivalData.imagesUrl.length
+        );
+      }
+    };
+
+    const onPrevImage = () => {
+      if (festivalData !== null) {
+        setSelectedImageIndex((prevIndex) =>
+          prevIndex === 0 ? festivalData.imagesUrl.length - 1 : prevIndex - 1
+        );
+      }
+    };
+
+    return (
+      <ImageContentWrap>
+        <FestivalMainImageWrap>
+          <ButtonIcon
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            onClick={onPrevImage}
+          >
+            <path
+              d="M25 30L15 20L25 10"
+              stroke="#949494"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </ButtonIcon>
+          <FestivalMainImage
+            src={festivalData.imagesUrl[selectedImageIndex]}
+            alt="Festival Image"
+          ></FestivalMainImage>
+          <ButtonIcon
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            onClick={onNextImage}
+          >
+            <path
+              d="M15 30L25 20L15 10"
+              stroke="#949494"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </ButtonIcon>
+        </FestivalMainImageWrap>
+        {festivalData.imagesUrl.map((image, index) => (
+          <PreviewImage
+            key={index}
+            src={image}
+            alt={`Image ${index}`}
+            onClick={() => onClickImage(index)}
+          />
+        ))}
+      </ImageContentWrap>
+    );
+  };
+
+  const { festivalId } = useParams();
+  console.log(festivalId);
   const accessToken = getCookie("accessToken");
   const [festivalData, setFestivalData] = useState(null);
 
   useEffect(() => {
     axios
-      .get(`/api/performance/${performanceid}`, {
+      .get(`/api/festival/${festivalId}`, {
         headers: {
           "X-AUTH-TOKEN": accessToken,
         },
       })
       .then((response) => {
         console.log(response.data);
+
         setFestivalData(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [performanceid, accessToken]);
-  console.log(performanceid);
+  }, [festivalId, accessToken]);
 
-  //dday계산
-  function calculateDday(currentDate, startDate, endDate) {
-    if (currentDate < startDate) {
-      const timeDiff = startDate - currentDate;
-      const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-      return `D-${daysDiff}`;
-    } else if (currentDate >= startDate && currentDate <= endDate) {
-      return "행사중";
-    } else {
-      return "행사종료";
-    }
-  }
-  const currentDate = new Date();
-  let dday = "D-Day";
-  if (festivalData != null) {
-    dday = calculateDday(
-      currentDate,
-      festivalData.startDate,
-      festivalData.endDate
-    );
-  }
+  const handleLikeButtonClick = () => {
+    const accessToken = getCookie("accessToken");
+    const newStatus = 1; // 좋아요 버튼을 누르면 상태를 1로 설정
 
-  //image 데이터 처리
-  let imageUrl = "";
-  if (festivalData != null) {
-    imageUrl = festivalData.images;
-  }
-
-  const urlPattern = /\[([^)]+)\]/;
-  const matches = imageUrl.match(urlPattern);
-  if (matches) {
-    imageUrl = matches[1];
-  }
-
-  const DetailsContent = () => {
-    return (
-      <ContentsWrap isMoreView={isMoreView}>
-        <ContentsDetailWrap>
-          <ImageMoreWrap isMoreView={isMoreView}>
-            {isMoreView === false && <WhiteGradientOverlay />}
-            <Image43
-              src={imageUrl}
-              alt={`Performance Image`}
-              width="200"
-              height="200"
-            ></Image43>
-          </ImageMoreWrap>
-          {festivalData !== null ? (
-            <ContentDetailText>{festivalData.detail}</ContentDetailText>
-          ) : (
-            <ContentDetailText></ContentDetailText>
-          )}
-          {isMoreView === false && (
-            <PlusButton onClick={onClickImageMoreViewButton}>더보기</PlusButton>
-          )}
-        </ContentsDetailWrap>
-      </ContentsWrap>
-    );
+    axios
+      .post(
+        "/api/likes",
+        {
+          festivalId: festivalId,
+          status: newStatus,
+        },
+        {
+          headers: {
+            "X-AUTH-TOKEN": accessToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setStatus(newStatus); // 상태를 업데이트하여 UI 갱신
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
-
   return (
     <Container>
       <ContentContainer>
@@ -140,10 +192,14 @@ export default function PerformanceDetail() {
               stroke-linejoin="round"
             />
           </svg>
-          <Word className="Word">공연</Word>
+          {festivalData !== null ? (
+            <Word className="Word">{festivalData.type}</Word>
+          ) : (
+            <TextInsideRectangle></TextInsideRectangle>
+          )}
         </TextContainer>
         {festivalData !== null ? (
-          <Image src={festivalData.profile} alt="Your Image" />
+          <Image src={festivalData.thumbnailUrl} alt="Your Image" />
         ) : (
           <Image />
         )}
@@ -186,92 +242,135 @@ export default function PerformanceDetail() {
           </Rectangle>
         </RectangleContainer>
         <TextContainerSelect>
-          <WordSelect>상세정보</WordSelect>
-
+          <WordSelect
+            active={activeTab === "상세정보"}
+            onClick={() => handleTabClick("상세정보")}
+          >
+            상세정보
+          </WordSelect>
+          <WordSelect
+            active={activeTab === "이미지"}
+            onClick={() => handleTabClick("이미지")}
+          >
+            이미지
+          </WordSelect>
           <HorizontalLine />
         </TextContainerSelect>
       </ContentContainer>
       <ContentInfo>
         <RectangleRight>
-          <TextInsideRectangle>{dday}</TextInsideRectangle>
+          {festivalData !== null ? (
+            <TextInsideRectangle>{festivalData.dday}</TextInsideRectangle>
+          ) : (
+            <TextInsideRectangle></TextInsideRectangle>
+          )}
         </RectangleRight>
         <ContentWrapper style={{ paddingBottom: "40px" }}>
           {festivalData !== null ? (
-            <ContentTitle>{festivalData.name}</ContentTitle>
+            <ContentTitle>{festivalData.festivalTitle}</ContentTitle>
           ) : (
             <ContentTitle></ContentTitle>
           )}
           <Wrapper>
             <TextWrapper>
-              <DateText>기간</DateText>
+              <Text>기간</Text>
               {festivalData !== null ? (
-                <Content2Text>
+                <ContentText>
                   {festivalData.startDate}
                   <span> ~ </span>
                   {festivalData.endDate}
-                </Content2Text>
-              ) : (
-                <Content2Text></Content2Text>
-              )}
-            </TextWrapper>
-            <TextWrapper>
-              <TimeText>시간</TimeText>
-              {festivalData !== null ? (
-                <ContentText>{festivalData.dateTime}</ContentText>
+                </ContentText>
               ) : (
                 <ContentText></ContentText>
               )}
             </TextWrapper>
-
             <TextWrapper>
-              <TimeText>위치</TimeText>
+              <Text>시간</Text>
+              {festivalData !== null ? (
+                <ContentText>{festivalData.startTime}</ContentText>
+              ) : (
+                <ContentText></ContentText>
+              )}
+            </TextWrapper>
+            <TextWrapper>
+              <Text>장소</Text>
               {festivalData !== null ? (
                 <ContentText>{festivalData.location}</ContentText>
               ) : (
                 <ContentText></ContentText>
               )}
             </TextWrapper>
+
             <TextWrapper>
-              <LocationText>가격</LocationText>
-              {festivalData !== null ? (
-                <ContentText>{festivalData.price}</ContentText>
-              ) : (
-                <ContentText></ContentText>
-              )}
-            </TextWrapper>
-            <TextWrapper>
-              <Info>정보</Info>
+              <Info>관련정보</Info>
               <Content3Text>
-                <CustomSvgBook
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                >
-                  <path
-                    d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M20 4H28V12"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M13.332 18.6667L27.9987 4"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </CustomSvgBook>
-                <span>예매하기</span>
+                {festivalData !== null ? (
+                  <InfoText href={festivalData.reservationLink}>
+                    <CustomSvgBook
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                    >
+                      <path
+                        d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M20 4H28V12"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M13.332 18.6667L27.9987 4"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </CustomSvgBook>
+                    예매하기
+                  </InfoText>
+                ) : (
+                  <InfoText>
+                    <CustomSvgBook
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                    >
+                      <path
+                        d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M20 4H28V12"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M13.332 18.6667L27.9987 4"
+                        stroke="#FFE500"
+                        strokeWidth="2.66667"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </CustomSvgBook>
+                    예매하기
+                  </InfoText>
+                )}
               </Content3Text>
             </TextWrapper>
             <RelatedInfoWrapper>
@@ -305,19 +404,21 @@ export default function PerformanceDetail() {
         </ContentWrapper>
       </ContentInfo>
       <SelectWrapper>
-        <DetailsContent />
+        {activeTab === "상세정보" && <DetailsContent />}
+        {activeTab === "이미지" && <ImageContent />}
       </SelectWrapper>
       <ManagerInquiryWrap>
         <ManagerInquiry>관리자</ManagerInquiry>
         {festivalData !== null ? (
-          <ManagerInquiryText>{festivalData.management}</ManagerInquiryText>
+          <ManagerInquiryText>{festivalData.adminsName}</ManagerInquiryText>
         ) : (
           <ManagerInquiryText></ManagerInquiryText>
         )}
         <ManagerInquiry>문의처</ManagerInquiry>
         {festivalData !== null ? (
           <ManagerInquiryText>
-            <Text3>{festivalData.management}</Text3>
+            <Text3>{festivalData.adminsPhone}</Text3>
+            <div>{festivalData.adminsSiteAddress}</div>
           </ManagerInquiryText>
         ) : (
           <ManagerInquiryText></ManagerInquiryText>
@@ -368,27 +469,8 @@ const Image = styled.img`
   height: 480.354px;
   flex-shrink: 0;
   border-radius: 19px;
-  display: flex;
-  justify-content: center;
 `;
 
-const Image43 = styled.img`
-  width: 90%;
-  height: 100%;
-`;
-
-const ContentDetailText = styled.div`
-  color: var(--festie-gray-800, #3a3a3a);
-  font-family: SUIT Variable;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 25.2px */
-  letter-spacing: 0.18px;
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-`;
 const Rectangle = styled.div`
   display: inline-flex;
   padding: 10px 18px;
@@ -411,7 +493,9 @@ const CustomSvg = styled.svg`
 const CustomSvgBook = styled.svg`
   width: 32px;
   height: 32px;
-  margin-left: 38px;
+  cursor: pointer;
+  display: flex;
+  margin-right: 10px;
 `;
 
 const SvgPath = styled.path`
@@ -444,7 +528,7 @@ const TextInsideRectangle = styled.div`
   line-height: normal;
 `;
 
-const DateText = styled.div`
+const Text = styled.div`
   color: var(--festie-gray-800, #3a3a3a);
   font-family: SUIT Variable;
   font-size: 20px;
@@ -452,28 +536,7 @@ const DateText = styled.div`
   font-weight: 700;
   line-height: 140%;
   letter-spacing: 0.2px;
-`;
-
-const TimeText = styled.div`
-  color: var(--festie-gray-800, #3a3a3a);
-  margin-top: 22px;
-  font-family: SUIT Variable;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 140%;
-  letter-spacing: 0.2px;
-`;
-
-const LocationText = styled.div`
-  color: var(--festie-gray-800, #3a3a3a);
-  margin-top: 22px;
-  font-family: SUIT Variable;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 140%;
-  letter-spacing: 0.2px;
+  margin-top: 20px;
 `;
 
 const Info = styled.div`
@@ -493,6 +556,24 @@ const ContentInfo = styled.div`
   flex-direction: column;
 `;
 
+const InfoText = styled.a`
+  color: var(--festie-gray-700, #555);
+  font-family: SUIT Variable;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+  display: flex;
+  text-align: center;
+`;
+
+const InstaLogo = styled.img`
+  cursor: pointer;
+  margin-left: 30px;
+`;
+
 const ContentTitle = styled.div`
   color: var(--festie-gray-900, #252525);
   font-family: "SUIT Variable";
@@ -504,25 +585,13 @@ const ContentTitle = styled.div`
   margin-top: 10px;
   flex-shrink: 0;
   width: 625px;
-  margin-bottom: 92px;
+  margin-bottom: 116px;
   white-space: pre-line;
 `;
 
 const ContentText = styled.div`
   color: var(--festie-gray-700, #555);
-  margin-top: 22px;
-  font-family: SUIT Variable;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 140%;
-  letter-spacing: 0.2px;
-  margin-left: 59px;
-`;
-
-const Content2Text = styled.div`
-  color: var(--festie-gray-700, #555);
-  margin-top: 0;
+  margin-top: 20px;
   font-family: SUIT Variable;
   font-size: 20px;
   font-style: normal;
@@ -545,8 +614,6 @@ const Content3Text = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  cursor: pointer;
-  text-decoration: none;
 `;
 
 const TextWrapper = styled.div`
@@ -596,12 +663,14 @@ const TogetherText = styled.div`
 `;
 
 const WordSelect = styled.div`
-  color: var(--festie-primary-orange, #ff7a00);
+  color: ${(props) =>
+    props.active ? "var(--festie-primary-orange, #FF7A00)" : "inherit"};
   font-family: SUIT Variable;
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
   line-height: 140%;
+  margin-left: 32px;
   cursor: pointer;
 `;
 
@@ -621,6 +690,7 @@ const HorizontalLine = styled.div`
   flex-shrink: 0;
   border-bottom: 1px solid var(--festie-gray-200, #e8e8e8);
   margin-top: 11px;
+  margin-left: 32px;
 `;
 
 const SelectWrapper = styled.div`
@@ -631,37 +701,16 @@ const SelectWrapper = styled.div`
 
 const ContentsWrap = styled.div`
   margin-top: 50px;
-  flex-wrap: wrap;
-  justify-content: center;
   display: flex;
-  width: 910px;
-`;
-
-const ImageMoreWrap = styled.div`
-  display: flex;
-  position: relative;
-  max-height: ${(props) => (props.isMoreView ? "" : "195px")};
-  overflow: hidden;
   justify-content: center;
-`;
-
-const ContentsDetailWrap = styled.div`
-  width: 100%;
-  margin-top: 50px;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
-
-const WhiteGradientOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    rgba(255, 255, 255, 0) 0%,
-    rgb(255, 255, 255) 90%
-  );
+  color: var(--festie-gray-800, #3a3a3a);
+  font-family: SUIT Variable;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0.18px;
+  white-space: pre-line;
 `;
 
 const ManagerInquiryWrap = styled.div`
@@ -705,14 +754,36 @@ const Text3 = styled.div`
   margin-right: 15px;
 `;
 
-const PlusButton = styled.div`
+const ImageContentWrap = styled.div`
   display: flex;
-  width: 910px;
-  padding: 14px 0px;
   justify-content: center;
-  align-items: center;
-  border-radius: 25px;
-  border: 1px solid var(--festie-gray-300, #dfdfdf);
-  background: #fff;
+  flex-wrap: wrap;
+`;
+
+const FestivalMainImage = styled.img`
+  width: 800px;
+  margin-top: 50px;
+  border-radius: 30px;
+`;
+
+const FestivalMainImageWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+`;
+
+const PreviewImage = styled.img`
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 10px; /*사진 크기에 맞게 잘라짐*/
   cursor: pointer;
+`;
+
+const ButtonIcon = styled.svg`
+  cursor: pointer;
+  margin-top: 21%;
+  margin-left: 30px;
+  margin-right: 30px;
 `;

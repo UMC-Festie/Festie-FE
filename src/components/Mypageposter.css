@@ -1,0 +1,117 @@
+.mypage_poster_wrap{
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 49px;
+  }
+
+  .openFestivalTitle{ /*정보보기축제*/
+    margin-top: 16px;
+    color: #3a3a3a;
+    font-family: SUIT Variable;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%; 
+    max-width: 245px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .festivalTitle{ /*정보공유축제*/
+    margin-top: 16px;
+    color: #3a3a3a;
+    font-family: SUIT Variable;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    max-width: 245px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .title{ /*같이가요매칭이력*/
+    margin-top: 16px;
+    color: #3a3a3a;
+    font-family: SUIT Variable;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    max-width: 245px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .location{ /*정보보기,정보공유축제*/
+    margin-top: 6px;
+    color: #949494;
+    font-family: SUIT Variable;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    max-width: 245px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .writerNickname{ /*같이가요매칭이력*/
+    margin-top: 6px;
+    color: #949494;
+    font-family: SUIT Variable;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    max-width: 245px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .openFestivalDate{ /*정보보기축제*/
+    margin-top: 4px;
+    color: #949494;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    max-width: 245px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .festivalDate{ /*정보공유축제*/
+    margin-top: 4px;
+    color: #949494;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    max-width: 245px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .updatedAt{ /*같이가요매칭이력*/
+    margin-top: 4px;
+    color: #949494;
+    font-family: SUIT Variable;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    max-width: 245px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
