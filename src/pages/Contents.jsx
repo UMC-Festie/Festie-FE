@@ -3,17 +3,20 @@ import React, { useState, useEffect } from 'react';
 import './Contents.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import Poster from '../components/Poster';
 import image1 from '../assets/image1.png';
-//import { commonAxios } from "../common/commonAxios";
 import axios from "axios";
-axios.get('/api/hello')
-.then((Response) => {
-    console.log(Response); 
-})
-.catch((Error) => {
+import { useNavigate } from 'react-router-dom';
+
+axios
+  .get('/api/base/performance?page=0')
+  .then((response) => {
+    const data = response.data.data; // "data" 변수에 데이터 배열을 할당
+    const thumbnailUrls = data.map((item) => item.thumbnailUrl); // 각 데이터 아이템의 thumbnailUrl 추출
+    console.log(response.data);
+  })
+  .catch((Error) => {
     console.log(Error);
-});
+  });
 function ConcertMain() {
   const [showCategoriesBtn, setShowCategoriesBtn] = useState(true);
   const [selectedButtons, setSelectedButtons] = useState([]);
@@ -25,9 +28,9 @@ function ConcertMain() {
   const [BtnStatus, setBtnStatus] = useState(false); // 버튼 상태
   // 검색 결과 개수를 담는 상태
   const [searchResultCount, setSearchResultCount] = useState(0);
+  const navigate = useNavigate();
 
   const [filteredPosters, setFilteredPosters] = useState([]);
-  const [posters, setPosters] = useState([]);
   const [searchButtonActive, setSearchButtonActive] = useState(false); // "조회하기" 버튼 클릭 상태를 관리
   const [selectedCategoryButton, setSelectedCategoryButton] = useState('');
   const [selectedCategoryButtons, setSelectedCategoryButtons] = useState([]);
@@ -151,27 +154,41 @@ function ConcertMain() {
     date: '날짜',
     img: '이미지 URL',
   };*/
-
-  const [posterInfo, setPosterInfo] = useState(null);
+  const [names, setNames] = useState([]); // 제목 데이터를 담을 상태 변수
+  const [locations, setLocation] = useState([]); // 장소 데이터를 담을 상태 변수
+  const [startDates, setStartDate] = useState([]); // 시작날짜 데이터를 담을 상태 변수
+  const [endDates, setEndDate] = useState([]); // 끝나는날짜 데이터를 담을 상태 변수
+  const [profiles, setProfile] = useState([]);
+  const [performanceIds, setperformanceId] = useState([]);
+  const [durations, setDuration] = useState([]);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts') // Fetch all posters
-      .then((response) => response.json())
-      .then((data) => {
-        // Process the data and set the posters state
-        const postersData = data.slice(0, 12).map((item) => ({
-          id: item.id,
-          postertxt: 'Day',
-          concertName: `Concert by User ${item.userId}`,
-          place: 'Virtual Concert Hall',
-          date: '2023-07-29',
-          imageUrl: 'http://tkfile.yes24.com/upload2/perfblog/202306/20230607/20230607-46113.jpg/dims/quality/70/',
-        }));
-        setPosters(postersData);
-        setFilteredPosters(postersData); // Also, update the filteredPosters state
+    const backendApiUrl = '/api/base/performance?page=0';
+
+    axios
+      .get(backendApiUrl)
+      .then((response) => {
+        const data = response.data.data;
+        const extractedUrls = data.map((item) => item.profile);
+        setProfile(extractedUrls);
+    
+        const names = data.map((item) => item.name);
+        const locations = data.map((item) => item.location);
+        const startDates = data.map((item) => item.startDate);
+        const endDates = data.map((item) => item.endDate);
+        const performanceIds = data.map((item) => item.performanceId);
+        const durations = data.map((item) => item.duration);
+
+        // 추출한 데이터를 상태로 설정
+        setNames(names);
+        setLocation(locations);
+        setStartDate(startDates);
+        setEndDate(endDates);
+        setperformanceId(performanceIds);
+        setDuration(durations);
       })
       .catch((error) => {
-        console.log('Error fetching data:', error);
+        console.log('데이터 가져오기 오류:', error);
       });
   }, []);
 
@@ -362,10 +379,19 @@ function ConcertMain() {
         >
           <FontAwesomeIcon icon={faArrowUp} className="fa-icon" />
         </button>
-        <div className="poster-wrap" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {filteredPosters.length > 0
-            ? filteredPosters.map((poster) => <Poster key={poster.id} posterInfo={poster} />)
-            : posters.map((poster) => <Poster key={poster.id} posterInfo={poster} />)}
+        <div className="poster2">
+          {profiles.map((url, index) => (
+            <div key={index} className="poster-item" onClick={()=> navigate(`/view/performance/detail${performanceIds[index]}`)}>
+              <img src={url} alt={`Thumbnail ${index}`} className='poster-img'/>
+              <div className="poster-info" >
+                {/* 여기에 이미지와 관련된 정보 표시*/}
+                <p className='postertxt'>{durations[index]}</p>
+                <p className='concertName'>{names[index]}</p>
+                <p className='place'>{locations[index]}</p>
+                <p className='date'>{startDates[index]} - {endDates[index]}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -9,13 +9,6 @@ import image6 from '../assets/image6.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-axios.get('/api/together?page=0')
-  .then((Response) => {
-    console.log(Response);
-  })
-  .catch((Error) => {
-    console.log(Error);
-  });
 axios
   .get('/api/together?page=0')
   .then((response) => {
@@ -26,6 +19,8 @@ axios
   .catch((Error) => {
     console.log(Error);
   });
+
+
 function ConcertMain() {
   const navigate = useNavigate();
   const [showCategoriesBtn, setShowCategoriesBtn] = useState(true);
@@ -45,6 +40,9 @@ function ConcertMain() {
   const [searchButtonActive, setSearchButtonActive] = useState(false); // "조회하기" 버튼 클릭 상태를 관리
   const [selectedCategoryButton, setSelectedCategoryButton] = useState('');
   const [selectedCategoryButtons, setSelectedCategoryButtons] = useState([]);
+  const [filterStatus, setFilterStatus] = useState(''); // 필터링 조건을 담을 상태 변수
+  const [filteredData, setFilteredData] = useState([]);
+  const [poster2, setPoster2] = useState([]);
 
   useEffect(() => {
     const handleScroll = () => { // 공연 공유 버튼
@@ -92,17 +90,102 @@ function ConcertMain() {
       window.removeEventListener('scroll', handleFollow)
     }
   })
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get('/api/together?page=0');
+        if (response.status === 200) {
+          const data = response.data.data;
+          console.log('Data fetched:', data); // 데이터 가져오기 직후 출력
+          setFilteredData(data instanceof Array ? data : []);
+          console.log('filteredData updated:', data); // 데이터 업데이트 후 출력
+        } else {
+          console.error('Error fetching data from the server');
+        }
+      } catch (error) {
+        console.error('Axios Error:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   const handleSearchButtonClick = async () => {
     setSearchButtonActive(true);
     setSearchButtonActive(!searchButtonActive);
-    setSelectedCategoryButtons([]);    // 필터링 조건 객체 생성
+
+    // 초기 필터링 조건 객체 생성
     const filterParams = {
       page: 0,
-      category: '바다',
-      region: '서울',
-      status: '모집중',
-      sortBy: 'LATEST'
+      category: '',
+      region: '',
+      status: '',
+      type: '',
     };
+
+    // 선택된 버튼에 따라 필터링 조건 업데이트
+    if (selectedButtons.includes('모집중')) {
+      filterParams.status = '모집중';
+    } else if (selectedButtons.includes('모집종료')) {
+      filterParams.status = '모집종료';
+    }
+
+    if (selectedButtons.includes('공연')) {
+      filterParams.type = '공연';
+    } else if (selectedButtons.includes('축제')) {
+      filterParams.type = '축제';
+    }
+
+    if (selectedButtons.includes('뮤지컬')) {
+      filterParams.category = '뮤지컬';
+    } else if (selectedButtons.includes('연극')) {
+      filterParams.category = '연극';
+    } else if (selectedButtons.includes('한국음악')) {
+      filterParams.category = '한국음악';
+    } else if (selectedButtons.includes('서양음악')) {
+      filterParams.category = '서양음악';
+    } else if (selectedButtons.includes('대중음악')) {
+      filterParams.category = '대중음악';
+    } else if (selectedButtons.includes('무용')) {
+      filterParams.category = '무용';
+    } else if (selectedButtons.includes('대중무용')) {
+      filterParams.category = '대중무용';
+    } else if (selectedButtons.includes('서커스-마술')) {
+      filterParams.category = '서커스-마술';
+    } else if (selectedButtons.includes('복합')) {
+      filterParams.category = '복합';
+    }
+
+    if (selectedButtons.includes('서울')) {
+      filterParams.region = '서울';
+    } else if (selectedButtons.includes('경기')) {
+      filterParams.region = '경기';
+    } else if (selectedButtons.includes('인천')) {
+      filterParams.region = '인천';
+    } else if (selectedButtons.includes('대전')) {
+      filterParams.region = '대전';
+    } else if (selectedButtons.includes('대구')) {
+      filterParams.region = '대구';
+    } else if (selectedButtons.includes('광주')) {
+      filterParams.region = '광주';
+    } else if (selectedButtons.includes('부산')) {
+      filterParams.region = '울산';
+    } else if (selectedButtons.includes('울산')) {
+      filterParams.region = '울산';
+    } else if (selectedButtons.includes('세종')) {
+      filterParams.region = '세종';
+    } else if (selectedButtons.includes('충청')) {
+      filterParams.region = '충청';
+    } else if (selectedButtons.includes('경상')) {
+      filterParams.region = '경상';
+    } else if (selectedButtons.includes('전라')) {
+      filterParams.region = '전라';
+    } else if (selectedButtons.includes('강원')) {
+      filterParams.region = '강원';
+    } else if (selectedButtons.includes('제주')) {
+      filterParams.region = '제주';
+    }
+
 
     // 필터링 조건 객체를 쿼리 파라미터 문자열로 변환
     const queryString = Object.keys(filterParams)
@@ -110,22 +193,37 @@ function ConcertMain() {
       .join('&');
 
     // API 엔드포인트
-    const apiEndpoint = '백엔드_API_URL';
+    const apiEndpoint = '/api/together';
 
     try {
-      // 필터링된 데이터를 백엔드로 전송하고 응답 받기
-      const response = await fetch(`${apiEndpoint}/filter?${queryString}`);
-      if (response.ok) {
-        const data = await response.json();
+      // 필터링된 데이터를 백엔드로 요청하고 응답 받기
+      const response = await axios.get(`${apiEndpoint}?${queryString}`);
+      if (response.status === 200) {
+        const data = response.data;
         // 받아온 데이터를 활용하여 필요한 처리를 수행
         console.log('Filtered data:', data);
+
+        // 필터링된 데이터를 배열로 설정
+        // 필터링된 데이터를 업데이트할 때 setFilteredData 함수 사용
+        setFilteredData(data instanceof Array ? data : []);
+        // Update poster2 with the filtered data
+        setPoster2(data instanceof Array ? data : []);
       } else {
         console.error('Error fetching data from the server');
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Axios Error:', error);
+      console.error('Response Data:', error.response.data);
+      console.error('Response Status:', error.response.status);
     }
   };
+  useEffect(() => {
+    // Update poster2 whenever filteredData changes
+    setPoster2(filteredData);
+    console.log('filteredData:', filteredData);
+    console.log('poster2:', poster2);
+  }, [filteredData])
+  
 
   const handleTypeClick = () => {
     setShowCategoriesBtn(true);
@@ -138,7 +236,7 @@ function ConcertMain() {
 
   const handleCategoryClick = () => {
     setShowCategoriesBtn(false);
-    setCategoryButtons(["바다", "여름먹거리", "연꽃", "토마토", "장미", "문화예술", "여름꽃"]);
+    setCategoryButtons(["뮤지컬", "연극", "한국음악", "서양음악", "대중음악", "무용", "대중무용", "서커스-마술", "복합"]);
     setAreaButtons([]);
     setPeriodButtons([]);
     setTypeButtons([]);
@@ -150,11 +248,11 @@ function ConcertMain() {
     setCategoryButtons([]);
     setAreaButtons([
       "서울", "경기", "인천", "대전", "대구", "광주", "부산", "울산", "세종",
-      "충청", "경상", "전라", "강원", "제주", "공연", "축제"
+      "충청", "경상", "전라", "강원", "제주",
     ]);
     setPeriodButtons([]);
     setTypeButtons([]);
-    setActiveButton('area');
+    setActiveButton('region');
   };
 
   const handlePeriodClick = () => {
@@ -163,7 +261,7 @@ function ConcertMain() {
     setAreaButtons([]);
     setPeriodButtons(["모집중", "모집종료"]);
     setTypeButtons([]);
-    setActiveButton('period');
+    setActiveButton('status');
   };
 
   const handleCategoryBtnClick = (button) => {
@@ -175,6 +273,7 @@ function ConcertMain() {
   const handleResetClick = () => {
     setSelectedButtons([]);
     setSearchButtonActive(false);
+    handlePeriodClick();
   };
 
   const handleRemoveButtonClick = (button) => {
@@ -192,14 +291,6 @@ function ConcertMain() {
     </h1>
   );
 
-  /*const backendData = {
-    postertxt: 'D-day',
-    concertName: '제목',
-    place: '작성자',
-    date: '날짜',
-    img: '이미지 URL',
-  };*/
-  //const [status, setStatus] = useState([]); // 축제 상태 데이터를 담을 상태
   const [titles, setTitles] = useState([]); // 축제 제목 데이터를 담을 상태 변수
   const [festivalDates, setFestivalDates] = useState([]); // 축제 날짜 데이터를 담을 상태 변수
   const [nicknames, setNicknames] = useState([]); // 닉네임 데이터를 담을 상태 변수
@@ -221,39 +312,17 @@ function ConcertMain() {
         const titles = data.map((item) => item.title);
         const togetherIds = data.map((item) => item.togetherId);
 
-        //const status = data.map((item) => item.status);
-
         // 추출한 데이터를 상태로 설정
         setFestivalDates(festivalDates);
         setNicknames(nicknames);
         setTitles(titles);
         setTogetherIds(togetherIds);
-        //setStatus(status);
       })
       .catch((error) => {
         console.log('데이터 가져오기 오류:', error);
       });
   }, []);
-  /* 
-   useEffect(() => {
-     axios
-       .get('https://jsonplaceholder.typicode.com/posts/1')
-       .then((response) => {
-         const data = response.data;
-         const { userId } = data;
-         setPosterInfo({
-           postertxt: 'Day',
-           concertName: `User ${userId}의 공연`,
-           place: '가상 콘서트 홀',
-           date: '2023-07-29',
-           imageUrl: 'http://tkfile.yes24.com/upload2/perfblog/202306/20230607/20230607-46113.jpg/dims/quality/70/',
-         });
-       })
-       .catch((error) => {
-         console.log('데이터 가져오기 오류:', error);
-       });
-   }, []);
-   */
+
   const [selectedOption, setSelectedOption] = useState(""); // 선택된 옵션을 저장하는 상태
 
   const handleOptionChange = async (event) => {
@@ -263,9 +332,9 @@ function ConcertMain() {
     // 필터링 조건 객체 생성
     const filterParams = {
       page: 0,
-      type: '공연',
+      type: '', // 원하는 기본 필터링 조건 설정
       // ... (다른 필터링 조건 추가)
-      sortBy: selectedValue  // 선택한 값을 sortBy 필터로 설정
+      sortBy: selectedValue, // 선택한 값을 sortBy 필터로 설정
     };
 
     // 필터링 조건 객체를 쿼리 파라미터 문자열로 변환
@@ -273,10 +342,12 @@ function ConcertMain() {
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
       .join('&');
 
-    const apiEndpoint = '백엔드_API_URL';
+    // 백엔드 API 엔드포인트 URL
+    const apiEndpoint = '/api/together'; // 백엔드 API 엔드포인트로 수정
 
     try {
-      const response = await fetch(`${apiEndpoint}/filter?${queryString}`);
+      // 필터링된 데이터를 백엔드로 요청하고 응답 받기
+      const response = await fetch(`${apiEndpoint}?${queryString}`);
       if (response.ok) {
         const data = await response.json();
         setFilteredPosters(data); // 필터링된 데이터 설정
@@ -287,6 +358,7 @@ function ConcertMain() {
       console.error('Error:', error);
     }
   };
+
 
   const OPTIONS = [
     { value: "최신순", name: "최신순" },
@@ -345,12 +417,12 @@ function ConcertMain() {
         />
         <CategoryButton
           button="지역"
-          isSelected={activeButton === 'area'}
+          isSelected={activeButton === 'region'}
           onClick={handleAreaClick}
         />
         <CategoryButton
           button="모집"
-          isSelected={activeButton === 'period'}
+          isSelected={activeButton === 'status'}
           onClick={handlePeriodClick}
         />
       </div>
@@ -368,13 +440,13 @@ function ConcertMain() {
           ))}
         </div>
       )}
-      {showCategoriesBtn && activeButton === 'area' && (
+      {showCategoriesBtn && activeButton === 'region' && (
         <div className="categories-btn">
           {/* 지역 버튼에 해당하는 하위 버튼들을 보여줍니다. */}
           {areaButtons.map((button, index) => (
             <button
               key={index}
-              className={`category-btn1 ${selectedButtons.includes(button) ? 'selected' : ''} ${searchButtonActive && activeButton === 'area' && selectedButtons.includes(button) ? 'active' : ''}`}
+              className={`category-btn1 ${selectedButtons.includes(button) ? 'selected' : ''} ${searchButtonActive && activeButton === 'region' && selectedButtons.includes(button) ? 'active' : ''}`}
               onClick={() => handleCategoryBtnClick(button)}
             >
               {button}
@@ -398,13 +470,13 @@ function ConcertMain() {
         </div>
       )}
 
-      {!showCategoriesBtn && activeButton === 'period' && (
+      {!showCategoriesBtn && activeButton === 'status' && (
         <div className="categories-btn">
           {/* 기간 버튼에 해당하는 하위 버튼들을 보여줍니다. */}
           {periodButtons.map((button, index) => (
             <button
               key={index}
-              className={`category-btn1 ${selectedButtons.includes(button) ? 'selected' : ''} ${searchButtonActive && activeButton === 'period' && selectedButtons.includes(button) ? 'active' : ''}`}
+              className={`category-btn1 ${selectedButtons.includes(button) ? 'selected' : ''} ${searchButtonActive && activeButton === 'status' && selectedButtons.includes(button) ? 'active' : ''}`}
               onClick={() => handleCategoryBtnClick(button)}
             >
               {button}
@@ -472,19 +544,22 @@ function ConcertMain() {
           </button>
         )}
         <div className="poster2">
-          {thumbnailUrls.map((url, index) => (
-            <div key={index} className="poster-item" onClick={()=> navigate(`/together/detail/${togetherIds[index]}`)}>
-              <img src={url} alt={`Thumbnail ${index}`} className='poster-img'/>
-              {/*<p className='postertxt'>{status[index]}</p>*/}
-              <div className="poster-info" >
-                {/* 여기에 이미지와 관련된 정보 표시 (예: festivalDate, nickname 등) */}
-                <p className='concertName'>{titles[index]}</p>
-                <p className='place'>{nicknames[index]}</p>
-                <p className='date'>{festivalDates[index]}</p>
+          {poster2.map((item) => (
+            <div
+              key={item.togetherId}
+              className="poster-item"
+              onClick={() => navigate(`/together/detail/${item.togetherId}`)}
+            >
+              <img src={item.thumbnailUrl} alt={`Thumbnail ${item.togetherId}`} className="poster-img" />
+              <div className="poster-info">
+                <p className="concertName">{item.title}</p>
+                <p className="place">{item.nickname}</p>
+                <p className="date">{item.festivalDate}</p>
               </div>
             </div>
           ))}
         </div>
+
       </div>
     </div>
   );
