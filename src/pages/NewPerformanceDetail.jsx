@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import icon from "../assets/image.jpg";
-import image43 from "../assets/image 43.png";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { getCookie } from "../Cookies";
@@ -23,83 +21,64 @@ export default function PerformanceDetail() {
   const onClickImageMoreViewButton = () => {
     setIsMoreView(!isMoreView);
   }; // 클릭시 상태 반전
-  const { performanceid } = useParams();
+
+  const { performancdId } = useParams();
+  console.log(performancdId);
   const accessToken = getCookie("accessToken");
-  const [festivalData, setFestivalData] = useState(null);
+  const [festivalData, setFestivalData] = useState(null); // 데이터를 저장할 상태를 정의합니다.
 
   useEffect(() => {
     axios
-      .get(`/api/performance/${performanceid}`, {
+      .get(`/api/festival/${performancdId}`, {
         headers: {
           "X-AUTH-TOKEN": accessToken,
         },
       })
       .then((response) => {
-        console.log(response.data);
+        console.log("받아온 데이터:", response.data);
+
         setFestivalData(response.data);
       })
       .catch((error) => {
-        console.error(error);
+        console.error("에러 발생:", error);
       });
-  }, [performanceid, accessToken]);
-  console.log(performanceid);
+  }, [performancdId, accessToken]);
 
-  //dday계산
-  function calculateDday(currentDate, startDate, endDate) {
-    if (currentDate < startDate) {
-      const timeDiff = startDate - currentDate;
-      const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-      return `D-${daysDiff}`;
-    } else if (currentDate >= startDate && currentDate <= endDate) {
-      return "행사중";
-    } else {
-      return "행사종료";
-    }
-  }
-  const currentDate = new Date();
-  let dday = "D-Day";
-  if (festivalData != null) {
-    dday = calculateDday(
-      currentDate,
-      festivalData.startDate,
-      festivalData.endDate
+  const FestivalImages = ({ images }) => {
+    return (
+      <ImageWrap>
+        {images.map((image, index) => (
+          <Image43
+            key={index}
+            src={image}
+            alt={`Image ${index}`}
+            width="200"
+            height="200"
+          />
+        ))}
+        {festivalData !== null ? (
+          <ContentDetailText>{festivalData.content}</ContentDetailText>
+        ) : (
+          <ContentDetailText></ContentDetailText>
+        )}
+      </ImageWrap>
     );
-  }
-
-  //image 데이터 처리
-  let imageUrl = "";
-  if (festivalData != null) {
-    imageUrl = festivalData.images;
-  }
-
-  const urlPattern = /\[([^)]+)\]/;
-  const matches = imageUrl.match(urlPattern);
-  if (matches) {
-    imageUrl = matches[1];
-  }
+  };
 
   const DetailsContent = () => {
     return (
       <ContentsWrap isMoreView={isMoreView}>
-        <ContentsDetailWrap>
-          <ImageMoreWrap isMoreView={isMoreView}>
-            {isMoreView === false && <WhiteGradientOverlay />}
-            <Image43
-              src={imageUrl}
-              alt={`Performance Image`}
-              width="200"
-              height="200"
-            ></Image43>
-          </ImageMoreWrap>
-          {festivalData !== null ? (
-            <ContentDetailText>{festivalData.detail}</ContentDetailText>
+        <ImageMoreWrap isMoreView={isMoreView}>
+          {isMoreView === false && <WhiteGradientOverlay />}
+          {festivalData !== null && festivalData.imagesUrl ? (
+            <FestivalImages images={festivalData.imagesUrl} />
           ) : (
-            <ContentDetailText></ContentDetailText>
+            <Image43 />
           )}
-          {isMoreView === false && (
-            <PlusButton onClick={onClickImageMoreViewButton}>더보기</PlusButton>
-          )}
-        </ContentsDetailWrap>
+        </ImageMoreWrap>
+        {isMoreView === false && (
+          <PlusButton onClick={onClickImageMoreViewButton}>더보기</PlusButton>
+        )}
       </ContentsWrap>
     );
   };
@@ -140,10 +119,14 @@ export default function PerformanceDetail() {
               stroke-linejoin="round"
             />
           </svg>
-          <Word className="Word">공연</Word>
+          {festivalData !== null ? (
+            <Word className="Word">{festivalData.type}</Word>
+          ) : (
+            <TextInsideRectangle></TextInsideRectangle>
+          )}
         </TextContainer>
         {festivalData !== null ? (
-          <Image src={festivalData.profile} alt="Your Image" />
+          <Image src={festivalData.thumbnailUrl} alt="Your Image" />
         ) : (
           <Image />
         )}
@@ -193,11 +176,15 @@ export default function PerformanceDetail() {
       </ContentContainer>
       <ContentInfo>
         <RectangleRight>
-          <TextInsideRectangle>{dday}</TextInsideRectangle>
+          {festivalData !== null ? (
+            <TextInsideRectangle>{festivalData.dday}</TextInsideRectangle>
+          ) : (
+            <TextInsideRectangle></TextInsideRectangle>
+          )}
         </RectangleRight>
         <ContentWrapper style={{ paddingBottom: "40px" }}>
           {festivalData !== null ? (
-            <ContentTitle>{festivalData.name}</ContentTitle>
+            <ContentTitle>{festivalData.festivalTitle}</ContentTitle>
           ) : (
             <ContentTitle></ContentTitle>
           )}
@@ -217,14 +204,13 @@ export default function PerformanceDetail() {
             <TextWrapper>
               <TimeText>시간</TimeText>
               {festivalData !== null ? (
-                <ContentText>{festivalData.dateTime}</ContentText>
+                <ContentText>{festivalData.startTime}</ContentText>
               ) : (
                 <ContentText></ContentText>
               )}
             </TextWrapper>
-
             <TextWrapper>
-              <TimeText>위치</TimeText>
+              <LocationText>장소</LocationText>
               {festivalData !== null ? (
                 <ContentText>{festivalData.location}</ContentText>
               ) : (
@@ -232,47 +218,74 @@ export default function PerformanceDetail() {
               )}
             </TextWrapper>
             <TextWrapper>
-              <LocationText>가격</LocationText>
+              <Info>관련정보</Info>
               {festivalData !== null ? (
-                <ContentText>{festivalData.price}</ContentText>
+                <Content3Text href={festivalData.reservationLink}>
+                  <CustomSvgBook
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                    fill="none"
+                  >
+                    <path
+                      d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
+                      stroke="#FFE500"
+                      strokeWidth="2.66667"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M20 4H28V12"
+                      stroke="#FFE500"
+                      strokeWidth="2.66667"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M13.332 18.6667L27.9987 4"
+                      stroke="#FFE500"
+                      strokeWidth="2.66667"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </CustomSvgBook>
+                  <span>예매하기</span>
+                </Content3Text>
               ) : (
-                <ContentText></ContentText>
+                <Content3Text>
+                  <CustomSvgBook
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                    fill="none"
+                  >
+                    <path
+                      d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
+                      stroke="#FFE500"
+                      strokeWidth="2.66667"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M20 4H28V12"
+                      stroke="#FFE500"
+                      strokeWidth="2.66667"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M13.332 18.6667L27.9987 4"
+                      stroke="#FFE500"
+                      strokeWidth="2.66667"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </CustomSvgBook>
+                  <span>예매하기</span>
+                </Content3Text>
               )}
-            </TextWrapper>
-            <TextWrapper>
-              <Info>정보</Info>
-              <Content3Text>
-                <CustomSvgBook
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                >
-                  <path
-                    d="M24 17.3333V25.3333C24 26.0406 23.719 26.7189 23.219 27.219C22.7189 27.719 22.0406 28 21.3333 28H6.66667C5.95942 28 5.28115 27.719 4.78105 27.219C4.28095 26.7189 4 26.0406 4 25.3333V10.6667C4 9.95942 4.28095 9.28115 4.78105 8.78105C5.28115 8.28095 5.95942 8 6.66667 8H14.6667"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M20 4H28V12"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M13.332 18.6667L27.9987 4"
-                    stroke="#FFE500"
-                    strokeWidth="2.66667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </CustomSvgBook>
-                <span>예매하기</span>
-              </Content3Text>
             </TextWrapper>
             <RelatedInfoWrapper>
               <TogetherText>
@@ -310,14 +323,15 @@ export default function PerformanceDetail() {
       <ManagerInquiryWrap>
         <ManagerInquiry>관리자</ManagerInquiry>
         {festivalData !== null ? (
-          <ManagerInquiryText>{festivalData.management}</ManagerInquiryText>
+          <ManagerInquiryText>{festivalData.adminsName}</ManagerInquiryText>
         ) : (
           <ManagerInquiryText></ManagerInquiryText>
         )}
         <ManagerInquiry>문의처</ManagerInquiry>
         {festivalData !== null ? (
           <ManagerInquiryText>
-            <Text3>{festivalData.management}</Text3>
+            <Text3>{festivalData.adminsPhone}</Text3>
+            <div>{festivalData.adminsSiteAddress}</div>
           </ManagerInquiryText>
         ) : (
           <ManagerInquiryText></ManagerInquiryText>
@@ -368,13 +382,15 @@ const Image = styled.img`
   height: 480.354px;
   flex-shrink: 0;
   border-radius: 19px;
-  display: flex;
-  justify-content: center;
 `;
 
 const Image43 = styled.img`
-  width: 90%;
+  width: 100%;
   height: 100%;
+`;
+
+const ImageWrap = styled.div`
+  width: 910px;
 `;
 
 const ContentDetailText = styled.div`
@@ -411,7 +427,6 @@ const CustomSvg = styled.svg`
 const CustomSvgBook = styled.svg`
   width: 32px;
   height: 32px;
-  margin-left: 38px;
 `;
 
 const SvgPath = styled.path`
@@ -532,7 +547,7 @@ const Content2Text = styled.div`
   margin-left: 59px;
 `;
 
-const Content3Text = styled.div`
+const Content3Text = styled.a`
   color: var(--festie-gray-700, #555);
   margin-top: 22px;
   font-family: SUIT Variable;
@@ -602,6 +617,7 @@ const WordSelect = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: 140%;
+  margin-left: 32px;
   cursor: pointer;
 `;
 
@@ -621,6 +637,7 @@ const HorizontalLine = styled.div`
   flex-shrink: 0;
   border-bottom: 1px solid var(--festie-gray-200, #e8e8e8);
   margin-top: 11px;
+  margin-left: 32px;
 `;
 
 const SelectWrapper = styled.div`
@@ -633,22 +650,12 @@ const ContentsWrap = styled.div`
   margin-top: 50px;
   flex-wrap: wrap;
   justify-content: center;
-  display: flex;
-  width: 910px;
 `;
 
 const ImageMoreWrap = styled.div`
-  display: flex;
   position: relative;
   max-height: ${(props) => (props.isMoreView ? "" : "195px")};
   overflow: hidden;
-  justify-content: center;
-`;
-
-const ContentsDetailWrap = styled.div`
-  width: 100%;
-  margin-top: 50px;
-  flex-wrap: wrap;
   justify-content: center;
 `;
 
