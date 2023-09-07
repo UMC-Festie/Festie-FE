@@ -58,7 +58,7 @@ export default function PerformanceDetail() {
     } else if (currentDate >= startDate && currentDate <= endDate) {
       return "행사중";
     } else {
-      return "행사예정";
+      return "공연예정";
     }
   }
   const currentDate = new Date();
@@ -74,7 +74,10 @@ export default function PerformanceDetail() {
   //image 데이터 처리
   let imageUrl = "";
   if (festivalData != null) {
-    imageUrl = festivalData.images.split(',')[0].substring(1);
+    if(festivalData.images.includes(','))
+      imageUrl = festivalData.images.split(',')[0].substring(1);
+    else 
+      imageUrl = festivalData.images;
     console.log(imageUrl)
   }
 

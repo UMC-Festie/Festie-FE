@@ -86,7 +86,7 @@ export default function Main() {
     } else if (currentDate >= startDate && currentDate <= endDate) {
       return "행사중";
     } else {
-      return "행사예정";
+      return "축제예정";
     }
   }
   const currentDate = new Date();

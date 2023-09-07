@@ -20,6 +20,9 @@ import axios from "axios";
 export default function Main() {
   const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
   const navigate = useNavigate();
+
+
+
   axios.get(`${PROXY}/api/home?festivalType=1&togetherType=1`)
   .then((Response) => {
       console.log(Response); 
@@ -97,9 +100,10 @@ export default function Main() {
       const [togetherInfo3, setTogetherInfo3] = useState(null);
       const [togetherInfo4, setTogetherInfo4] = useState(null);
 
+
       useEffect(() => {
         // Fetch festival and together data from the API
-        axios.get(`${PROXY}/api/home?festivalType=1&togetherType=1`)
+        axios.get(`${PROXY}/api/home?festivalType=1&togetherType=0`)
           .then((response) => {
             const festivalList = response.data.festivalList;
             const togetherList = response.data.togetherList;

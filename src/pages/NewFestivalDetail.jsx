@@ -83,7 +83,7 @@ export default function Main() {
           </ButtonIcon>
           <FestivalMainImage
             src={festivalData.imagesUrl[selectedImageIndex]}
-            alt="Festival Image"
+            // alt="Festival Image"
           ></FestivalMainImage>
           <ButtonIcon
             xmlns="http://www.w3.org/2000/svg"
